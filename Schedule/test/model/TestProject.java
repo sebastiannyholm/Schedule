@@ -14,39 +14,33 @@ public class TestProject {
 	public void createProject() throws OperationNotAllowedException{
 		Schedule schedule = new Schedule();
 		
-		Address address = new Address("Street", 12, 3850, "City");			//street, streetNumber, zipCode, city
-		Employee employee = new Employee("Cat", "cat1", 23, address);
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");					//street, streetNumber, zipCode, city
+		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
 		schedule.addEmployee(employee);
 		
-		Project project = new Project("ProjectAwesome", 1, 5, employee);	//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", 1, 5, employee);						//projectName, projectNumber, totalTime (in weeks)
 		
-		assertEquals(0,employee.getProjects());
+		assertEquals(0,employee.getProjects().size());
 		employee.createProject(project);
-		assertEquals(1,employee.getProjects());
+		assertEquals(1,schedule.getAllProjects().size());
+		assertEquals(1,employee.getProjects().size());
 		
-		
-		
-		// employee.addTask(project)     --> if (employee.equals(project.getProjectLeader)) NO TASK IS ADDED
-	
 	}
 	
 	@Test
-	public void deleteProject() throws OperationNotAllowedException{
+	public void deleteProject() throws Exception{
 		Schedule schedule = new Schedule();
 		
-		Address address = new Address("Street", 12, 3850, "City");			//street, streetNumber, zipCode, city
-		Employee employee = new Employee("Cat", "cat1", 23, address);
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");					//street, streetNumber, zipCode, city
+		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
 		schedule.addEmployee(employee);
 		
-		Project project = new Project("ProjectAwesome", 1, 5, employee);	//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", 1, 5, employee);						//projectName, projectNumber, totalTime (in weeks)
 		
-		assertEquals(0,employee.getProjects());
 		employee.createProject(project);
-		assertEquals(1,employee.getProjects());
 		
-		Employee projectLeader = project.getProjectleader();
+		Employee projectLeader = project.getProjectLeader();
 		projectLeader.deleteProject(project);
-		assertEquals(0,employee.getProjects());
-		assertTrue(project == null);
+		assertEquals(0,projectLeader.getProjects().size());
 	}
 }

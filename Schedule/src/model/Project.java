@@ -1,5 +1,6 @@
 package model;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Project {
@@ -16,9 +17,12 @@ public class Project {
 		this.projectNumber = projectNumber;
 		this.timeInWeeks = timeInWeeks;
 		this.projectLeader = employee;
+		
+		tasks = new LinkedList<Task>();
+	
 	}
 
-	public Employee getProjectleader() {
+	public Employee getProjectLeader() {
 		return projectLeader;
 	}
 
@@ -26,4 +30,9 @@ public class Project {
 		return tasks;
 	}
 
+	public void addTask(Task task) {
+		tasks.add(task);
+		
+	}	
+	
 }

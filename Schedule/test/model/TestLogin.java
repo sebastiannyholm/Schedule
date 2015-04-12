@@ -16,7 +16,7 @@ public class TestLogin {
 	public void setUp() throws Exception {
 		
 		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");
-		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address);
+		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);
 		
 		schedule.addEmployee(employee);
 	}

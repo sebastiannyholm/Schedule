@@ -11,6 +11,7 @@ public class Schedule {
 	
 	public Schedule(){
 		this.employees = new LinkedList<Employee>();
+		this.allProjects = new LinkedList<Project>();
 	}
 	
 	public List<Employee> getEmployees() {
@@ -21,9 +22,11 @@ public class Schedule {
 		if (employee.hasInitialsOnFourLetters()) 
 			throw new OperationNotAllowedException("An employee can only have four initials.", "Add employee");
 		
-		for (Employee employeeInSystem : employees)
+		for (Employee employeeInSystem : employees) {
 			if (employeeInSystem.hasSameInitials(employee.getInitials())) 
 				throw new OperationNotAllowedException("Two employees can't have the same initials.", "Add employee");
+		}
+		
 		employees.add(employee);
 	}
 
@@ -41,5 +44,10 @@ public class Schedule {
 				loggedIn = true;
 				break;
 			}			
+	}
+
+	public void addProject(Project project) {
+		allProjects.add(project);
+		
 	}
 }
