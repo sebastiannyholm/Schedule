@@ -22,25 +22,4 @@ public class TestDataSetup {
 		
 	}
 	
-	
-	/* Test 1
-	 * As an employee I would like to log into the system, when I arrive at work.
-	 */
-	@Test
-	public void testLogin() {
-
-		// Check if a user is logged in
-		// Will fail, since no user are logged in.
-		
-		assertFalse(schedule.adminLoggedIn());
-		
-		// Step 1)
-		
-		schedule.login("user");
-		
-		// Step 2) Check that the method returned true and check that admin is logged in.
-		assertTrue(login);
-		assertTrue(libApp.adminLoggedIn());
-	}
-	
 }
