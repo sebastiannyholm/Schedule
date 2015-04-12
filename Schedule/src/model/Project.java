@@ -17,5 +17,13 @@ public class Project {
 		this.timeInWeeks = timeInWeeks;
 		this.projectLeader = employee;
 	}
-	
+
+	public Employee getProjectleader() {
+		return projectLeader;
+	}
+
+	public List<Task> getTasks() {
+		return tasks;
+	}
+
 }

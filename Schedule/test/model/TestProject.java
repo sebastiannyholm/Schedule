@@ -11,7 +11,7 @@ public class TestProject {
 	
 	
 	@Test
-	public void createProject(){
+	public void createProject() throws OperationNotAllowedException{
 		Schedule schedule = new Schedule();
 		
 		Address address = new Address("Street", 12, 3850, "City");			//street, streetNumber, zipCode, city
@@ -31,7 +31,7 @@ public class TestProject {
 	}
 	
 	@Test
-	public void deleteProject(){
+	public void deleteProject() throws OperationNotAllowedException{
 		Schedule schedule = new Schedule();
 		
 		Address address = new Address("Street", 12, 3850, "City");			//street, streetNumber, zipCode, city
@@ -44,8 +44,9 @@ public class TestProject {
 		employee.createProject(project);
 		assertEquals(1,employee.getProjects());
 		
-		employee.deleteProject(project);
+		Employee projectLeader = project.getProjectleader();
+		projectLeader.deleteProject(project);
 		assertEquals(0,employee.getProjects());
-		
+		assertTrue(project == null);
 	}
 }

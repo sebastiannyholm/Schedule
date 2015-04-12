@@ -27,9 +27,19 @@ public class Employee {
 		return projects;
 	}
 
-	public void deleteProject(Project project) {
-		projects.remove(project);
-		
+	public void deleteProject(Project project) throws Exception{
+		try{
+			// remove reference to the object entirely --> removed by garbage collector.
+			projects.remove(project);
+			for (Task task : project.getTasks()){
+				task.removeTask();
+			}
+			
+			
+			project = null;	
+		} catch (IllegalArgumentException e){
+			throw new ProjectNotFoundException("Cannot remove a project which does not exist!", "Delete project");
+		}
 	}
 	
 	public String getInitials() {
