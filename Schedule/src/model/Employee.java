@@ -10,6 +10,8 @@ public class Employee {
 	private Address address;
 	
 	List<Project> projects = new ArrayList<Project>();
+	List<Task> tasks = new ArrayList<Task>();
+	
 	
 	public Employee(String name, String initials, int age, Address address) {
 		this.name = name;
@@ -32,7 +34,10 @@ public class Employee {
 			// remove reference to the object entirely --> removed by garbage collector.
 			projects.remove(project);
 			for (Task task : project.getTasks()){
-				task.removeTask();
+				for (Employee employee : task.getEmployees()){
+					employee.removeTask(task);
+				}
+				task = null;
 			}
 			
 			
@@ -42,6 +47,11 @@ public class Employee {
 		}
 	}
 	
+	private void removeTask(Task task) {
+		tasks.remove(task);
+		
+	}
+
 	public String getInitials() {
 		return initials;
 	}

@@ -15,9 +15,7 @@ public class TestLogin {
 	@Before
 	public void setUp() throws Exception {
 		
-		List<Employee> users = schedule.getEmployees();
-		
-		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingør");
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");
 		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address);
 		
 		schedule.addEmployee(employee);

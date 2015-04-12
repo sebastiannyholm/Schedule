@@ -14,7 +14,7 @@ public class TestEmployee {
 		
 		List<Employee> employees = schedule.getEmployees();
 		
-		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingør");		//street, streetNumber, zipCode, city
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
 		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address);
 		
 		assertEquals(0,employees.size());
@@ -31,10 +31,10 @@ public class TestEmployee {
 		
 		List<Employee> employees = schedule.getEmployees();
 		
-		Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingør");		//street, streetNumber, zipCode, city
+		Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
 		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address1);
 		
-		Address address2 = new Address("Grønnegangen", 32, 3070, "Snekkersten");		//street, streetNumber, zipCode, city
+		Address address2 = new Address("Gronnegangen", 32, 3070, "Snekkersten");		//street, streetNumber, zipCode, city
 		Employee employee2 = new Employee("Sebastian Nystorm", "seny", 23, address2);
 		
 		schedule.addEmployee(employee1);
@@ -56,7 +56,7 @@ public class TestEmployee {
 		
 		List<Employee> employees = schedule.getEmployees();
 		
-		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingør");		//street, streetNumber, zipCode, city
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
 		Employee employee = new Employee("Sebastian Nyholm", "sn", 25, address);
 		
 		assertEquals(0,employees.size());

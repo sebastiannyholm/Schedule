@@ -10,11 +10,9 @@ public class TestTask {
 	public void addTask() throws Exception {
 		
 		Schedule schedule = new Schedule();
-
-		List<Employee> users = schedule.getEmployees();
 		
-		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingør");		//street, streetNumber, zipCode, city
-		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address);
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
+		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address);	//name, initials, age, address
 		
 		schedule.addEmployee(employee);
 				
