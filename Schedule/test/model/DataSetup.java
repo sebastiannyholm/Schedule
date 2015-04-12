@@ -11,16 +11,15 @@ public class DataSetup {
 		
 		Schedule schedule = new Schedule();
 		
-		Address address1 = new Address("Rolighedsvej", 3, "Helsingør", 3000); 
+		Address address1 = new Address("Rolighedsvej", 3, "Helsingor", 3000); 
 		User user1 = new User("brje","Brian Jensen",35,address1);
 		
-		Address address2 = new Address("Bjarkesvej", 14, "Helsingør", 3000);
+		Address address2 = new Address("Bjarkesvej", 14, "Helsingor", 3000);
 		User user2 = new User("lala","Lasse Larsen",42,address2);
 		
-		schedule.addEmployee(user1);
 		schedule.addEmployee(user2);
 		
-		System.out.println("Øv");
+		System.out.println("ov");
 		
 	}
 	
@@ -32,7 +31,7 @@ public class DataSetup {
 	public void testLogin() {
 
 		
-		
+		System.out.println("HI WORLD");
 		
 		// Check if a user is logged in
 		// Will fail, since no user are logged in.
