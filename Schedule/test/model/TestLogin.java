@@ -13,7 +13,7 @@ public class TestLogin {
 	Schedule schedule = new Schedule();
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setup() throws Exception {
 		
 		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");
 		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);
