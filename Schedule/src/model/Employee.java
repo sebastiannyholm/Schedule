@@ -6,9 +6,9 @@ public class Employee {
 	private int age;
 	private Address address;
 	
-	public Employee(String initials, String name, int age, Address address) {
-		this.initials = initials;
+	public Employee(String name, String initials, int age, Address address) {
 		this.name = name;
+		this.initials = initials;
 		this.age = age;
 		this.address = address;
 	}

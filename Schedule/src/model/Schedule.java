@@ -5,14 +5,18 @@ import java.util.List;
 
 public class Schedule {
 
-	List<Employee> users;
+	private List<Employee> employees;
 	
 	public Schedule(){
-		users = new LinkedList<Employee>();
+		this.employees = new LinkedList<Employee>();
 	}
 	
 	public List<Employee> getEmployees() {
-		return users;
+		return employees;
+	}
+
+	public void addEmpolyee(Employee employee) {
+		employees.add(employee);
 	}
 
 }
