@@ -13,4 +13,8 @@ public class Employee {
 		this.address = address;
 	}
 	
+	public String getInitials() {
+		return initials;
+	}
+	
 }

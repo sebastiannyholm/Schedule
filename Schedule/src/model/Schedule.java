@@ -15,7 +15,8 @@ public class Schedule {
 		return employees;
 	}
 
-	public void addEmployee(Employee employee) {
+	public void addEmployee(Employee employee) throws OperationNotAllowedException {
+		if (employee.getInitials().length() != 4) throw new OperationNotAllowedException("An employee can only have four initials.", "Add employee");
 		employees.add(employee);
 	}
 
