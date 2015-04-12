@@ -12,16 +12,41 @@ public class TestEmployee {
 	public void addEmployee() throws Exception {
 		Schedule schedule = new Schedule();
 		
-		List<Employee> users = schedule.getEmployees();
+		List<Employee> employees = schedule.getEmployees();
 		
-		Address address = new Address("Street", 12, 3850, "City");		//street, streetNumber, zipCode, city
-		Employee employee = new Employee("Cat", "cat1", 23, address);
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingør");		//street, streetNumber, zipCode, city
+		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address);
 		
-		assertEquals(0,users.size());
+		assertEquals(0,employees.size());
 		
 		schedule.addEmployee(employee);
 		
-		assertEquals(1,users.size());
+		assertEquals(1,employees.size());
+		
+	}
+	
+	@Test
+	public void addEmployeeWithSameInitials() throws Exception {
+		Schedule schedule = new Schedule();
+		
+		List<Employee> employees = schedule.getEmployees();
+		
+		Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingør");		//street, streetNumber, zipCode, city
+		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address1);
+		
+		Address address2 = new Address("Grønnegangen", 32, 3070, "Snekkersten");		//street, streetNumber, zipCode, city
+		Employee employee2 = new Employee("Sebastian Nystorm", "seny", 23, address2);
+		
+		schedule.addEmployee(employee1);
+		
+		try {
+			schedule.addEmployee(employee2);
+		} catch (OperationNotAllowedException e) {
+			assertEquals("Two employees can't have the same initials.",e.getMessage());
+			assertEquals("Add employee",e.getOperation());
+		}
+		
+		assertEquals(1,employees.size());
 		
 	}
 	
@@ -29,12 +54,12 @@ public class TestEmployee {
 	public void addEmployeeWithFiveInitials() {
 		Schedule schedule = new Schedule();
 		
-		List<Employee> users = schedule.getEmployees();
+		List<Employee> employees = schedule.getEmployees();
 		
-		Address address = new Address("Street", 12, 3850, "City");		//street, streetNumber, zipCode, city
-		Employee employee = new Employee("Cat", "cat12", 23, address);
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingør");		//street, streetNumber, zipCode, city
+		Employee employee = new Employee("Sebastian Nyholm", "sn", 25, address);
 		
-		assertEquals(0,users.size());
+		assertEquals(0,employees.size());
 		
 		try {
 			schedule.addEmployee(employee);
@@ -43,7 +68,7 @@ public class TestEmployee {
 			assertEquals("Add employee",e.getOperation());
 		}
 		
-		assertEquals(0,users.size());
+		assertEquals(0,employees.size());
 	}
 	
 }

@@ -46,4 +46,16 @@ public class Employee {
 		return initials;
 	}
 	
+	public boolean matchInitials(String initials) {
+		return this.initials.equals(initials);
+	}
+	
+	public boolean hasInitialsOnFourLetters() {
+		return initials.length() != 4;
+	}
+	
+	public boolean hasSameInitials(String initials) {
+		return this.initials.equals(initials);
+	}
+	
 }
