@@ -32,4 +32,8 @@ public class Employee {
 		
 	}
 	
+	public String getInitials() {
+		return initials;
+	}
+	
 }
