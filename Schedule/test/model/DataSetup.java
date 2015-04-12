@@ -8,6 +8,7 @@ public class DataSetup {
 		
 	@Before
 	public void setUp(){
+		
 		Schedule schedule = new Schedule();
 		
 		Address address1 = new Address("Rolighedsvej", 3, "Helsingør", 3000); 
@@ -19,11 +20,13 @@ public class DataSetup {
 		schedule.addEmployee(user1);
 		schedule.addEmployee(user2);
 		
+		System.out.println("Øv");
+		
 	}
 	
 	
 	/* Test 1
-	 * ”As an employee I would like to log into the system, when I arrive at work.”
+	 * As an employee I would like to log into the system, when I arrive at work.
 	 */
 	@Test
 	public void testLogin() {
