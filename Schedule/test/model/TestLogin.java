@@ -2,44 +2,44 @@ package model;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import java.util.List;
+
+import org.junit.Before;
 import org.junit.Test;
 
 public class TestLogin {
 
-	@Test
-	public void login() throws Exception {
+	Schedule schedule = new Schedule();
+	
+	@Before
+	public void setUp() throws Exception {
 		
-		Schedule schedule = new Schedule();
-
 		List<Employee> users = schedule.getEmployees();
 		
-		Address address = new Address("Street", 12, 3850, "City");
-		Employee employee = new Employee("Cat", "cat1", 23, address);
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingør");
+		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address);
 		
 		schedule.addEmployee(employee);
+	}
+	
+	@Test
+	public void login() {
 		
-		assertFalse(schedule.loggedIn());
+		assertFalse(schedule.isLoggedIn());
 		
-		schedule.login(employee);
+		schedule.login("seny");
 
-		assertTrue(schedule.loggedIn());
+		assertTrue(schedule.isLoggedIn());
 		
 	}
 	
 	@Test
 	public void loginFailed() {
-
-		Schedule schedule = new Schedule();
-
-		List<Employee> users = schedule.getEmployees();
 		
-		Address address = new Address("Street", 12, 3850, "City");
-		Employee employee = new Employee("Cat", "cat1", 23, address);
-		
-		schedule.login(employee);
+		schedule.login("sn");
 
-		assertFalse(schedule.loggedIn());
+		assertFalse(schedule.isLoggedIn());
 	}
 
 	
