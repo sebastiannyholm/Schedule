@@ -22,6 +22,7 @@ public class TestEmployee {
 		schedule.addEmployee(employee);
 		
 		assertEquals(1,users.size());
+		
 	}
 	
 	@Test

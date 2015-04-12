@@ -6,6 +6,7 @@ import java.util.List;
 public class Schedule {
 
 	private List<Employee> employees;
+	private List<Project> allProjects;
 	
 	public Schedule(){
 		this.employees = new LinkedList<Employee>();
@@ -20,4 +21,7 @@ public class Schedule {
 		employees.add(employee);
 	}
 
+	public List<Project> getAllProjects(){
+		return allProjects;
+	}
 }
