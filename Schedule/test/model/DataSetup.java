@@ -1,9 +1,6 @@
 package model;
 import static org.junit.Assert.*;
-
 import org.junit.Test;
-
-
 import org.junit.Before;
 
 public class DataSetup {
@@ -15,7 +12,7 @@ public class DataSetup {
 	
 	@Test
 	public void check() {
-		
+		System.out.println("test");
 	}
 	
 }
