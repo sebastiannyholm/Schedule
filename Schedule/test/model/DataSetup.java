@@ -7,7 +7,7 @@ public class DataSetup {
 		
 	@Before
 	public void setUp(){
-		
+		asd
 	}
 	
 	@Test
