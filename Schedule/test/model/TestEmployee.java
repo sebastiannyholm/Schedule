@@ -18,7 +18,7 @@ public class TestEmployee {
 		Employee employee = new Employee("Cat", "cat1", 23, address);
 		
 		assertEquals(0,users.size());
-		schedule.addEmpolyee(employee);
+		schedule.addEmployee(employee);
 		assertEquals(1,users.size());
 		
 	}

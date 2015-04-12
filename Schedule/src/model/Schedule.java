@@ -15,7 +15,7 @@ public class Schedule {
 		return employees;
 	}
 
-	public void addEmpolyee(Employee employee) {
+	public void addEmployee(Employee employee) {
 		employees.add(employee);
 	}
 
