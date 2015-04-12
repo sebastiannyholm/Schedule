@@ -13,8 +13,6 @@ public class DataSetup {
 	@Test
 	public void check() {
 		System.out.println("test");
-		
-		asdasdasd
 	}
 	
 }
