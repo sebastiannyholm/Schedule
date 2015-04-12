@@ -7,6 +7,7 @@ import org.junit.Before;
 public class TestDataSetup {
 	
 	Schedule schedule = new Schedule();
+	
 	@Before
 	public void setUp(){
 		
