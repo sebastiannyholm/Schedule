@@ -17,10 +17,8 @@ public class DataSetup {
 		Address address2 = new Address("Bjarkesvej", 14, "Helsingor", 3000);
 		User user2 = new User("lala","Lasse Larsen",42,address2);
 		
-		
+		schedule.addEmployee(user1);
 		schedule.addEmployee(user2);
-		
-		System.out.println("ov");
 		
 	}
 	
@@ -31,9 +29,6 @@ public class DataSetup {
 	@Test
 	public void testLogin() {
 
-		
-		System.out.println("HI WORLD");
-		
 		// Check if a user is logged in
 		// Will fail, since no user are logged in.
 		
