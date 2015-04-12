@@ -27,17 +27,12 @@ public class DataSetup {
 			libApp.addBook(book);
 		}
 
-		List<User> users = new ArrayList<User>();
-		
-		Address address = new Address("Kirkevej",2344,"Herlev");
-		User user = new User("1234651234","User 1","user1@library.dk",address);
-		users.add(user);
-		address = new Address("Lyngby",2345,"Holte");
-		user = new User("1212871234","User 2","user2@library.dk",address);
-		users.add(user);
-		
-		for (User usr : users) {
-			libApp.register(usr);
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();	
 		}		
 	}
 	
