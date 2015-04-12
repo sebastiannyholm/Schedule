@@ -10,26 +10,25 @@ public class DataSetup {
 	public void setUp(){
 		Schedule schedule = new Schedule();
 		
-		Address address1 = new Address("Rolighedsvej", 3, "Helsingør", 3000); 
+		Address address1 = new Address("Rolighedsvej", 3, "HelsingÃ¸r", 3000); 
 		User user1 = new User("brje","Brian Jensen",35,address1);
 		
-		Address address2 = new Address("Bjarkesvej", 14, "Helsingør", 3000);
+		Address address2 = new Address("Bjarkesvej", 14, "HelsingÃ¸r", 3000);
 		User user2 = new User("lala","Lasse Larsen",42,address2);
 		
-		schedule.addEmployee(user1);
 		schedule.addEmployee(user2);
 		
 	}
 	
 	
 	/* Test 1
-	 * ”As an employee I would like to log into the system, when I arrive at work.”
+	 * â€�As an employee I would like to log into the system, when I arrive at work.â€�
 	 */
 	@Test
 	public void testLogin() {
 
 		
-		
+		System.out.println("HI WORLD");
 		
 		// Check if a user is logged in
 		// Will fail, since no user are logged in.
