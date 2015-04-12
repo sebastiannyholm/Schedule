@@ -73,11 +73,13 @@ public class Employee {
 	}
 
 	public void addTask(Task task, Project project) throws Exception {
-		
 		if (!this.equals(project.getProjectLeader())){
 			throw new OperationNotAllowedException("Only the project leader may add a task to a project", "Add task");
 		}
 		project.addTask(task);
 	}
 	
+//	public String toString(){
+//		return name + ", " + initials + ", aged " + age + ", living in " + address;
+//	}
 }

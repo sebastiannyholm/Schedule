@@ -35,4 +35,7 @@ public class Project {
 		
 	}	
 	
+//	public String toString(){
+//		return projectName + " " + projectNumber + ", Estimated time in weeks: " + timeInWeeks + " -- Project leader: " + projectLeader;
+//	}
 }

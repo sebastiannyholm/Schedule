@@ -12,4 +12,7 @@ public class Address {
 		this.city = city;
 	}
 	
+	public String toString(){
+		return street + " " + streetNumber + ", " + zipCode + "  " + city;
+	}
 }

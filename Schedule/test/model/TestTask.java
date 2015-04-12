@@ -17,11 +17,12 @@ public class TestTask {
 		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
 		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
 
-		Project project = new Project("ProjectAwesome", 1, 5, employee1);							//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", 1, 5, employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
 		
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
 		employee2.createProject(project);
+		
 	}
 	
 	@Test
