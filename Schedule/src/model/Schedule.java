@@ -7,11 +7,13 @@ public class Schedule {
 
 	private List<Employee> employees;
 	private List<Project> allProjects;
+	private List<Task> allTasks;
 	private boolean loggedIn = false;
 	
 	public Schedule(){
 		this.employees = new LinkedList<Employee>();
 		this.allProjects = new LinkedList<Project>();
+		this.allTasks = new LinkedList<Task>();
 	}
 	
 	public List<Employee> getEmployees() {
@@ -48,6 +50,15 @@ public class Schedule {
 
 	public void addProject(Project project) {
 		allProjects.add(project);
+		
+	}
+
+	public List<Task> getAllTasks() {
+		return allTasks;
+	}
+
+	public void addTask(Task task) {
+		allTasks.add(task);
 		
 	}
 }

@@ -28,7 +28,7 @@ public class Employee {
 	public void createProject(Project project) {
 		projects.add(project);
 		schedule.addProject(project);
-		
+		project.setProjectNumber(schedule.getAllProjects().size()-1);
 	}
 
 	public List<Project> getProjects() {
@@ -46,11 +46,10 @@ public class Employee {
 				employee.removeTask(task);
 			}
 			task = null;
-			System.out.println(task);
 		}
 		project = null;	
 	}
-	
+
 	private void removeTask(Task task) {
 		tasks.remove(task);
 		
@@ -77,9 +76,26 @@ public class Employee {
 			throw new OperationNotAllowedException("Only the project leader may add a task to a project", "Add task");
 		}
 		project.addTask(task);
+		schedule.addTask(task);
+		task.setTaskNumber(schedule.getAllTasks().size()-1);
+	}
+
+	public void addEmployee(Employee employee, Task task) {
+		employee.setTasks(task);
+		task.addEmployee(employee);
+		
 	}
 	
-//	public String toString(){
-//		return name + ", " + initials + ", aged " + age + ", living in " + address;
-//	}
+	public void setTasks(Task task) {
+		tasks.add(task);
+		
+	}
+
+	public String toString(){
+		return name + ", " + initials + ", aged " + age + ", living in " + address;
+	}
+
+	public List<Task> getTasks() {
+		return tasks;
+	}
 }

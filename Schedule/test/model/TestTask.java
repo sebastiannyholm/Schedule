@@ -17,7 +17,7 @@ public class TestTask {
 		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
 		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
 
-		Project project = new Project("ProjectAwesome", 1, 5, employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
+		Project project = new Project("ProjectAwesome", 5, employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
 		
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
@@ -31,7 +31,7 @@ public class TestTask {
 		Project project = schedule.getAllProjects().get(0);		// list of 1
 		Employee employee = schedule.getEmployees().get(1);		// list of 2
 		
-		Task task = new Task("taskName", 1, 5, 8, 37*(8-5));	// name, number, startWeek, endWeek, budgetedHours
+		Task task = new Task("taskName", 5, 8, 37*(8-5));	// name, number, startWeek, endWeek, budgetedHours
 		
 		assertEquals(0,project.getTasks().size());
 		employee.addTask(task, project);
@@ -46,7 +46,7 @@ public class TestTask {
 		Project project = schedule.getAllProjects().get(0);		// list of 1
 		Employee employee = schedule.getEmployees().get(0);		// list of 2
 		
-		Task task = new Task("taskName", 1, 5, 8, 37*(8-5));	// name, number, startWeek, endWeek, budgetedHours
+		Task task = new Task("taskName", 5, 8, 37*(8-5));	// name, number, startWeek, endWeek, budgetedHours
 		
 		assertEquals(0,project.getTasks().size());
 		try {
@@ -61,8 +61,32 @@ public class TestTask {
 	}
 	
 	@Test
-	public void addEmployeeToTask() {
+	public void addEmployeeToTask() throws Exception {
+		Project project = schedule.getAllProjects().get(0);	
+		Employee projectLeader = schedule.getEmployees().get(1);	
+		Employee employee = schedule.getEmployees().get(0);		
+		Task task = new Task("taskName", 5, 8, 37*(8-5));	// name, startWeek, endWeek, budgetedHours
 		
+		projectLeader.addTask(task, project);
+		
+		// task knows which employees are working on it
+		// and the employee knows which tasks they are working on
+		assertEquals(0, employee.getTasks().size());
+		assertEquals(0, task.getEmployees().size());	
+		
+		projectLeader.addEmployee(employee, task);				// main focus here, adds an employee to the created task
+		
+		assertEquals(1, employee.getTasks().size());
+		assertEquals(1, task.getEmployees().size());
+		
+		// add more than 1 employee to the task, here the project leader adds him-/herself to the task
+		projectLeader.addEmployee(projectLeader, task);
+		
+		assertEquals(2, task.getEmployees().size());
 	}
 	
+	@Test
+	public void TenTaskEmployee() throws Exception {
+		
+	}
 }
