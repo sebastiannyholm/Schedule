@@ -64,8 +64,9 @@ public class Employee {
 		project = null;	
 	}
 
-	private void removeTask(Task task) {
+	public void removeTask(Task task) {
 		tasks.remove(task);
+		task.remove(this);
 		
 	}
 
@@ -94,11 +95,14 @@ public class Employee {
 		task.setTaskNumber(schedule.getAllTasks().size()-1);
 	}
 
-	public void addEmployee(Employee employee, Task task) throws Exception {
+	public void addEmployeeToTask(Employee employee, Task task) throws Exception {
 		// regular employees can't work on more than 10 tasks at once
-		if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
-			throw new OperationNotAllowedException("The employee " + employee + " is already working on the maximum amount of tasks!", "Add task");
-		
+		if (employee.getTasks().contains(task)) 
+			throw new OperationNotAllowedException("The employee " + employee + " is already working on this task!", "Add employee to task");
+		else if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
+			throw new OperationNotAllowedException("The employee " + employee + " is already working on the maximum amount of tasks!", 
+					"Add employee to task");
+
 		employee.setTasks(task);
 		task.addEmployee(employee);
 	}

@@ -7,9 +7,9 @@ import java.util.List;
 
 public class Project {
 
-	String projectName, projectNumber;
-	int timeInWeeks;
-	Employee projectLeader;
+	private String projectName, projectNumber;
+	private int timeInWeeks;
+	private Employee projectLeader;
 	
 	List<Task> tasks;
 	
@@ -39,7 +39,7 @@ public class Project {
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		
 		// adds leading zeros so that the number reaches 4 digits.   --> projectCount = 4  becomes 0004
-		this.projectNumber = "" + year + String.format("%04d", (projectCount % 1000));
+		this.projectNumber = "" + year + String.format("%04d", (projectCount % 10000));
 
 	}
 

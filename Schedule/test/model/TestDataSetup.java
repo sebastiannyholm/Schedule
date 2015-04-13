@@ -17,7 +17,7 @@ public class TestDataSetup {
 		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");	
 		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);	
 
-		Project project = new Project("ProjectAwesome", 1, 5, employee1);				//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", 5, employee1);				//projectName, projectNumber, totalTime (in weeks)
 		
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
