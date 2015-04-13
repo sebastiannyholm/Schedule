@@ -27,10 +27,13 @@ public class Employee {
 		tasks = new ArrayList<Task>();
 	}
 
-	public void createProject(Project project) {
-		projects.add(project);
-		schedule.addProject(project);
-		project.setProjectNumber(schedule.getAllProjects().size()-1);
+	public void createProject(Project newProject) throws Exception {
+		for (Project project : schedule.getAllProjects())
+			if (project.projectExist(newProject)) 
+				throw new OperationNotAllowedException("You can't create the same project multiple times.", "Create project");
+		projects.add(newProject);
+		schedule.addProject(newProject);
+		newProject.setProjectNumber(schedule.getAllProjects().size()-1);
 	}
 
 	public List<Project> getProjects() {
@@ -131,7 +134,4 @@ public class Employee {
 		return superWorker;
 	}
 
-	public String getName() {
-		return name;
-	}
 }

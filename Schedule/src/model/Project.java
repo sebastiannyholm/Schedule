@@ -72,4 +72,8 @@ public class Project {
 	public int getStartWeek() {
 		return startWeek;
 	}
+	
+	public boolean projectExist(Project newProject) {
+		return this.equals(newProject);
+	}
 }
