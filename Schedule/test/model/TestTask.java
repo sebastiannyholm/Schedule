@@ -10,7 +10,7 @@ public class TestTask {
 	Schedule schedule = new Schedule();
 	
 	@Before
-	public void setup() throws OperationNotAllowedException{
+	public void setup() throws Exception{
 		Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingor");
 		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address1, schedule);
 		
@@ -247,6 +247,6 @@ public class TestTask {
 		
 		assertEquals(0, projectLeader.getTasks().size());
 		assertEquals(0, projectLeader.getProjects().size());
-		
+
 	}
 }
