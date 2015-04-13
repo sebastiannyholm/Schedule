@@ -18,7 +18,7 @@ public class TestProject {
 		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
 		schedule.addEmployee(employee);
 		
-		Project project = new Project("ProjectAwesome", 5, employee);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", 5, employee);							//projectName, projectNumber, totalTime (in weeks)
 		
 		assertEquals(0,employee.getProjects().size());
 		employee.createProject(project);
@@ -45,7 +45,29 @@ public class TestProject {
 	}
 	
 	@Test
-	public void projectNumberGeneration() throws OperationNotAllowedException{
+	public void createTheSameProjectMultipleTimes() throws Exception {
+		Schedule schedule = new Schedule();
+		
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");					//street, streetNumber, zipCode, city
+		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
+		schedule.addEmployee(employee);
+		
+		Project project = new Project("ProjectAwesome", 5, employee);							//projectName, totalTime (in weeks), employee
+		
+		employee.createProject(project);
+		
+		try {
+			employee.createProject(project);	
+		} catch (OperationNotAllowedException e) {
+			assertEquals("You can't create the same project multiple times.",e.getMessage());
+			assertEquals("Create project",e.getOperation());
+		}
+		
+		assertEquals(1,employee.getProjects().size());
+	}
+	
+	@Test
+	public void projectNumberGeneration() throws Exception {
 		Schedule schedule = new Schedule();
 		
 		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");					//street, streetNumber, zipCode, city
@@ -73,7 +95,7 @@ public class TestProject {
 		
 		schedule.addEmployee(employee);
 		
-		Project project = new Project("ProjectAwesome", 5, employee);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", 5, employee);							//projectName, projectNumber, totalTime (in weeks)
 		employee.createProject(project);
 		
 		List<Project> foundProjects = schedule.searchProjects("wrong");
@@ -90,7 +112,7 @@ public class TestProject {
 	public void changeProjectLeader() throws Exception {
 		Schedule schedule = new Schedule();
 		
-		Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
+		Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingor");						//street, streetNumber, zipCode, city
 		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address1, schedule);
 		
 		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
@@ -99,7 +121,7 @@ public class TestProject {
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
 		
-		Project project = new Project("ProjectAwesome", 5, employee1);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", 5, employee1);								//projectName, projectNumber, totalTime (in weeks)
 		employee1.createProject(project);
 		assertEquals(employee1, project.getProjectLeader());
 		

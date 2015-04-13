@@ -59,4 +59,8 @@ public class Project {
 	public int getProjectNumber() {
 		return Integer.parseInt(projectNumber);
 	}
+
+	public boolean projectExist(Project newProject) {
+		return this.equals(newProject);
+	}
 }
