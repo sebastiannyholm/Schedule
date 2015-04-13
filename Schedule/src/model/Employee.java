@@ -138,4 +138,8 @@ public class Employee {
 	public boolean isSuperWorker(){
 		return superWorker;
 	}
+
+	public String getName() {
+		return name;
+	}
 }

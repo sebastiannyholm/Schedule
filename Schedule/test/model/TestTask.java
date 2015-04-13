@@ -230,4 +230,23 @@ public class TestTask {
 		assertEquals(1, task.getEmployees().size());
 		
 	}	
+	public void removeProjectWithTasks() throws Exception {
+		Project project = schedule.getAllProjects().get(0);	
+		Employee projectLeader = schedule.getEmployees().get(1);	
+		
+		for (int i = 0; i < 7; i++){
+			//add 10 tasks to the project leader
+			Task task = new Task("task"+i, i, i+2, 37*(i+2-i));
+			projectLeader.addTask(task, project);
+			projectLeader.addEmployeeToTask(projectLeader, task);
+		}
+		
+		assertEquals(7, projectLeader.getTasks().size());
+		
+		projectLeader.deleteProject(project);
+		
+		assertEquals(0, projectLeader.getTasks().size());
+		assertEquals(0, projectLeader.getProjects().size());
+		
+	}
 }
