@@ -12,6 +12,7 @@ public class Employee {
 	
 	private List<Project> projects;
 	private List<Task> tasks;
+	private boolean superWorker;
 	
 	
 	public Employee(String name, String initials, int age, Address address, Schedule schedule) {
@@ -20,6 +21,19 @@ public class Employee {
 		this.age = age;
 		this.address = address;
 		this.schedule = schedule;
+		this.superWorker = false;
+		
+		projects = new ArrayList<Project>();
+		tasks = new ArrayList<Task>();
+	}
+	
+	public Employee(String name, String initials, int age, Address address, Schedule schedule, boolean superWorker) {
+		this.name = name;
+		this.initials = initials;
+		this.age = age;
+		this.address = address;
+		this.schedule = schedule;
+		this.superWorker = superWorker;
 		
 		projects = new ArrayList<Project>();
 		tasks = new ArrayList<Task>();
@@ -80,10 +94,13 @@ public class Employee {
 		task.setTaskNumber(schedule.getAllTasks().size()-1);
 	}
 
-	public void addEmployee(Employee employee, Task task) {
+	public void addEmployee(Employee employee, Task task) throws Exception {
+		// regular employees can't work on more than 10 tasks at once
+		if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
+			throw new OperationNotAllowedException("The employee " + employee + " is already working on the maximum amount of tasks!", "Add task");
+		
 		employee.setTasks(task);
 		task.addEmployee(employee);
-		
 	}
 	
 	public void setTasks(Task task) {
@@ -97,5 +114,14 @@ public class Employee {
 
 	public List<Task> getTasks() {
 		return tasks;
+	}
+
+	public void setSuperWorker(boolean state) {
+		superWorker  = state;
+		
+	}
+	
+	public boolean isSuperWorker(){
+		return superWorker;
 	}
 }

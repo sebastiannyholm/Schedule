@@ -92,11 +92,77 @@ public class TestTask {
 	public void tenTaskEmployee() throws Exception {
 		Project project = schedule.getAllProjects().get(0);	
 		Employee projectLeader = schedule.getEmployees().get(1);	
+		
+		for (int i = 0; i < 10; i++){
+			//add 10 tasks to the project leader
+			Task task = new Task("task"+i, i, i+2, 37*(i+2-i));
+			projectLeader.addTask(task, project);
+			projectLeader.addEmployee(projectLeader, task);
+		}
+		
+		assertEquals(10, projectLeader.getTasks().size());
+		// add another tasks to the project leader -- file an error
+		Task task = new Task("taskName", 5, 8, 37*(8-5));				// name, startWeek, endWeek, budgetedHours
+		projectLeader.addTask(task, project); // add the task to the project
+		
+		try{
+			projectLeader.addEmployee(projectLeader, task);
+			fail("OperationNotAlloedException should have been thrown from the above statement");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("The employee " + projectLeader + " is already working on the maximum amount of tasks!", e.getMessage());
+			assertEquals("Add task", e.getOperation());
+		}
+		
+		assertEquals(10, projectLeader.getTasks().size());
 	}
 	
 	// employee allowed to work on more than 10 tasks but not more than 20
 	@Test
 	public void twentyTaskEmployee() throws Exception {
+		Project project = schedule.getAllProjects().get(0);	
+		Employee projectLeader = schedule.getEmployees().get(1);	
+		
+		for (int i = 0; i < 10; i++){
+			//add 10 tasks to the project leader
+			Task task = new Task("task"+i, i, i+2, 37*(i+2-i));
+			projectLeader.addTask(task, project);
+			projectLeader.addEmployee(projectLeader, task);
+		}
+		
+		assertEquals(10, projectLeader.getTasks().size());
+		
+		projectLeader.setSuperWorker(true);
+		// add another tasks to the project leader -- now allowed because super worker
+		Task task11 = new Task("taskName", 5, 8, 37*(8-5));				// name, startWeek, endWeek, budgetedHours
+		
+		projectLeader.addTask(task11, project); // add the task to the project
+		projectLeader.addEmployee(projectLeader, task11);
+		
+		assertEquals(11, projectLeader.getTasks().size());
+
+		// adding more than 20 tasks even though super worker
+		for (int i = 0; i < 9; i++){
+			//add 9 tasks to the project leader
+			Task task2 = new Task("task"+i, i, i+2, 37*(i+2-i));
+			projectLeader.addTask(task2, project);
+			projectLeader.addEmployee(projectLeader, task2);
+		}
+		
+		assertEquals(20, projectLeader.getTasks().size());
+		// add another tasks to the project leader -- not allowed even though super worker
+		Task task21 = new Task("taskName", 5, 8, 37*(8-5));				// name, startWeek, endWeek, budgetedHours
+		
+		projectLeader.addTask(task21, project); // add the task to the project
+		
+		try{
+			projectLeader.addEmployee(projectLeader, task21);
+			fail("OperationNotAlloedException should have been thrown from the above statement");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("The employee " + projectLeader + " is already working on the maximum amount of tasks!", e.getMessage());
+			assertEquals("Add task", e.getOperation());
+		}
+		
+		assertEquals(20, projectLeader.getTasks().size());
 		
 	}
 }
