@@ -32,8 +32,20 @@ public class Task {
 
 	public void setTaskNumber(int taskCount) {
 				
-		// adds leading zeros so that the number reaches 8 digits.   --> taskCount = 207  becomes 00000207
-		this.taskNumber = String.format("%04d", (taskCount % 10000000));
+		int year = Calendar.getInstance().get(Calendar.YEAR);
 		
+		// adds leading zeros so that the number reaches 6 digits.   --> projectCount = 6  becomes 000006
+		this.taskNumber = "" + year + String.format("%06d", (taskCount % 1000000));
+		
+		// total taskNumber:  2015000255   for the 254th task in 2015
+	}
+
+	public void remove(Employee employee) {
+		employees.remove(employee);
+		
+	}
+	
+	public String toString(){
+		return name + ", " + taskNumber + ", weeks " + startTime + " .. " + endTime + " = " + budgetedTime + " hours";
 	}
 }
