@@ -9,13 +9,13 @@ public class Task {
 	List<Employee> employees;
 	
 	private String name, taskNumber;
-	private int startTime, endTime, budgetedTime;
+	private int startWeek, endWeek, budgetedTime;
 
 	
-	public Task(String name, int startTime, int endTime, int budgetedTime){
+	public Task(String name, int startWeek, int endWeek, int budgetedTime){
 		this.name = name;
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.startWeek = startWeek;
+		this.endWeek = endWeek;
 		this.budgetedTime = budgetedTime;
 		
 		employees = new LinkedList<Employee>();
@@ -46,6 +46,21 @@ public class Task {
 	}
 	
 	public String toString(){
-		return name + ", " + taskNumber + ", weeks " + startTime + " .. " + endTime + " = " + budgetedTime + " hours";
+		return name + ", " + taskNumber + ", weeks " + startWeek + " .. " + endWeek + " = " + budgetedTime + " hours";
+	}
+
+	// this.startWeek > 45 to make up for tasks overlapping new years eve
+	public boolean isOutOfBounds(int startWeek, int endWeek) {
+		return (this.startWeek < startWeek || this.startWeek >= endWeek || this.endWeek < startWeek || this.endWeek >= endWeek 
+				|| this.startWeek < 1 || this.endWeek < 1 || this.startWeek > 52 || this.endWeek > 52) 
+				&& (this.startWeek < 45 || this.startWeek > 52);
+	}
+
+	public boolean endsBeforeStart() {
+		// take into account tasks which overlap new years eve
+		if (startWeek >= 45)
+			return !(endWeek < startWeek && endWeek <= 10);
+		
+		return endWeek < startWeek;
 	}
 }

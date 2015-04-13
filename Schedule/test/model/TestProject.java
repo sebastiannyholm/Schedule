@@ -18,12 +18,17 @@ public class TestProject {
 		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
 		schedule.addEmployee(employee);
 		
-		Project project = new Project("ProjectAwesome", 5, employee);							//projectName, projectNumber, totalTime (in weeks)
-		
+		Project project = new Project("ProjectAwesome", 1, 5, employee);						//projectName, projectNumber, totalTime (in weeks)
+	
 		assertEquals(0,employee.getProjects().size());
 		employee.createProject(project);
 		assertEquals(1,schedule.getAllProjects().size());
 		assertEquals(1,employee.getProjects().size());
+		
+	}
+	
+	@Test
+	public void projectOverlapNewYear(){
 		
 	}
 	
@@ -35,7 +40,7 @@ public class TestProject {
 		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
 		schedule.addEmployee(employee);
 		
-		Project project = new Project("ProjectAwesome", 5, employee);							//projectName, totalTime (in weeks), employee
+		Project project = new Project("ProjectAwesome",1, 5, employee);							//projectName, totalTime (in weeks), employee
 		
 		employee.createProject(project);
 		
@@ -52,7 +57,7 @@ public class TestProject {
 		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
 		schedule.addEmployee(employee);
 		
-		Project project = new Project("ProjectAwesome", 5, employee);							//projectName, totalTime (in weeks), employee
+		Project project = new Project("ProjectAwesome", 1, 5, employee);							//projectName, totalTime (in weeks), employee
 		
 		employee.createProject(project);
 		
@@ -74,9 +79,9 @@ public class TestProject {
 		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
 		schedule.addEmployee(employee);
 		
-		Project project = new Project("ProjectAwesome", 5, employee);							//projectName, totalTime (in weeks), employee
-		Project newProject = new Project("ProjectEXO", 9, employee);
-		Project anotherProject = new Project("Tea Party", 10, employee);
+		Project project = new Project("ProjectAwesome",1, 5, employee);							//projectName, totalTime (in weeks), employee
+		Project newProject = new Project("ProjectEXO",4, 9, employee);
+		Project anotherProject = new Project("Tea Party",5, 10, employee);
 		
 		employee.createProject(project);
 		employee.createProject(newProject);
@@ -95,7 +100,8 @@ public class TestProject {
 		
 		schedule.addEmployee(employee);
 		
-		Project project = new Project("ProjectAwesome", 5, employee);							//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome",1, 5, employee);						//projectName, start, end (in weeks)
+
 		employee.createProject(project);
 		
 		List<Project> foundProjects = schedule.searchProjects("wrong");
@@ -121,7 +127,8 @@ public class TestProject {
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
 		
-		Project project = new Project("ProjectAwesome", 5, employee1);								//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome",1, 5, employee1);						//projectName, projectNumber, totalTime (in weeks)
+
 		employee1.createProject(project);
 		assertEquals(employee1, project.getProjectLeader());
 		
@@ -149,7 +156,7 @@ public class TestProject {
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
 		
-		Project project = new Project("ProjectAwesome", 5, employee1);								//projectName, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome",1, 5, employee1);								//projectName, totalTime (in weeks)
 		employee1.createProject(project);
 		
 		List<Employee> foundEmployees = schedule.searchEmployee("Lukas Villumsen");

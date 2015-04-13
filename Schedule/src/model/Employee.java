@@ -26,18 +26,6 @@ public class Employee {
 		projects = new ArrayList<Project>();
 		tasks = new ArrayList<Task>();
 	}
-	
-	public Employee(String name, String initials, int age, Address address, Schedule schedule, boolean superWorker) {
-		this.name = name;
-		this.initials = initials;
-		this.age = age;
-		this.address = address;
-		this.schedule = schedule;
-		this.superWorker = superWorker;
-		
-		projects = new ArrayList<Project>();
-		tasks = new ArrayList<Task>();
-	}
 
 	public void createProject(Project newProject) throws Exception {
 		for (Project project : schedule.getAllProjects())
@@ -93,6 +81,10 @@ public class Employee {
 		if (!this.equals(project.getProjectLeader())){
 			throw new OperationNotAllowedException("Only the project leader may add a task to a project", "Add task");
 		}
+		else if (task.endsBeforeStart()) 
+			throw new OperationNotAllowedException("Task ends before it even begins!", "Add task");
+		else if (task.isOutOfBounds(project.getStartWeek(), project.getEndWeek()))
+			throw new OperationNotAllowedException("Task span does not comply with project bounds!", "Add task");
 		project.addTask(task);
 		schedule.addTask(task);
 		task.setTaskNumber(schedule.getAllTasks().size()-1);
