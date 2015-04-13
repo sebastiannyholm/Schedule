@@ -29,12 +29,12 @@ public class TestTask {
 	public void addTask() throws Exception {
 		
 		Project project = schedule.getAllProjects().get(0);		// list of 1
-		Employee employee = schedule.getEmployees().get(1);		// list of 2
+		Employee projectLeader = schedule.getEmployees().get(1);		// list of 2
 		
 		Task task = new Task("taskName", 5, 8, 37*(8-5));	// name, number, startWeek, endWeek, budgetedHours
 		
 		assertEquals(0,project.getTasks().size());
-		employee.addTask(task, project);
+		projectLeader.addTask(task, project);
 		assertEquals(1,project.getTasks().size());
 		
 		
@@ -87,11 +87,16 @@ public class TestTask {
 	
 	// add more than 10 tasks to an employee who isn't allowed to work on 20
 	// default max task = 10
-	@Test
-	public void tenTaskEmployee() throws Exception {
-		
-	}
 	
 	@Test
-	public void  
+	public void tenTaskEmployee() throws Exception {
+		Project project = schedule.getAllProjects().get(0);	
+		Employee projectLeader = schedule.getEmployees().get(1);	
+	}
+	
+	// employee allowed to work on more than 10 tasks but not more than 20
+	@Test
+	public void twentyTaskEmployee() throws Exception {
+		
+	}
 }
