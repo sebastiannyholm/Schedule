@@ -126,7 +126,7 @@ public class TestProject {
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
 		
-		Project project = new Project("ProjectAwesome", 1, 5, employee1);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", 5, employee1);								//projectName, totalTime (in weeks)
 		employee1.createProject(project);
 		
 		List<Employee> foundEmployees = schedule.searchEmployee("Lukas Villumsen");
