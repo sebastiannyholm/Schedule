@@ -101,6 +101,7 @@ public class TestProject {
 		
 		Project project = new Project("ProjectAwesome", 5, employee1);						//projectName, projectNumber, totalTime (in weeks)
 		employee1.createProject(project);
+		assertEquals(employee1, project.getProjectLeader());
 		
 		assertEquals(1,employee1.getProjects().size());
 		assertEquals(0,employee2.getProjects().size());
@@ -109,7 +110,7 @@ public class TestProject {
 		
 		assertEquals(0,employee1.getProjects().size());
 		assertEquals(1,employee2.getProjects().size());
-		
+		assertEquals(employee2, project.getProjectLeader());
 	}
 	
 	@Test
@@ -117,7 +118,7 @@ public class TestProject {
 		
 		Schedule schedule = new Schedule();
 		
-		Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
+		Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingor");						//street, streetNumber, zipCode, city
 		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address1, schedule);
 		
 		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city

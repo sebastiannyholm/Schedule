@@ -66,7 +66,6 @@ public class Employee {
 
 	private void removeTask(Task task) {
 		tasks.remove(task);
-		
 	}
 
 	public String getInitials() {
@@ -133,5 +132,9 @@ public class Employee {
 	
 	public boolean isSuperWorker(){
 		return superWorker;
+	}
+
+	public String getName() {
+		return name;
 	}
 }
