@@ -46,6 +46,13 @@ public class Schedule {
 				break;
 			}			
 	}
+	
+	public void logOut() throws OperationNotAllowedException {
+		if (!loggedIn)
+			throw new OperationNotAllowedException("You can't log out, if you are not logged in.", "Log out");
+		
+		loggedIn = false;
+	}
 
 	public void addProject(Project project) {
 		allProjects.add(project);
@@ -71,4 +78,5 @@ public class Schedule {
 		
 		return foundEmployees;
 	}
+
 }
