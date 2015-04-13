@@ -71,4 +71,27 @@ public class TestEmployee {
 		assertEquals(0,employees.size());
 	}
 	
+	@Test
+	public void searchEmployee() throws Exception {
+		Schedule schedule = new Schedule();
+		
+		Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
+		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address1, schedule);
+		
+		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
+		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
+
+		schedule.addEmployee(employee1);
+		schedule.addEmployee(employee2);
+		
+		List<Employee> foundEmployees = schedule.searchEmployee("Seb");
+		
+		assertEquals(1,foundEmployees.size());
+		
+		foundEmployees = schedule.searchEmployee("as");
+		
+		assertEquals(2,foundEmployees.size());
+		
+	}
+	
 }

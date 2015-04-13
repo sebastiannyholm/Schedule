@@ -102,6 +102,16 @@ public class Employee {
 		employee.setTasks(task);
 		task.addEmployee(employee);
 	}
+
+	public boolean match(String critiria) {
+		return initials.contains(critiria) || name.contains(critiria);
+	}
+
+	public void changeProjectLeader(Employee newProjectLeader, Project project) {
+		project.changeProjectLeader(newProjectLeader);
+		newProjectLeader.projects.add(project);
+		projects.remove(project);
+	}
 	
 	public void setTasks(Task task) {
 		tasks.add(task);

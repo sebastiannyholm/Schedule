@@ -40,6 +40,16 @@ public class Project {
 		
 		// adds leading zeros so that the number reaches 4 digits.   --> projectCount = 4  becomes 0004
 		this.projectNumber = "" + year + String.format("%04d", (projectCount % 1000));
+
+	}
+
+	public boolean match(String critiria) {
+		return projectName.contains(critiria) || projectNumber.contains(critiria);
+	}
+
+	public void changeProjectLeader(Employee newProjectLeader) {
+		projectLeader = newProjectLeader;
+		
 	}	
 	
 	public String toString(){
