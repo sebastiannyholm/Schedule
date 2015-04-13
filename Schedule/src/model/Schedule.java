@@ -61,4 +61,14 @@ public class Schedule {
 		
 		return foundEmployees;
 	}
+
+	public List<Project> searchProjects(String critiria) {
+		List<Project> foundEmployees = new ArrayList<Project>();
+		
+		for (Project project : allProjects)
+			if(project.match(critiria))
+				foundEmployees.add(project);
+		
+		return foundEmployees;
+	}
 }

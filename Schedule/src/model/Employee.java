@@ -28,7 +28,6 @@ public class Employee {
 	public void createProject(Project project) {
 		projects.add(project);
 		schedule.addProject(project);
-		
 	}
 
 	public List<Project> getProjects() {
@@ -81,6 +80,12 @@ public class Employee {
 
 	public boolean match(String critiria) {
 		return initials.contains(critiria) || name.contains(critiria);
+	}
+
+	public void changeProjectLeader(Employee newProjectLeader, Project project) {
+		project.changeProjectLeader(newProjectLeader);
+		newProjectLeader.projects.add(project);
+		projects.remove(project);
 	}
 	
 //	public String toString(){

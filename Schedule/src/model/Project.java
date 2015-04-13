@@ -33,6 +33,15 @@ public class Project {
 	public void addTask(Task task) {
 		tasks.add(task);
 		
+	}
+
+	public boolean match(String critiria) {
+		return projectName.contains(critiria) || projectNumber.contains(critiria);
+	}
+
+	public void changeProjectLeader(Employee newProjectLeader) {
+		projectLeader = newProjectLeader;
+		
 	}	
 	
 //	public String toString(){
