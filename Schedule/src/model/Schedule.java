@@ -8,11 +8,18 @@ public class Schedule {
 
 	private List<Employee> employees;
 	private List<Project> allProjects;
+	private List<Task> allTasks;
 	private boolean loggedIn = false;
 	
 	public Schedule(){
+
+		this.employees = new LinkedList<Employee>();
+		this.allProjects = new LinkedList<Project>();
+		this.allTasks = new LinkedList<Task>();
+
 		this.employees = new ArrayList<Employee>();
 		this.allProjects = new ArrayList<Project>();
+
 	}
 	
 	public List<Employee> getEmployees() {
@@ -59,6 +66,15 @@ public class Schedule {
 		
 	}
 
+	public List<Task> getAllTasks() {
+		return allTasks;
+	}
+
+	public void addTask(Task task) {
+		allTasks.add(task);
+		
+	}
+		
 	public List<Employee> searchEmployee(String critiria) {
 		List<Employee> foundEmployees = new ArrayList<Employee>();
 		

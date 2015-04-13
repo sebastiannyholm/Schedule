@@ -18,7 +18,7 @@ public class TestProject {
 		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
 		schedule.addEmployee(employee);
 		
-		Project project = new Project("ProjectAwesome", 1, 5, employee);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", 5, employee);						//projectName, projectNumber, totalTime (in weeks)
 		
 		assertEquals(0,employee.getProjects().size());
 		employee.createProject(project);
@@ -35,7 +35,7 @@ public class TestProject {
 		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
 		schedule.addEmployee(employee);
 		
-		Project project = new Project("ProjectAwesome", 1, 5, employee);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", 5, employee);							//projectName, totalTime (in weeks), employee
 		
 		employee.createProject(project);
 		
@@ -45,6 +45,26 @@ public class TestProject {
 	}
 	
 	@Test
+	public void projectNumberGeneration() throws OperationNotAllowedException{
+		Schedule schedule = new Schedule();
+		
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");					//street, streetNumber, zipCode, city
+		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
+		schedule.addEmployee(employee);
+		
+		Project project = new Project("ProjectAwesome", 5, employee);							//projectName, totalTime (in weeks), employee
+		Project newProject = new Project("ProjectEXO", 9, employee);
+		Project anotherProject = new Project("Tea Party", 10, employee);
+		
+		employee.createProject(project);
+		employee.createProject(newProject);
+		employee.createProject(anotherProject);
+		
+		assertEquals(20150000, project.getProjectNumber());
+		assertEquals(20150001, newProject.getProjectNumber());
+		assertEquals(20150002, anotherProject.getProjectNumber());
+	}
+	
 	public void searchProjects() throws Exception {
 		Schedule schedule = new Schedule();
 		
@@ -53,7 +73,7 @@ public class TestProject {
 		
 		schedule.addEmployee(employee);
 		
-		Project project = new Project("ProjectAwesome", 1, 5, employee);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", 5, employee);						//projectName, projectNumber, totalTime (in weeks)
 		employee.createProject(project);
 		
 		List<Project> foundProjects = schedule.searchProjects("wrong");
@@ -79,7 +99,7 @@ public class TestProject {
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
 		
-		Project project = new Project("ProjectAwesome", 1, 5, employee1);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", 5, employee1);						//projectName, projectNumber, totalTime (in weeks)
 		employee1.createProject(project);
 		
 		assertEquals(1,employee1.getProjects().size());
