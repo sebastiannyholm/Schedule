@@ -11,6 +11,7 @@ public class Schedule {
 	private List<Task> allTasks;
 	private boolean loggedIn = false;
 	
+	
 	public Schedule(){
 
 		this.employees = new LinkedList<Employee>();
@@ -93,6 +94,15 @@ public class Schedule {
 				foundEmployees.add(project);
 		
 		return foundEmployees;
+	}
+
+	public List<Project> getProjectsInPeriod(int startWeek, int endWeek) {
+		List<Project> projectsInPeriod = new ArrayList<Project>();
+		
+		for (Project project : allProjects)
+			if (project.isInPeriod(startWeek, endWeek))
+				projectsInPeriod.add(project);
+		return projectsInPeriod;
 	}
 
 }

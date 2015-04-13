@@ -8,15 +8,16 @@ import java.util.List;
 public class Project {
 
 	private String projectName, projectNumber;
-	private int timeInWeeks;
+	private int startWeek, endWeek;
 	private Employee projectLeader;
 	
 	List<Task> tasks;
 	
-	public Project(String projectName, int timeInWeeks, Employee employee){
+	public Project(String projectName, int startWeek, int endWeek, Employee employee){
 		
 		this.projectName = projectName;
-		this.timeInWeeks = timeInWeeks;
+		this.startWeek = startWeek;
+		this.endWeek = endWeek;
 		this.projectLeader = employee;
 		
 		tasks = new LinkedList<Task>();
@@ -53,10 +54,22 @@ public class Project {
 	}	
 	
 	public String toString(){
-		return projectName + " " + projectNumber + ", Estimated time in weeks: " + timeInWeeks + " -- Project leader: " + projectLeader;
+		return projectName + " " + projectNumber + ", Estimated time in weeks: " + (endWeek-startWeek) + " -- Project leader: " + projectLeader;
 	}
 
 	public int getProjectNumber() {
 		return Integer.parseInt(projectNumber);
+	}
+
+	public boolean isInPeriod(int startWeek, int endWeek) {
+		return (this.startWeek >= startWeek && this.startWeek < endWeek) || (this.endWeek >= startWeek && this.endWeek < endWeek);
+	}
+
+	public int getEndWeek() {
+		return endWeek;
+	}
+
+	public int getStartWeek() {
+		return startWeek;
 	}
 }
