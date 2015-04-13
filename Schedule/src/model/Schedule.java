@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,8 +11,8 @@ public class Schedule {
 	private boolean loggedIn = false;
 	
 	public Schedule(){
-		this.employees = new LinkedList<Employee>();
-		this.allProjects = new LinkedList<Project>();
+		this.employees = new ArrayList<Employee>();
+		this.allProjects = new ArrayList<Project>();
 	}
 	
 	public List<Employee> getEmployees() {
@@ -49,5 +50,15 @@ public class Schedule {
 	public void addProject(Project project) {
 		allProjects.add(project);
 		
+	}
+
+	public List<Employee> searchEmployee(String critiria) {
+		List<Employee> foundEmployees = new ArrayList<Employee>();
+		
+		for (Employee employee : employees)
+			if(employee.match(critiria))
+				foundEmployees.add(employee);
+		
+		return foundEmployees;
 	}
 }

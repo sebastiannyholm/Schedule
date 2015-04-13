@@ -78,6 +78,10 @@ public class Employee {
 		}
 		project.addTask(task);
 	}
+
+	public boolean match(String critiria) {
+		return initials.contains(critiria) || name.contains(critiria);
+	}
 	
 //	public String toString(){
 //		return name + ", " + initials + ", aged " + age + ", living in " + address;
