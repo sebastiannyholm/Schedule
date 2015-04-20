@@ -12,6 +12,7 @@ import org.junit.Test;
 public class TestTime {
 
 	Schedule schedule = new Schedule();
+	Employee user;
 	
 	@Before
 	public void setup() throws Exception{
@@ -30,6 +31,8 @@ public class TestTime {
 		employee2.createProject(project1);
 		employee2.createProject(project2);
 		employee2.createProject(project3);
+		
+		user = schedule.getUser();
 		
 	}
 	
