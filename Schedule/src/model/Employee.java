@@ -28,6 +28,11 @@ public class Employee {
 	}
 
 	public void createProject(Project newProject) throws Exception {
+		if (!schedule.isLoggedIn())
+			throw new OperationNotAllowedException("You need to be logged in to create a project", "Create project");
+		else if (!this.equals(schedule.getUser()))
+			throw new OperationNotAllowedException("You need to be the one logged in to create a project", "Add task");
+		
 		for (Project project : schedule.getAllProjects())
 			if (project.projectExist(newProject)) 
 				throw new OperationNotAllowedException("You can't create the same project multiple times.", "Create project");
@@ -41,6 +46,11 @@ public class Employee {
 	}
 
 	public void deleteProject(Project project) throws Exception{
+		if (!schedule.isLoggedIn())
+			throw new OperationNotAllowedException("You need to be logged in to delete a project", "Create project");
+		else if (!this.equals(schedule.getUser()))
+			throw new OperationNotAllowedException("You need to be the one logged in to delete a project", "Add task");
+		
 		if (!this.equals(project.getProjectLeader())) 
 			throw new OperationNotAllowedException("Cannot remove a project if not its leader", "Delete project");
 		
@@ -78,8 +88,10 @@ public class Employee {
 	}
 
 	public void addTask(Task task, Project project) throws Exception {
-		if (!schedule.isLoggedIn() && this.equals(schedule.getUser()))
+		if (!schedule.isLoggedIn())
 			throw new OperationNotAllowedException("You need to be logged in to add a task", "Add task");
+		else if (!this.equals(schedule.getUser()))
+			throw new OperationNotAllowedException("You need to be the one logged in to add a task", "Add task");
 		
 		if (!this.equals(project.getProjectLeader()))
 			throw new OperationNotAllowedException("Only the project leader may add a task to a project", "Add task");
