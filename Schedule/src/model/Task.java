@@ -1,8 +1,10 @@
 package model;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Task {
 
@@ -10,6 +12,7 @@ public class Task {
 	
 	private String name, taskNumber;
 	private int startWeek, endWeek, budgetedTime;
+	private Map<Employee, Integer> log = new HashMap<Employee, Integer>();
 
 	
 	public Task(String name, int startWeek, int endWeek, int budgetedTime){
@@ -67,5 +70,15 @@ public class Task {
 	public boolean isInPeriod(int startWeek, int endWeek) {
 		return (this.startWeek >= startWeek && this.startWeek <= endWeek) || (this.endWeek >= startWeek && this.endWeek <= endWeek)
 				|| (this.startWeek <= startWeek && this.endWeek >= endWeek);
+	}
+
+	
+	public void setTaskLog(Employee employee, int timeWorkedOnTask) {
+		
+		if (log.containsKey(employee))
+			log.put(employee, log.get(employee) + timeWorkedOnTask);
+		else 
+			log.put(employee, timeWorkedOnTask);
+		
 	}
 }

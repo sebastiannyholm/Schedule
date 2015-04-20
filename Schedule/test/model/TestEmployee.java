@@ -94,4 +94,15 @@ public class TestEmployee {
 		
 	}
 	
+	@Test
+	public void employeeCallsInSick(){
+		
+		
+	}
+	
+	@Test
+	public void notifyVacation(){
+		
+	}
+	
 }

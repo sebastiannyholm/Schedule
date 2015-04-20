@@ -24,7 +24,7 @@ public class TestTime {
 		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
 		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
 
-		Project project1 = new Project("Project1", 2, 4, employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
+		Project project1 = new Project("Project1", 1, 52, employee1);		//projectName, projectNumber, totalTime (in weeks), project leader
 		Project project2 = new Project("Project2", 4, 6, employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
 		Project project3 = new Project("Project3", 8, 13, employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
 		
@@ -39,7 +39,6 @@ public class TestTime {
 		user.createProject(project3);
 
 		
-		user = schedule.getUser();
 		
 	}
 	
@@ -51,22 +50,22 @@ public class TestTime {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(date);
 		
-		// skip 8 hours ahead, set time -- hours += 8
-		user.setCalendarHour(cal.get(Calendar.HOUR_OF_DAY)+8);
+		// skip 8 hours ahead, set time -- hours += 8 = 60*8 minutes
+		user.setCalendarMinutes(cal.get(Calendar.MINUTE)+8*60);
 		
 		// the employee automatically punches out as he logs out
 		schedule.logOut(); 			// punches out
-		assertEquals(8, user.getWorkLogValue(date));
+		assertEquals(8*60, user.getWorkLogValue(date));
 		
 		// log in another employee
 		schedule.login("luvi");
 		user = schedule.getUser();
 		
-		// He works for 5 hours and logs out
-		user.setCalendarHour(cal.get(Calendar.HOUR_OF_DAY)+5);
+		// He works for 5 hours and logs out (5*60 min)
+		user.setCalendarMinutes(cal.get(Calendar.MINUTE)+5*60);
 		schedule.logOut();
 		
-		assertEquals(5, user.getWorkLogValue(date));
+		assertEquals(5*60, user.getWorkLogValue(date));
 	}
 	
 	@Test
@@ -78,22 +77,22 @@ public class TestTime {
 		cal.setTime(date);
 		
 		// skip 5 hours ahead, set time -- hours += 5
-		user.setCalendarHour(cal.get(Calendar.HOUR_OF_DAY)+5);
+		user.setCalendarMinutes(cal.get(Calendar.MINUTE)+5*60);
 		
 		// the employee automatically punches out as he logs out
 		schedule.logOut(); 			// punches out
 		
-		assertEquals(5, user.getWorkLogValue(date));
+		assertEquals(5*60, user.getWorkLogValue(date));
 		
 		// log in another employee
 		schedule.login("seny");
 		user = schedule.getUser();
 		
 		// He works for 3 hours and logs out
-		user.setCalendarHour(cal.get(Calendar.HOUR_OF_DAY)+3);
+		user.setCalendarMinutes(cal.get(Calendar.MINUTE)+3*60);
 		schedule.logOut();
 		
-		assertEquals(8, user.getWorkLogValue(date));
+		assertEquals(8*60, user.getWorkLogValue(date));
 	}
 	
 	// test how many and which projects are found in a specific period of time (in weeks)
@@ -134,5 +133,61 @@ public class TestTime {
 		
 	}
 	
+	@Test
+	public void registerTaskTime() throws Exception{
+		
+		// set the time of punchIn
+		Date date = new GregorianCalendar().getTime();
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		
+		Project project = schedule.getAllProjects().get(0);
+		Task task = new Task("name", 4, 50, 1000);
+		
+		user.addTask(task, project);
+		user.startWorkingOnTask(task);
+		
+		// work on the task for 270 minutes then stop
+		user.setCalendarMinutes(cal.get(Calendar.MINUTE) + 270);		// mock sub
+		
+		user.stopWorkingOnTask(task);
+		
+		assertEquals(270, user.getTaskLogValue(task));
+		
+	}
+	
+	// add working time to an already active task (the employee has already worked on it before)
+	@Test
+	public void registerTaskTimeMulitple() throws Exception{
+		
+		// set the time of punchIn
+		Date date = new GregorianCalendar().getTime();
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		
+		Project project = schedule.getAllProjects().get(0);
+		Task task = new Task("name", 4, 50, 1000);
+		
+		user.addTask(task, project);
+		user.startWorkingOnTask(task);
+		
+		// work on the task for 270 minutes then stop
+		user.setCalendarMinutes(cal.get(Calendar.MINUTE) + 270);		// mock sub
+		
+		user.stopWorkingOnTask(task);
+		
+		assertEquals(270, user.getTaskLogValue(task));
+		
+		// begin working on the task again
+		user.startWorkingOnTask(task);
+		
+		// work on the task for 40 minutes then stop
+		user.setCalendarMinutes(cal.get(Calendar.MINUTE) + 40);		// mock sub
+		
+		user.stopWorkingOnTask(task);
+		
+		assertEquals(270+40, user.getTaskLogValue(task));
+		
+	}
 	
 }

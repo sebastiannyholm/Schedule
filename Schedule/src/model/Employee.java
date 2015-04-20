@@ -22,8 +22,9 @@ public class Employee {
 	private boolean superWorker;
 	private Calendar cal = new GregorianCalendar();
 	private Date date;
-	private int punchIn, punchOut; 
+	private int punchIn, punchOut, taskIn, taskOut;
 	private Map<String, Integer> workLog = new HashMap<String, Integer>();
+	private Map<Task, Integer> taskLog = new HashMap<Task, Integer>();
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public Employee(String name, String initials, int age, Address address, Schedule schedule) {
@@ -175,29 +176,30 @@ public class Employee {
 	}
 
 	public void punchIn() {		
-		// get the date of today
-		this.date = new GregorianCalendar().getTime();
-		cal.setTime(date);
+		// set the date of today
+		setTime();
 		
 		// get hour of day
-		punchIn = cal.get(Calendar.HOUR_OF_DAY);
+		punchIn = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
 		
 	}
 	
 	public void punchOut() {
 		// get the new time 
-		punchOut = cal.get(Calendar.HOUR_OF_DAY);
+		punchOut = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
 		
-		int workHours = punchOut-punchIn;
-		
+		int workMinutes = punchOut-punchIn;
+		System.out.println(punchIn + "  " + punchOut);
 		// to compensate for late shifts working past midnight
-		if (workHours < 0)
-			workHours += 24;
+		
+		 if (workMinutes < 0)
+			 workMinutes += 24*60;
+		 
 		
 		if (workLog.containsKey(df.format(date)))
-			workLog.put(df.format(date), workLog.get(df.format(date)) + workHours);
+			workLog.put(df.format(date), workLog.get(df.format(date)) + workMinutes);
 		else 
-			workLog.put(df.format(date), workHours);
+			workLog.put(df.format(date), workMinutes);
 		
 	}
 	
@@ -205,11 +207,43 @@ public class Employee {
 		return workLog.get(df.format(date));
 	}
 
-	
 	public void setCalendarHour(int newHour) {
 		cal.set(Calendar.HOUR_OF_DAY, newHour);
 		
 	}
 	
+	public void setCalendarMinutes(int newMinutes){
+		cal.set(Calendar.MINUTE, newMinutes);
+	}
+
+	public void startWorkingOnTask(Task task) {
+		setTime();
+		taskIn = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
+
+	}
+	
+	public void stopWorkingOnTask(Task task) {
+		taskOut = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);	// get the current time in minutes
+		
+		int timeWorkedOnTask = taskOut - taskIn;
+		
+		if (taskLog.containsKey(task))
+			taskLog.put(task, taskLog.get(task) + timeWorkedOnTask);
+		else 
+			taskLog.put(task, timeWorkedOnTask);
+	
+		task.setTaskLog(this, timeWorkedOnTask);
+		
+	}
+	
+	private void setTime(){
+		this.date = new GregorianCalendar().getTime();
+		cal.setTime(date);
+	}
+
+	public int getTaskLogValue(Task task) {
+		return taskLog.get(task);
+	}
+
 	
 }
