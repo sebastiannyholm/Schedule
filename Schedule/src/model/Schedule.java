@@ -12,7 +12,6 @@ public class Schedule {
 	private boolean loggedIn = false;
 	private Employee user;
 	
-	
 	public Schedule(){
 
 		this.employees = new LinkedList<Employee>();
@@ -48,7 +47,8 @@ public class Schedule {
 		return loggedIn;
 	}
 	
-	public void login(String initials) {
+	public void login(String initials) throws Exception {
+		if (isLoggedIn()) throw new OperationNotAllowedException("You can't log in when someone else is using the system.", "Log in");
 		for (Employee employee : employees)
 			if (employee.matchInitials(initials)) {
 				loggedIn = true;
