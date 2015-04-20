@@ -17,7 +17,6 @@ public class Schedule {
 		this.employees = new LinkedList<Employee>();
 		this.allProjects = new LinkedList<Project>();
 		this.allTasks = new LinkedList<Task>();
-
 		this.employees = new ArrayList<Employee>();
 		this.allProjects = new ArrayList<Project>();
 
@@ -53,17 +52,22 @@ public class Schedule {
 			if (employee.matchInitials(initials)) {
 				loggedIn = true;
 				this.user = employee;
+				user.punchIn();
 				break;
 			}
 	}
-	
+
 	public void logOut() throws OperationNotAllowedException {
 		if (!loggedIn)
 			throw new OperationNotAllowedException("You can't log out, if you are not logged in.", "Log out");
 		
+		user.punchOut();
 		loggedIn = false;
 		user = null;
+		
 	}
+
+	
 
 	public void addProject(Project project) {
 		allProjects.add(project);

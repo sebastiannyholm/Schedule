@@ -2,7 +2,9 @@ package model;
 
 import static org.junit.Assert.assertEquals;
 
+import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class TestTime {
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
 		
-		schedule.login(employee1.getInitials());
+		schedule.login("seny");
 		user = schedule.getUser();
 		
 		user.createProject(project1);
@@ -42,25 +44,57 @@ public class TestTime {
 	}
 	
 	@Test
-	public void punchIn(){
+	public void registerTime() throws Exception{
 		
+		// set the time of punchIn
+		Date date = new GregorianCalendar().getTime();
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(date);
 		
+		// skip 8 hours ahead, set time -- hours += 8
+		user.setCalendarHour(cal.get(Calendar.HOUR_OF_DAY)+8);
+		
+		// the employee automatically punches out as he logs out
+		schedule.logOut(); 			// punches out
+		assertEquals(8, user.getWorkLogValue(date));
+		
+		// log in another employee
+		schedule.login("luvi");
+		user = schedule.getUser();
+		
+		// He works for 5 hours and logs out
+		user.setCalendarHour(cal.get(Calendar.HOUR_OF_DAY)+5);
+		schedule.logOut();
+		
+		assertEquals(5, user.getWorkLogValue(date));
 	}
 	
 	@Test
-	public void punchOut(){
+	public void registerTimeMultipleTimesADay() throws Exception{
 		
-		//Calendar begin = new GregorianCalendar(2015, 3, 20);
-		//System.out.println(begin.get(GregorianCalendar.WEEK_OF_YEAR));
-	}
-	
-	@Test
-	public void registerTime(){
+		// set the time of punchIn
+		Date date = new GregorianCalendar().getTime();
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(date);
 		
-		//Calendar begin = new GregorianCalendar(2015, 3, 20);
-		//System.out.println(begin.get(GregorianCalendar.WEEK_OF_YEAR));
+		// skip 5 hours ahead, set time -- hours += 5
+		user.setCalendarHour(cal.get(Calendar.HOUR_OF_DAY)+5);
+		
+		// the employee automatically punches out as he logs out
+		schedule.logOut(); 			// punches out
+		
+		assertEquals(5, user.getWorkLogValue(date));
+		
+		// log in another employee
+		schedule.login("seny");
+		user = schedule.getUser();
+		
+		// He works for 3 hours and logs out
+		user.setCalendarHour(cal.get(Calendar.HOUR_OF_DAY)+3);
+		schedule.logOut();
+		
+		assertEquals(8, user.getWorkLogValue(date));
 	}
-	
 	
 	// test how many and which projects are found in a specific period of time (in weeks)
 	@Test
@@ -73,19 +107,9 @@ public class TestTime {
 		assertEquals(2, projectsInPeriod.size());
 	}
 
-	@Test
-	public void tasksInPeriod(){
-		
-		int startWeek = 2;
-		int endWeek = 5;
-		
-		List<Project> projectsInPeriod = schedule.getProjectsInPeriod(startWeek, endWeek);
-		assertEquals(2, projectsInPeriod.size());
-	}
-	
-	
 	// get the agenda for a given employee
 	// agenda being the working schedule for the employee in the current >>week<<
+
 	@Test
 	public void employeeAgenda() throws Exception {
 		
@@ -109,5 +133,6 @@ public class TestTime {
 		assertEquals(2, employeeAgenda.size());
 		
 	}
+	
 	
 }

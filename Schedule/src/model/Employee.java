@@ -1,9 +1,14 @@
 package model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Employee {
 
@@ -16,7 +21,10 @@ public class Employee {
 	private List<Task> tasks;
 	private boolean superWorker;
 	private Calendar cal = new GregorianCalendar();
-	
+	private Date date;
+	private int punchIn, punchOut; 
+	private Map<String, Integer> workLog = new HashMap<String, Integer>();
+	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public Employee(String name, String initials, int age, Address address, Schedule schedule) {
 		this.name = name;
@@ -166,4 +174,42 @@ public class Employee {
 		return tasksInPeriod;
 	}
 
+	public void punchIn() {		
+		// get the date of today
+		this.date = new GregorianCalendar().getTime();
+		cal.setTime(date);
+		
+		// get hour of day
+		punchIn = cal.get(Calendar.HOUR_OF_DAY);
+		
+	}
+	
+	public void punchOut() {
+		// get the new time 
+		punchOut = cal.get(Calendar.HOUR_OF_DAY);
+		
+		int workHours = punchOut-punchIn;
+		
+		// to compensate for late shifts working past midnight
+		if (workHours < 0)
+			workHours += 24;
+		
+		if (workLog.containsKey(df.format(date)))
+			workLog.put(df.format(date), workLog.get(df.format(date)) + workHours);
+		else 
+			workLog.put(df.format(date), workHours);
+		
+	}
+	
+	public int getWorkLogValue(Date date){
+		return workLog.get(df.format(date));
+	}
+
+	
+	public void setCalendarHour(int newHour) {
+		cal.set(Calendar.HOUR_OF_DAY, newHour);
+		
+	}
+	
+	
 }
