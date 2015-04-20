@@ -83,7 +83,7 @@ public class TestTime {
 	
 	
 	// get the agenda for a given employee
-	// agenda being the working schedule for the employee in a given >>week<<
+	// agenda being the working schedule for the employee in the current >>week<<
 	@Test
 	public void employeeAgenda() throws Exception {
 		
