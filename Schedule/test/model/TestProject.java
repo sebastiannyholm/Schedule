@@ -24,16 +24,6 @@ public class TestProject {
 	}
 	
 	@Test
-	public void createProjectNotLoggedIn() {
-		
-	}
-	
-	@Test
-	public void deleteProjectWhenNotProjectLeader() {
-		
-	}
-	
-	@Test
 	public void createProject() throws Exception{
 		
 		Project project = new Project("ProjectAwesome", 1, 5, user);						//projectName, projectNumber, totalTime (in weeks)
@@ -42,6 +32,28 @@ public class TestProject {
 		user.createProject(project);
 		assertEquals(1,schedule.getAllProjects().size());
 		assertEquals(1,user.getProjects().size());
+		
+	}
+	
+	@Test
+	public void createProjectWhenNotLoggedIn() throws Exception {
+		Project project = new Project("ProjectAwesome", 1, 5, user);						//projectName, projectNumber, totalTime (in weeks)
+		
+		schedule.logOut();
+		
+		assertFalse(schedule.isLoggedIn());
+		
+		assertEquals(0,user.getProjects().size());
+		
+		try {
+			user.createProject(project);	
+			fail("OperationNotAlloedException should have been thrown from the above statement");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("You need to be logged in to create a project",e.getMessage());
+			assertEquals("Create project",e.getOperation());
+		}
+		
+		assertEquals(0,schedule.getAllProjects().size());
 		
 	}
 	
@@ -60,6 +72,36 @@ public class TestProject {
 		Employee projectLeader = project.getProjectLeader();
 		projectLeader.deleteProject(project);
 		assertEquals(0,projectLeader.getProjects().size());
+	}
+	
+	@Test
+	public void deleteProjectWhenNotProjectLeader() throws Exception {
+		
+		Project project = new Project("ProjectAwesome",1, 5, user);							//projectName, totalTime (in weeks), employee
+		user.createProject(project);
+		
+		assertEquals(1,schedule.getAllProjects().size());
+		
+		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
+		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
+
+		schedule.addEmployee(employee2);
+
+		schedule.logOut();
+		schedule.login("luvi");
+		
+		user = schedule.getUser();
+		
+		try {
+			user.deleteProject(project);	
+			fail("OperationNotAlloedException should have been thrown from the above statement");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("Cannot remove a project if not its leader",e.getMessage());
+			assertEquals("Delete project",e.getOperation());
+		}
+	
+		assertEquals(1,schedule.getAllProjects().size());
+		
 	}
 	
 	@Test
