@@ -4,26 +4,44 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class TestProject {
 
+	Schedule schedule = new Schedule();
+	Employee user;
 	
-	
-	@Test
-	public void createProject() throws Exception{
-		Schedule schedule = new Schedule();
-		
+	@Before
+	public void setup() throws Exception {
 		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");					//street, streetNumber, zipCode, city
 		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
 		schedule.addEmployee(employee);
 		
-		Project project = new Project("ProjectAwesome", 1, 5, employee);						//projectName, projectNumber, totalTime (in weeks)
+		schedule.login("seny");
+		
+		user = schedule.getUser();
+	}
 	
-		assertEquals(0,employee.getProjects().size());
-		employee.createProject(project);
+	@Test
+	public void createProjectNotLoggedIn() {
+		
+	}
+	
+	@Test
+	public void deleteProjectWhenNotProjectLeader() {
+		
+	}
+	
+	@Test
+	public void createProject() throws Exception{
+		
+		Project project = new Project("ProjectAwesome", 1, 5, user);						//projectName, projectNumber, totalTime (in weeks)
+	
+		assertEquals(0,user.getProjects().size());
+		user.createProject(project);
 		assertEquals(1,schedule.getAllProjects().size());
-		assertEquals(1,employee.getProjects().size());
+		assertEquals(1,user.getProjects().size());
 		
 	}
 	
@@ -34,15 +52,10 @@ public class TestProject {
 	
 	@Test
 	public void deleteProject() throws Exception{
-		Schedule schedule = new Schedule();
 		
-		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");					//street, streetNumber, zipCode, city
-		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
-		schedule.addEmployee(employee);
+		Project project = new Project("ProjectAwesome",1, 5, user);							//projectName, totalTime (in weeks), employee
 		
-		Project project = new Project("ProjectAwesome",1, 5, employee);							//projectName, totalTime (in weeks), employee
-		
-		employee.createProject(project);
+		user.createProject(project);
 		
 		Employee projectLeader = project.getProjectLeader();
 		projectLeader.deleteProject(project);
@@ -51,41 +64,31 @@ public class TestProject {
 	
 	@Test
 	public void createTheSameProjectMultipleTimes() throws Exception {
-		Schedule schedule = new Schedule();
 		
-		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");					//street, streetNumber, zipCode, city
-		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
-		schedule.addEmployee(employee);
+		Project project = new Project("ProjectAwesome", 1, 5, user);							//projectName, totalTime (in weeks), employee
 		
-		Project project = new Project("ProjectAwesome", 1, 5, employee);							//projectName, totalTime (in weeks), employee
-		
-		employee.createProject(project);
+		user.createProject(project);
 		
 		try {
-			employee.createProject(project);	
+			user.createProject(project);	
 		} catch (OperationNotAllowedException e) {
 			assertEquals("You can't create the same project multiple times.",e.getMessage());
 			assertEquals("Create project",e.getOperation());
 		}
 		
-		assertEquals(1,employee.getProjects().size());
+		assertEquals(1,user.getProjects().size());
 	}
 	
 	@Test
 	public void projectNumberGeneration() throws Exception {
-		Schedule schedule = new Schedule();
 		
-		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");					//street, streetNumber, zipCode, city
-		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
-		schedule.addEmployee(employee);
+		Project project = new Project("ProjectAwesome",1, 5, user);							//projectName, totalTime (in weeks), employee
+		Project newProject = new Project("ProjectEXO",4, 9, user);
+		Project anotherProject = new Project("Tea Party",5, 10, user);
 		
-		Project project = new Project("ProjectAwesome",1, 5, employee);							//projectName, totalTime (in weeks), employee
-		Project newProject = new Project("ProjectEXO",4, 9, employee);
-		Project anotherProject = new Project("Tea Party",5, 10, employee);
-		
-		employee.createProject(project);
-		employee.createProject(newProject);
-		employee.createProject(anotherProject);
+		user.createProject(project);
+		user.createProject(newProject);
+		user.createProject(anotherProject);
 		
 		assertEquals(20150000, project.getProjectNumber());
 		assertEquals(20150001, newProject.getProjectNumber());
@@ -93,16 +96,10 @@ public class TestProject {
 	}
 	
 	public void searchProjects() throws Exception {
-		Schedule schedule = new Schedule();
 		
-		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");					//street, streetNumber, zipCode, city
-		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);
-		
-		schedule.addEmployee(employee);
-		
-		Project project = new Project("ProjectAwesome",1, 5, employee);						//projectName, start, end (in weeks)
+		Project project = new Project("ProjectAwesome",1, 5, user);						//projectName, start, end (in weeks)
 
-		employee.createProject(project);
+		user.createProject(project);
 		
 		List<Project> foundProjects = schedule.searchProjects("wrong");
 		
@@ -116,48 +113,37 @@ public class TestProject {
 	
 	@Test
 	public void changeProjectLeader() throws Exception {
-		Schedule schedule = new Schedule();
-		
-		Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingor");						//street, streetNumber, zipCode, city
-		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address1, schedule);
 		
 		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
 		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
 
-		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
 		
-		Project project = new Project("ProjectAwesome",1, 5, employee1);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome",1, 5, user);						//projectName, projectNumber, totalTime (in weeks)
 
-		employee1.createProject(project);
-		assertEquals(employee1, project.getProjectLeader());
+		user.createProject(project);
+		assertEquals(user, project.getProjectLeader());
 		
-		assertEquals(1,employee1.getProjects().size());
+		assertEquals(1,user.getProjects().size());
 		assertEquals(0,employee2.getProjects().size());
 		
-		employee1.changeProjectLeader(employee2, project);
+		user.changeProjectLeader(employee2, project);
 		
-		assertEquals(0,employee1.getProjects().size());
+		assertEquals(0,user.getProjects().size());
 		assertEquals(1,employee2.getProjects().size());
 		assertEquals(employee2, project.getProjectLeader());
 	}
 	
 	@Test
-	public void changeProjectLeaderBySearch() throws Exception {
-		
-		Schedule schedule = new Schedule();
-		
-		Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingor");						//street, streetNumber, zipCode, city
-		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address1, schedule);
+	public void changeProjectLeaderBySearch() throws Exception {		
 		
 		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
 		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
 
-		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
 		
-		Project project = new Project("ProjectAwesome",1, 5, employee1);								//projectName, totalTime (in weeks)
-		employee1.createProject(project);
+		Project project = new Project("ProjectAwesome",1, 5, user);								//projectName, totalTime (in weeks)
+		user.createProject(project);
 		
 		List<Employee> foundEmployees = schedule.searchEmployee("Lukas Villumsen");
 		assertEquals(1,foundEmployees.size());

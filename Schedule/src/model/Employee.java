@@ -78,9 +78,11 @@ public class Employee {
 	}
 
 	public void addTask(Task task, Project project) throws Exception {
-		if (!this.equals(project.getProjectLeader())){
+		if (!schedule.isLoggedIn() && this.equals(schedule.getUser()))
+			throw new OperationNotAllowedException("You need to be logged in to add a task", "Add task");
+		
+		if (!this.equals(project.getProjectLeader()))
 			throw new OperationNotAllowedException("Only the project leader may add a task to a project", "Add task");
-		}
 		else if (task.endsBeforeStart()) 
 			throw new OperationNotAllowedException("Task ends before it even begins!", "Add task");
 		else if (task.isOutOfBounds(project.getStartWeek(), project.getEndWeek()))

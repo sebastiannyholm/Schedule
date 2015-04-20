@@ -10,6 +10,7 @@ public class Schedule {
 	private List<Project> allProjects;
 	private List<Task> allTasks;
 	private boolean loggedIn = false;
+	private Employee user;
 	
 	
 	public Schedule(){
@@ -51,8 +52,9 @@ public class Schedule {
 		for (Employee employee : employees)
 			if (employee.matchInitials(initials)) {
 				loggedIn = true;
+				this.user = employee;
 				break;
-			}			
+			}
 	}
 	
 	public void logOut() throws OperationNotAllowedException {
@@ -60,6 +62,7 @@ public class Schedule {
 			throw new OperationNotAllowedException("You can't log out, if you are not logged in.", "Log out");
 		
 		loggedIn = false;
+		user = null;
 	}
 
 	public void addProject(Project project) {
@@ -103,6 +106,10 @@ public class Schedule {
 			if (project.isInPeriod(startWeek, endWeek))
 				projectsInPeriod.add(project);
 		return projectsInPeriod;
+	}
+
+	public Employee getUser() {
+		return user;
 	}
 
 }
