@@ -37,6 +37,8 @@ public class TestTime {
 		user.createProject(project3);
 
 		
+		user = schedule.getUser();
+		
 	}
 	
 	@Test
