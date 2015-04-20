@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Employee {
@@ -13,6 +15,7 @@ public class Employee {
 	private List<Project> projects;
 	private List<Task> tasks;
 	private boolean superWorker;
+	private Calendar cal = new GregorianCalendar();
 	
 	
 	public Employee(String name, String initials, int age, Address address, Schedule schedule) {
@@ -134,6 +137,21 @@ public class Employee {
 	
 	public boolean isSuperWorker(){
 		return superWorker;
+	}
+
+	public List<Task> getAgenda() {
+		int week = cal.get(GregorianCalendar.WEEK_OF_YEAR);
+		return this.getTasksInPeriod(week, week+1);
+		
+	}
+
+	public List<Task> getTasksInPeriod(int startWeek, int endWeek) {
+		List<Task> tasksInPeriod = new ArrayList<Task>();
+		
+		for (Task task : tasks)
+			if (task.isInPeriod(startWeek, endWeek))
+				tasksInPeriod.add(task);
+		return tasksInPeriod;
 	}
 
 }
