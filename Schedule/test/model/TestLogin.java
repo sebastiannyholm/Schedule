@@ -24,7 +24,7 @@ public class TestLogin {
 	}
 	
 	@Test
-	public void login() {
+	public void login() throws Exception {
 		
 		assertFalse(schedule.isLoggedIn());
 		
@@ -35,11 +35,38 @@ public class TestLogin {
 	}
 	
 	@Test
-	public void loginFailed() {
+	public void loginFailed() throws Exception {
 		
 		schedule.login("sn");
 
 		assertFalse(schedule.isLoggedIn());
+	}
+	
+	@Test
+	public void loginTwice() throws Exception{
+		schedule.login("seny");
+		assertTrue(schedule.isLoggedIn());
+
+		Address address2 = new Address("Rolighedsvej", 3, 3000, "Frederikssund");
+		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);
+		schedule.addEmployee(employee2);
+		
+		try {
+			schedule.login("luvi");
+		} catch(OperationNotAllowedException e) {
+			assertEquals("You can't log in when someone else is using the system.",e.getMessage());
+			assertEquals("Log in",e.getOperation());
+		}
+		
+		// verify that the first employee is still logged in and "luvi" was denied access
+		assertEquals(schedule.getUser(), schedule.getEmployees().get(0));
+		
+		schedule.logOut();
+		assertFalse(schedule.isLoggedIn());
+		assertEquals(schedule.getUser(), null);
+		
+		schedule.login("luvi");
+		assertEquals(schedule.getUser(), employee2);
 	}
 
 	@Test
