@@ -128,8 +128,8 @@ public class TestTime {
 		int week = schedule.getDate().get(GregorianCalendar.WEEK_OF_YEAR);
 
 		Project project = new Project("project!!022", week-4, week+6, schedule.getUser());
-		Task task1 = new Task("newTask", week-4, week+1, 200);		//  within week agenda
-		Task task2 = new Task("popTask", week-2  , week-1, 100);		//  within week agenda
+		Task task1 = new Task("newTask", week-4, week+1, 200);		// within week agenda
+		Task task2 = new Task("popTask", week-2  , week-1, 100);	// within week agenda
 		Task task3 = new Task("badTask", week+2, week+5, 80);		// outside week agenda
 		
 		user.createProject(project);
