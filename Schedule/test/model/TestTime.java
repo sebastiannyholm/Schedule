@@ -1,6 +1,8 @@
 package model;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -16,8 +18,15 @@ public class TestTime {
 	Schedule schedule = new Schedule();
 	Employee user;
 	
+	DateServer dateServer = mock(DateServer.class);
+	Calendar cal = new GregorianCalendar(2015,Calendar.APRIL,10,8,0);
+	
 	@Before
 	public void setup() throws Exception{
+		
+		schedule.setDateServer(dateServer);
+		when(dateServer.getDate()).thenReturn(cal);
+		
 		Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingor");
 		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address1, schedule);
 		
@@ -45,54 +54,58 @@ public class TestTime {
 	@Test
 	public void registerTime() throws Exception{
 		
-		// set the time of punchIn
-		Date date = new GregorianCalendar().getTime();
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(date);
+		Calendar newCal = new GregorianCalendar();
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 8*60);
+		when(dateServer.getDate()).thenReturn(newCal);
 		
-		// skip 8 hours ahead, set time -- hours += 8 = 60*8 minutes
-		user.setCalendarMinutes(cal.get(Calendar.MINUTE)+8*60);
 		
 		// the employee automatically punches out as he logs out
 		schedule.logOut(); 			// punches out
-		assertEquals(8*60, user.getWorkLogValue(date));
+		assertEquals(8*60, user.getWorkLogValue(schedule.getDate().getTime()));
 		
 		// log in another employee
 		schedule.login("luvi");
 		user = schedule.getUser();
 		
 		// He works for 5 hours and logs out (5*60 min)
-		user.setCalendarMinutes(cal.get(Calendar.MINUTE)+5*60);
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 5*60 + 8*60);
+		when(dateServer.getDate()).thenReturn(newCal);
+	
 		schedule.logOut();
 		
-		assertEquals(5*60, user.getWorkLogValue(date));
+		assertEquals(5*60, user.getWorkLogValue(schedule.getDate().getTime()));
 	}
 	
 	@Test
 	public void registerTimeMultipleTimesADay() throws Exception{
 		
 		// set the time of punchIn
-		Date date = new GregorianCalendar().getTime();
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(date);
-		
 		// skip 5 hours ahead, set time -- hours += 5
-		user.setCalendarMinutes(cal.get(Calendar.MINUTE)+5*60);
+		Calendar newCal = new GregorianCalendar();
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 5*60);
+		when(dateServer.getDate()).thenReturn(newCal);
 		
 		// the employee automatically punches out as he logs out
 		schedule.logOut(); 			// punches out
 		
-		assertEquals(5*60, user.getWorkLogValue(date));
+		assertEquals(5*60, user.getWorkLogValue(schedule.getDate().getTime()));
 		
-		// log in another employee
+		// log in the same employee
 		schedule.login("seny");
 		user = schedule.getUser();
 		
 		// He works for 3 hours and logs out
-		user.setCalendarMinutes(cal.get(Calendar.MINUTE)+3*60);
+		newCal = new GregorianCalendar();
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 5*60 + 3*60);
+		when(dateServer.getDate()).thenReturn(newCal);
+		
 		schedule.logOut();
 		
-		assertEquals(8*60, user.getWorkLogValue(date));
+		assertEquals(8*60, user.getWorkLogValue(schedule.getDate().getTime()));
 	}
 	
 	// test how many and which projects are found in a specific period of time (in weeks)
@@ -112,12 +125,11 @@ public class TestTime {
 	@Test
 	public void employeeAgenda() throws Exception {
 		
-		Calendar cal = new GregorianCalendar();
-		int week = cal.get(GregorianCalendar.WEEK_OF_YEAR);
+		int week = schedule.getDate().get(GregorianCalendar.WEEK_OF_YEAR);
 
 		Project project = new Project("project!!022", week-4, week+6, schedule.getUser());
 		Task task1 = new Task("newTask", week-4, week+1, 200);		//  within week agenda
-		Task task2 = new Task("popTask", week  , week+4, 100);		//  within week agenda
+		Task task2 = new Task("popTask", week-2  , week-1, 100);		//  within week agenda
 		Task task3 = new Task("badTask", week+2, week+5, 80);		// outside week agenda
 		
 		user.createProject(project);
@@ -136,11 +148,6 @@ public class TestTime {
 	@Test
 	public void registerTaskTime() throws Exception{
 		
-		// set the time of punchIn
-		Date date = new GregorianCalendar().getTime();
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(date);
-		
 		Project project = schedule.getAllProjects().get(0);
 		Task task = new Task("name", 4, 50, 1000);
 		
@@ -148,7 +155,10 @@ public class TestTime {
 		user.startWorkingOnTask(task);
 		
 		// work on the task for 270 minutes then stop
-		user.setCalendarMinutes(cal.get(Calendar.MINUTE) + 270);		// mock sub
+		Calendar newCal = new GregorianCalendar();
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 270);
+		when(dateServer.getDate()).thenReturn(newCal);
 		
 		user.stopWorkingOnTask(task);
 		
@@ -160,11 +170,6 @@ public class TestTime {
 	@Test
 	public void registerTaskTimeMulitple() throws Exception{
 		
-		// set the time of punchIn
-		Date date = new GregorianCalendar().getTime();
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(date);
-		
 		Project project = schedule.getAllProjects().get(0);
 		Task task = new Task("name", 4, 50, 1000);
 		
@@ -172,7 +177,10 @@ public class TestTime {
 		user.startWorkingOnTask(task);
 		
 		// work on the task for 270 minutes then stop
-		user.setCalendarMinutes(cal.get(Calendar.MINUTE) + 270);		// mock sub
+		Calendar newCal = new GregorianCalendar();
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 270);
+		when(dateServer.getDate()).thenReturn(newCal);
 		
 		user.stopWorkingOnTask(task);
 		
@@ -182,7 +190,10 @@ public class TestTime {
 		user.startWorkingOnTask(task);
 		
 		// work on the task for 40 minutes then stop
-		user.setCalendarMinutes(cal.get(Calendar.MINUTE) + 40);		// mock sub
+		newCal = new GregorianCalendar();
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 270 + 40);
+		when(dateServer.getDate()).thenReturn(newCal);
 		
 		user.stopWorkingOnTask(task);
 		

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class Schedule {
 	private List<Task> allTasks;
 	private boolean loggedIn = false;
 	private Employee user;
+	private DateServer dateServer = new DateServer();
 	
 	public Schedule(){
 
@@ -116,4 +118,11 @@ public class Schedule {
 		return user;
 	}
 
+	public Calendar getDate() {
+		return dateServer.getDate(); 
+	}
+
+	public void setDateServer(DateServer dateServer) {
+		this.dateServer = dateServer;
+	}
 }

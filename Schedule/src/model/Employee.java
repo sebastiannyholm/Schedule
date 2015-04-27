@@ -20,8 +20,6 @@ public class Employee {
 	private List<Project> projects;
 	private List<Task> tasks;
 	private boolean superWorker;
-	private Calendar cal = new GregorianCalendar();
-	private Date date;
 	private int punchIn, punchOut, taskIn, taskOut;
 	private Map<String, Integer> workLog = new HashMap<String, Integer>();
 	private Map<Task, Integer> taskLog = new HashMap<Task, Integer>();
@@ -161,7 +159,7 @@ public class Employee {
 	}
 
 	public List<Task> getAgenda() {
-		int week = cal.get(GregorianCalendar.WEEK_OF_YEAR);
+		int week = schedule.getDate().get(GregorianCalendar.WEEK_OF_YEAR);
 		return this.getTasksInPeriod(week, week+1);
 		
 	}
@@ -176,17 +174,16 @@ public class Employee {
 	}
 
 	public void punchIn() {		
-		// set the date of today
-		setTime();
-		
 		// get hour of day
-		punchIn = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
+		punchIn = schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);		// get the current time in minutes
+		//punchIn = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
 		
 	}
 	
 	public void punchOut() {
 		// get the new time 
-		punchOut = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
+		punchOut = schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);		// get the current time in minutes
+		//punchOut = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
 		
 		int workMinutes = punchOut-punchIn;
 		System.out.println(punchIn + "  " + punchOut);
@@ -195,7 +192,8 @@ public class Employee {
 		 if (workMinutes < 0)
 			 workMinutes += 24*60;
 		 
-		
+		 Date date = schedule.getDate().getTime();
+		 
 		if (workLog.containsKey(df.format(date)))
 			workLog.put(df.format(date), workLog.get(df.format(date)) + workMinutes);
 		else 
@@ -207,23 +205,14 @@ public class Employee {
 		return workLog.get(df.format(date));
 	}
 
-	public void setCalendarHour(int newHour) {
-		cal.set(Calendar.HOUR_OF_DAY, newHour);
-		
-	}
 	
-	public void setCalendarMinutes(int newMinutes){
-		cal.set(Calendar.MINUTE, newMinutes);
-	}
-
 	public void startWorkingOnTask(Task task) {
-		setTime();
-		taskIn = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
+		taskIn = schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);	// get the current time in minutes
 
 	}
 	
 	public void stopWorkingOnTask(Task task) {
-		taskOut = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);	// get the current time in minutes
+		taskOut = schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);	// get the current time in minutes
 		
 		int timeWorkedOnTask = taskOut - taskIn;
 		
@@ -234,11 +223,6 @@ public class Employee {
 	
 		task.setTaskLog(this, timeWorkedOnTask);
 		
-	}
-	
-	private void setTime(){
-		this.date = new GregorianCalendar().getTime();
-		cal.setTime(date);
 	}
 
 	public int getTaskLogValue(Task task) {
