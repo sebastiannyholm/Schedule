@@ -28,7 +28,7 @@ public class Schedule {
 		return employees;
 	}
 
-	public void addEmployee(Employee employee) throws OperationNotAllowedException {
+	public void addEmployee(Employee employee) throws Exception {
 		if (employee.hasInitialsOnFourLetters()) 
 			throw new OperationNotAllowedException("An employee can only have four initials.", "Add employee");
 		
@@ -38,6 +38,15 @@ public class Schedule {
 		}
 		
 		employees.add(employee);
+	}
+	
+	public void removeEmployee(Employee employee) throws Exception {
+		if (!employees.contains(employee))
+			throw new OperationNotAllowedException("You can't remove an employee that doens't exist", "Remove employee");
+		if (employee.getProjects().size() > 0)
+			throw new OperationNotAllowedException("You can't remove an employee that are project leader", "Remove employee");
+		
+		employees.remove(employee);
 	}
 
 	public List<Project> getAllProjects(){
@@ -125,4 +134,5 @@ public class Schedule {
 	public void setDateServer(DateServer dateServer) {
 		this.dateServer = dateServer;
 	}
+
 }

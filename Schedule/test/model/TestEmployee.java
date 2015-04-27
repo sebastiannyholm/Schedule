@@ -41,6 +41,7 @@ public class TestEmployee {
 		
 		try {
 			schedule.addEmployee(employee2);
+			fail("OperationNotAllowedException should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Two employees can't have the same initials.",e.getMessage());
 			assertEquals("Add employee",e.getOperation());
@@ -51,7 +52,7 @@ public class TestEmployee {
 	}
 	
 	@Test
-	public void addEmployeeWithFiveInitials() {
+	public void addEmployeeWithFiveInitials() throws Exception {
 		Schedule schedule = new Schedule();
 		
 		List<Employee> employees = schedule.getEmployees();
@@ -63,12 +64,85 @@ public class TestEmployee {
 		
 		try {
 			schedule.addEmployee(employee);
+			fail("OperationNotAllowedException should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("An employee can only have four initials.",e.getMessage());
 			assertEquals("Add employee",e.getOperation());
 		}
 		
 		assertEquals(0,employees.size());
+	}
+	
+	@Test
+	public void removeEmployee() throws Exception {
+		Schedule schedule = new Schedule();
+		
+		List<Employee> employees = schedule.getEmployees();
+		
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
+		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);
+		
+		schedule.addEmployee(employee);
+		
+		assertEquals(1,employees.size());
+		
+		schedule.removeEmployee(employee);
+		
+		assertEquals(0,employees.size());
+		
+	}
+	
+	@Test
+	public void removeEmployeeThatDoesNotExist() throws Exception {
+		Schedule schedule = new Schedule();
+		
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
+		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);
+		
+		List<Employee> employees = schedule.getEmployees();
+		
+		assertEquals(0,employees.size());
+		
+		try {
+			schedule.removeEmployee(employee);
+			fail("OperationNotAllowedException should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("You can't remove an employee that doens't exist",e.getMessage());
+			assertEquals("Remove employee",e.getOperation());
+		}
+		
+		assertEquals(0,employees.size());
+		
+	}
+	
+	@Test
+	public void removeEmployeeThatIsProjectLeader() throws Exception {
+		Schedule schedule = new Schedule();
+		
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
+		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);
+		
+		schedule.addEmployee(employee);
+		assertEquals(1,schedule.getEmployees().size());
+		
+		schedule.login(employee.getInitials());
+		Employee user = schedule.getUser();
+		
+		Project project = new Project("ProjectAwesome", 1, 5, user);						//projectName, projectNumber, totalTime (in weeks)
+		
+		user.createProject(project);
+		assertEquals(1,user.getProjects().size());
+		
+		try {
+			schedule.removeEmployee(user);
+			fail("OperationNotAllowedException should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("You can't remove an employee that are project leader",e.getMessage());
+			assertEquals("Remove employee",e.getOperation());
+		}
+		
+		assertEquals(1,schedule.getEmployees().size());
+		
 	}
 	
 	@Test

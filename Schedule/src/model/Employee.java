@@ -161,7 +161,7 @@ public class Employee {
 
 	public List<Task> getAgenda() {
 		int week = schedule.getDate().get(GregorianCalendar.WEEK_OF_YEAR);
-		return this.getTasksInPeriod(week, week+1);
+		return this.getTasksInPeriod(week, week);
 		
 	}
 
