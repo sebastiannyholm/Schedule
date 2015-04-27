@@ -110,10 +110,10 @@ public class TestTime {
 	@Test
 	public void projectsInPeriod(){
 		
-		int startWeek = 2;
-		int endWeek = 5;
+		Calendar startDate = new GregorianCalendar(2015, Calendar.JANUARY, 8);
+		Calendar endDate = new GregorianCalendar(2015, Calendar.JANUARY, 29);
 		
-		List<Project> projectsInPeriod = schedule.getProjectsInPeriod(startWeek, endWeek);
+		List<Project> projectsInPeriod = schedule.getProjectsInPeriod(startDate, endDate);
 		assertEquals(2, projectsInPeriod.size());
 	}
 
@@ -124,10 +124,24 @@ public class TestTime {
 	public void employeeAgenda() throws Exception {
 		
 		Calendar date = schedule.getDate();
-		Project project = new Project("project!!022", date.add(GregorianCalendar.WEEK_OF_YEAR, -4), date.add(GregorianCalendar.WEEK_OF_YEAR, 10), schedule.getUser());
-		Task task1 = new Task("newTask", week-4, week+1, 200);		// within week agenda
-		Task task2 = new Task("popTask", week  , week + 1, 100);	// within week agenda
-		Task task3 = new Task("badTask", week+2, week+5, 80);		// outside week agenda
+		Calendar startDate = (GregorianCalendar) date.clone();
+		Calendar endDate = (GregorianCalendar) date.clone();
+		
+		startDate.add(GregorianCalendar.WEEK_OF_YEAR,-4);
+		endDate.add(GregorianCalendar.WEEK_OF_YEAR, 6);
+		Project project = new Project("project!!022", startDate, endDate, schedule.getUser());
+		
+		Calendar endDate2 = (GregorianCalendar) date.clone();
+		endDate2.add(GregorianCalendar.WEEK_OF_YEAR, 1);
+		Task task1 = new Task("newTask", startDate, endDate2, 200);		// within week agenda
+		
+		Task task2 = new Task("popTask", date, endDate2, 100);			// within week agenda
+		Calendar startDate2 = (GregorianCalendar) date.clone();
+		startDate2.add(GregorianCalendar.WEEK_OF_YEAR, 2);
+		Calendar endDate3 = (GregorianCalendar) date.clone();
+		endDate3.add(GregorianCalendar.WEEK_OF_YEAR, 5);
+		
+		Task task3 = new Task("badTask", startDate2, endDate3, 80);		// outside week agenda
 		
 		user.createProject(project);
 		user.addTask(task1, project);
@@ -146,7 +160,8 @@ public class TestTime {
 	public void registerTaskTime() throws Exception{
 		
 		Project project = schedule.getAllProjects().get(0);
-		Task task = new Task("name", 4, 50, 1000);
+	
+		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 1000);
 		
 		user.addTask(task, project);
 		user.startWorkingOnTask(task);
@@ -168,7 +183,7 @@ public class TestTime {
 	public void registerTaskTimeMulitple() throws Exception{
 		
 		Project project = schedule.getAllProjects().get(0);
-		Task task = new Task("name", 4, 50, 1000);
+		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 1000);
 		
 		user.addTask(task, project);
 		user.startWorkingOnTask(task);

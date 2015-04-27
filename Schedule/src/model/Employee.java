@@ -108,7 +108,7 @@ public class Employee {
 			throw new OperationNotAllowedException("Only the project leader may add a task to a project", "Add task");
 		else if (task.endsBeforeStart()) 
 			throw new OperationNotAllowedException("Task ends before it even begins!", "Add task");
-		else if (task.isOutOfBounds(project.getStartWeek(), project.getEndWeek()))
+		else if (task.isOutOfBounds(project.getStartDate(), project.getEndDate()))
 			throw new OperationNotAllowedException("Task span does not comply with project bounds!", "Add task");
 		project.addTask(task);
 		schedule.addTask(task);
@@ -160,16 +160,19 @@ public class Employee {
 	}
 
 	public List<Task> getAgenda() {
-		int week = schedule.getDate().get(GregorianCalendar.WEEK_OF_YEAR);
-		return this.getTasksInPeriod(week, week);
+		Calendar date = schedule.getDate();
+		Calendar startDate = (GregorianCalendar) date.clone();
+		Calendar endDate = (GregorianCalendar) date.clone();
+		endDate.add(GregorianCalendar.DAY_OF_YEAR, 7);
+		return this.getTasksInPeriod(startDate, endDate);
 		
 	}
 
-	public List<Task> getTasksInPeriod(int startWeek, int endWeek) {
+	public List<Task> getTasksInPeriod(Calendar startDate, Calendar endDate) {
 		List<Task> tasksInPeriod = new ArrayList<Task>();
 		
 		for (Task task : tasks)
-			if (task.isInPeriod(startWeek, endWeek))
+			if (task.isInPeriod(startDate, endDate))
 				tasksInPeriod.add(task);
 		return tasksInPeriod;
 	}

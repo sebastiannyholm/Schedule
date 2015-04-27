@@ -11,14 +11,15 @@ public class Task {
 	List<Employee> employees;
 	
 	private String name, taskNumber;
-	private int startWeek, endWeek, budgetedTime;
+	private Calendar startDate, endDate;
+	private int budgetedTime;
 	private Map<Employee, Integer> log = new HashMap<Employee, Integer>();
 
 	
-	public Task(String name, int startWeek, int endWeek, int budgetedTime){
+	public Task(String name, Calendar date, Calendar endDate, int budgetedTime){
 		this.name = name;
-		this.startWeek = startWeek;
-		this.endWeek = endWeek;
+		this.startDate = date;
+		this.endDate = endDate;
 		this.budgetedTime = budgetedTime;
 		
 		employees = new LinkedList<Employee>();
@@ -49,27 +50,23 @@ public class Task {
 	}
 	
 	public String toString(){
-		return name + ", " + taskNumber + ", weeks " + startWeek + " .. " + endWeek + " = " + budgetedTime + " hours";
+		return name + ", " + taskNumber + ", from " + startDate + " to " + endDate + " = " + budgetedTime + " hours";
 	}
 
 	// this.startWeek > 45 to make up for tasks overlapping new years eve
-	public boolean isOutOfBounds(int startWeek, int endWeek) {
-		return (this.startWeek < startWeek || this.startWeek >= endWeek || this.endWeek < startWeek || this.endWeek >= endWeek 
-				|| this.startWeek < 1 || this.endWeek < 1 || this.startWeek > 52 || this.endWeek > 52) 
-				&& (this.startWeek < 45 || this.startWeek > 52);
+	public boolean isOutOfBounds(Calendar startDate, Calendar endDate) {
+		return (this.startDate.before(startDate) || this.endDate.after(endDate));
 	}
 
 	public boolean endsBeforeStart() {
 		// take into account tasks which overlap new years eve
-		if (startWeek >= 45)
-			return !(endWeek < startWeek && endWeek <= 10);
-		
-		return endWeek < startWeek;
+		return this.endDate.before(this.startDate);
 	}
 
-	public boolean isInPeriod(int startWeek, int endWeek) {
-		return (this.startWeek >= startWeek && this.startWeek < endWeek) || (this.endWeek > startWeek && this.endWeek <= endWeek)
-				|| (this.startWeek <= startWeek && this.endWeek >= endWeek);
+	public boolean isInPeriod(Calendar startDate, Calendar endDate) {
+		return (this.startDate.compareTo(startDate) >= 0 && this.startDate.before(endDate)) 
+				|| (this.endDate.after(startDate) && this.endDate.compareTo(endDate) <= 0)
+				|| (this.startDate.compareTo(startDate) <= 0 && this.endDate.compareTo(endDate) >= 0);
 	}
 
 	

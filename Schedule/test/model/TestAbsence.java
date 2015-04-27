@@ -2,6 +2,9 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import org.junit.Test;
 
 public class TestAbsence {
@@ -26,8 +29,8 @@ public class TestAbsence {
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
 		
-		Project project = new Project("title", 5, 10, employee1); 			// employee1 is assigned project leader
-		Task task = new Task("title", 6,8, 50);
+		Project project = new Project("title", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.DECEMBER, 31), employee1); 			// employee1 is assigned project leader
+		Task task = new Task("title", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.DECEMBER, 31), 50);
 		
 		schedule.login(employee1.getInitials());
 		employee1.createProject(project);

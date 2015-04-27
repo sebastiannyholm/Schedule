@@ -1,19 +1,18 @@
 package model;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Project {
 
 	private String projectName, projectNumber;
-	private GregorianCalendar startDate, endDate;
+	private Calendar startDate, endDate;
 	private Employee projectLeader;
 	
 	List<Task> tasks;
 	
-	public Project(String projectName, GregorianCalendar startDate, GregorianCalendar endDate, Employee employee){
+	public Project(String projectName, Calendar startDate, Calendar endDate, Employee employee){
 		
 		this.projectName = projectName;
 		this.startDate = startDate;
@@ -55,25 +54,24 @@ public class Project {
 	}	
 	
 	public String toString(){
-		int yearDiff = endDate.get(GregorianCalendar.YEAR) - startDate.get(GregorianCalendar.YEAR);
-		return projectName + " " + projectNumber + ", Estimated time in weeks: " + (endDate.get(GregorianCalendar.WEEK_OF_YEAR)*yearDiff-startDate.get(GregorianCalendar.WEEK_OF_YEAR)) + " -- Project leader: " + projectLeader;
+		return projectName + " " + projectNumber + ", Project period from " + startDate + " to " + endDate + " -- Project leader: " + projectLeader;
 	}
 
 	public int getProjectNumber() {
 		return Integer.parseInt(projectNumber);
 	}
 
-	public boolean isInPeriod(GregorianCalendar startDate, GregorianCalendar endDate) {
+	public boolean isInPeriod(Calendar startDate, Calendar endDate) {
 		return (this.startDate.compareTo(startDate) >= 0  && this.startDate.compareTo(endDate) < 0)
 				|| (this.endDate.compareTo(startDate) > 0 && this.endDate.compareTo(endDate) <= 0)
 				|| (this.startDate.compareTo(startDate) <= 0 && this.endDate.compareTo(endDate) >= 0);
 	}
 
-	public GregorianCalendar getEndDate() {
+	public Calendar getEndDate() {
 		return this.endDate;
 	}
 
-	public GregorianCalendar getStartDate() {
+	public Calendar getStartDate() {
 		return this.startDate;
 	}
 	

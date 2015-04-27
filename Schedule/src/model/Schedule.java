@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -114,11 +115,11 @@ public class Schedule {
 		return foundEmployees;
 	}
 
-	public List<Project> getProjectsInPeriod(int startWeek, int endWeek) {
+	public List<Project> getProjectsInPeriod(Calendar startDate, Calendar endDate) {
 		List<Project> projectsInPeriod = new ArrayList<Project>();
 		
 		for (Project project : allProjects)
-			if (project.isInPeriod(startWeek, endWeek))
+			if (project.isInPeriod(startDate, endDate))
 				projectsInPeriod.add(project);
 		return projectsInPeriod;
 	}
@@ -127,8 +128,8 @@ public class Schedule {
 		return user;
 	}
 
-	public Calendar getDate() {
-		return dateServer.getDate(); 
+	public GregorianCalendar getDate() {
+		return (GregorianCalendar) dateServer.getDate(); 
 	}
 
 	public void setDateServer(DateServer dateServer) {

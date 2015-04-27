@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.junit.Before;
@@ -26,7 +28,7 @@ public class TestProject {
 	@Test
 	public void createProject() throws Exception{
 		
-		Project project = new Project("ProjectAwesome", 1, 5, user);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);						//projectName, projectNumber, totalTime (in weeks)
 	
 		assertEquals(0,user.getProjects().size());
 		user.createProject(project);
@@ -37,7 +39,7 @@ public class TestProject {
 	
 	@Test
 	public void createProjectWhenNotLoggedIn() throws Exception {
-		Project project = new Project("ProjectAwesome", 1, 5, user);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);						//projectName, projectNumber, totalTime (in weeks)
 		
 		schedule.logOut();
 		
@@ -65,7 +67,7 @@ public class TestProject {
 	@Test
 	public void deleteProject() throws Exception{
 		
-		Project project = new Project("ProjectAwesome",1, 5, user);							//projectName, totalTime (in weeks), employee
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);							//projectName, totalTime (in weeks), employee
 		
 		user.createProject(project);
 		
@@ -77,7 +79,7 @@ public class TestProject {
 	@Test
 	public void deleteProjectWhenNotProjectLeader() throws Exception {
 		
-		Project project = new Project("ProjectAwesome",1, 5, user);							//projectName, totalTime (in weeks), employee
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);							//projectName, totalTime (in weeks), employee
 		user.createProject(project);
 		
 		assertEquals(1,schedule.getAllProjects().size());
@@ -107,7 +109,7 @@ public class TestProject {
 	@Test
 	public void createTheSameProjectMultipleTimes() throws Exception {
 		
-		Project project = new Project("ProjectAwesome", 1, 5, user);							//projectName, totalTime (in weeks), employee
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);							//projectName, totalTime (in weeks), employee
 		
 		user.createProject(project);
 		
@@ -124,9 +126,9 @@ public class TestProject {
 	@Test
 	public void projectNumberGeneration() throws Exception {
 		
-		Project project = new Project("ProjectAwesome",1, 5, user);							//projectName, totalTime (in weeks), employee
-		Project newProject = new Project("ProjectEXO",4, 9, user);
-		Project anotherProject = new Project("Tea Party",5, 10, user);
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);							//projectName, totalTime (in weeks), employee
+		Project newProject = new Project("ProjectEXO", new GregorianCalendar(2015, Calendar.JANUARY, 3), new GregorianCalendar(2015, Calendar.JANUARY, 31), user);
+		Project anotherProject = new Project("Tea Party",new GregorianCalendar(2015, Calendar.JANUARY, 29), new GregorianCalendar(2015, Calendar.FEBRUARY, 29), user);
 		
 		user.createProject(project);
 		user.createProject(newProject);
@@ -139,7 +141,7 @@ public class TestProject {
 	
 	public void searchProjects() throws Exception {
 		
-		Project project = new Project("ProjectAwesome",1, 5, user);						//projectName, start, end (in weeks)
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);						//projectName, start, end (in weeks)
 
 		user.createProject(project);
 		
@@ -161,7 +163,7 @@ public class TestProject {
 
 		schedule.addEmployee(employee2);
 		
-		Project project = new Project("ProjectAwesome",1, 5, user);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);						//projectName, projectNumber, totalTime (in weeks)
 
 		user.createProject(project);
 		assertEquals(user, project.getProjectLeader());
@@ -184,7 +186,7 @@ public class TestProject {
 
 		schedule.addEmployee(employee2);
 		
-		Project project = new Project("ProjectAwesome",1, 5, user);								//projectName, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);								//projectName, totalTime (in weeks)
 		user.createProject(project);
 		
 		List<Employee> foundEmployees = schedule.searchEmployee("Lukas Villumsen");
