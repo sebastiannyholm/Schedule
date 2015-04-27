@@ -24,6 +24,7 @@ public class Employee {
 	private Map<String, Integer> workLog = new HashMap<String, Integer>();
 	private Map<Task, Integer> taskLog = new HashMap<Task, Integer>();
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	private boolean absence = false;
 	
 	public Employee(String name, String initials, int age, Address address, Schedule schedule) {
 		this.name = name;
@@ -186,7 +187,6 @@ public class Employee {
 		//punchOut = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
 		
 		int workMinutes = punchOut-punchIn;
-		System.out.println(punchIn + "  " + punchOut);
 		// to compensate for late shifts working past midnight
 		
 		 if (workMinutes < 0)
@@ -227,6 +227,19 @@ public class Employee {
 
 	public int getTaskLogValue(Task task) {
 		return taskLog.get(task);
+	}
+
+	public void reportAbsence(Employee employee) {
+		employee.setAbsent();
+		
+	}
+	
+	public void setAbsent(){
+		this.absence = true;
+	}
+
+	public boolean isAbsent() {
+		return absence;
 	}
 
 	

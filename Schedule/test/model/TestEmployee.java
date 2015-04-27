@@ -1,6 +1,6 @@
 package model;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -89,20 +89,8 @@ public class TestEmployee {
 		assertEquals(1,foundEmployees.size());
 		
 		foundEmployees = schedule.searchEmployee("as");
-		
+		// two employees with the char sequence "as"
 		assertEquals(2,foundEmployees.size());
 		
-	}
-	
-	@Test
-	public void employeeCallsInSick(){
-		
-		
-	}
-	
-	@Test
-	public void notifyVacation(){
-		
-	}
-	
+	}	
 }
