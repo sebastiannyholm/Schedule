@@ -33,9 +33,9 @@ public class TestTime {
 		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
 		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
 
-		Project project1 = new Project("Project1", 1, 52, employee1);		//projectName, projectNumber, totalTime (in weeks), project leader
-		Project project2 = new Project("Project2", 4, 6, employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
-		Project project3 = new Project("Project3", 8, 13, employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
+		Project project1 = new Project("Project1", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.DECEMBER, 31), employee1);		//projectName, projectNumber, totalTime (in weeks), project leader
+		Project project2 = new Project("Project2", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.FEBRUARY, 3), employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
+		Project project3 = new Project("Project3", new GregorianCalendar(2015, Calendar.FEBRUARY, 16), new GregorianCalendar(2015, Calendar.MARCH, 23), employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
 		
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
@@ -125,9 +125,8 @@ public class TestTime {
 	@Test
 	public void employeeAgenda() throws Exception {
 		
-		int week = schedule.getDate().get(GregorianCalendar.WEEK_OF_YEAR);
-
-		Project project = new Project("project!!022", week-4, week+6, schedule.getUser());
+		Calendar date = schedule.getDate();
+		Project project = new Project("project!!022", date.add(GregorianCalendar.WEEK_OF_YEAR, -4), date.add(GregorianCalendar.WEEK_OF_YEAR, 10), schedule.getUser());
 		Task task1 = new Task("newTask", week-4, week+1, 200);		// within week agenda
 		Task task2 = new Task("popTask", week-2  , week-1, 100);	// within week agenda
 		Task task3 = new Task("badTask", week+2, week+5, 80);		// outside week agenda

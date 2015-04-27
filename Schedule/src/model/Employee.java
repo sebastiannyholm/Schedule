@@ -25,6 +25,7 @@ public class Employee {
 	private Map<Task, Integer> taskLog = new HashMap<Task, Integer>();
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	private boolean absence = false;
+	private Enum<Status> reason;
 	
 	public Employee(String name, String initials, int age, Address address, Schedule schedule) {
 		this.name = name;
@@ -47,7 +48,6 @@ public class Employee {
 		for (Project project : schedule.getAllProjects())
 			if (project.projectExist(newProject)) 
 				throw new OperationNotAllowedException("You can't create the same project multiple times.", "Create project");
-		projects.add(newProject);
 		schedule.addProject(newProject);
 		newProject.setProjectNumber(schedule.getAllProjects().size()-1);
 	}
@@ -229,17 +229,27 @@ public class Employee {
 		return taskLog.get(task);
 	}
 
-	public void reportAbsence(Employee employee) {
-		employee.setAbsent();
+	public void reportAbsence(Employee employee, Enum<Status> reason) {
+		employee.setAbsent(reason);
 		
 	}
 	
-	public void setAbsent(){
+	public void setAbsent(Enum<Status> reason){
 		this.absence = true;
+		this.reason = reason;
 	}
 
 	public boolean isAbsent() {
 		return absence;
+	}
+
+	public void addProject(Project project) {
+		this.projects.add(project);
+		
+	}
+	
+	public void returnFromAbsence(){
+		
 	}
 
 	

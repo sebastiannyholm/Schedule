@@ -8,18 +8,19 @@ import java.util.List;
 public class Project {
 
 	private String projectName, projectNumber;
-	private int startWeek, endWeek;
+	private GregorianCalendar startDate, endDate;
 	private Employee projectLeader;
 	
 	List<Task> tasks;
 	
-	public Project(String projectName, int startWeek, int endWeek, Employee employee){
+	public Project(String projectName, GregorianCalendar startDate, GregorianCalendar endDate, Employee employee){
 		
 		this.projectName = projectName;
-		this.startWeek = startWeek;
-		this.endWeek = endWeek;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.projectLeader = employee;
 		
+		projectLeader.addProject(this);
 		tasks = new LinkedList<Task>();
 	
 	}
@@ -54,24 +55,26 @@ public class Project {
 	}	
 	
 	public String toString(){
-		return projectName + " " + projectNumber + ", Estimated time in weeks: " + (endWeek-startWeek) + " -- Project leader: " + projectLeader;
+		int yearDiff = endDate.get(GregorianCalendar.YEAR) - startDate.get(GregorianCalendar.YEAR);
+		return projectName + " " + projectNumber + ", Estimated time in weeks: " + (endDate.get(GregorianCalendar.WEEK_OF_YEAR)*yearDiff-startDate.get(GregorianCalendar.WEEK_OF_YEAR)) + " -- Project leader: " + projectLeader;
 	}
 
 	public int getProjectNumber() {
 		return Integer.parseInt(projectNumber);
 	}
 
-	public boolean isInPeriod(int startWeek, int endWeek) {
-		return (this.startWeek >= startWeek && this.startWeek < endWeek) || (this.endWeek > startWeek && this.endWeek <= endWeek)
-				|| (this.startWeek <= startWeek && this.endWeek >= endWeek);
+	public boolean isInPeriod(GregorianCalendar startDate, GregorianCalendar endDate) {
+		return (this.startDate.compareTo(startDate) >= 0  && this.startDate.compareTo(endDate) < 0)
+				|| (this.endDate.compareTo(startDate) > 0 && this.endDate.compareTo(endDate) <= 0)
+				|| (this.startDate.compareTo(startDate) <= 0 && this.endDate.compareTo(endDate) >= 0);
 	}
 
-	public int getEndWeek() {
-		return endWeek;
+	public GregorianCalendar getEndDate() {
+		return this.endDate;
 	}
 
-	public int getStartWeek() {
-		return startWeek;
+	public GregorianCalendar getStartDate() {
+		return this.startDate;
 	}
 	
 	public boolean projectExist(Project newProject) {
