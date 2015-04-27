@@ -108,7 +108,7 @@ public class Employee {
 			throw new OperationNotAllowedException("Only the project leader may add a task to a project", "Add task");
 		else if (task.endsBeforeStart()) 
 			throw new OperationNotAllowedException("Task ends before it even begins!", "Add task");
-		else if (task.isOutOfBounds(project.getStartWeek(), project.getEndWeek()))
+		else if (task.isOutOfBounds(project.getStartDate(), project.getEndDate()))
 			throw new OperationNotAllowedException("Task span does not comply with project bounds!", "Add task");
 		project.addTask(task);
 		schedule.addTask(task);
