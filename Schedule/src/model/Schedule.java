@@ -83,11 +83,11 @@ public class Schedule {
 		
 	}
 		
-	public List<Employee> searchEmployee(String critiria) {
+	public List<Employee> searchEmployee(String criteria) {
 		List<Employee> foundEmployees = new ArrayList<Employee>();
 		
 		for (Employee employee : employees)
-			if(employee.match(critiria))
+			if(employee.match(criteria))
 				foundEmployees.add(employee);
 		
 		return foundEmployees;
