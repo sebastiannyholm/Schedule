@@ -48,7 +48,7 @@ public class Employee {
 		for (Project project : schedule.getAllProjects())
 			if (project.projectExist(newProject)) 
 				throw new OperationNotAllowedException("You can't create the same project multiple times.", "Create project");
-		System.out.println("hey");
+		
 		schedule.addProject(newProject);
 		newProject.setProjectNumber(schedule.getAllProjects().size()-1, schedule.getDate().get(GregorianCalendar.YEAR));
 		newProject.addProjectToProjectLeader();
@@ -261,3 +261,4 @@ public class Employee {
 
 	
 }
+
