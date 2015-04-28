@@ -51,6 +51,7 @@ public class Employee {
 		System.out.println("hey");
 		schedule.addProject(newProject);
 		newProject.setProjectNumber(schedule.getAllProjects().size()-1, schedule.getDate().get(GregorianCalendar.YEAR));
+		newProject.addProjectToProjectLeader();
 	}
 
 	public List<Project> getProjects() {
@@ -131,7 +132,10 @@ public class Employee {
 		return initials.contains(critiria) || name.contains(critiria);
 	}
 
-	public void changeProjectLeader(Employee newProjectLeader, Project project) {
+	public void changeProjectLeader(Employee newProjectLeader, Project project) throws Exception {
+		if (!this.equals(project.getProjectLeader())) 
+			throw new OperationNotAllowedException("You can't change the project leader, if you are not the current one", "Change project leader");
+		
 		project.changeProjectLeader(newProjectLeader);
 		newProjectLeader.projects.add(project);
 		projects.remove(project);

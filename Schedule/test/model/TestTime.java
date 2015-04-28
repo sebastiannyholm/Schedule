@@ -43,9 +43,7 @@ public class TestTime {
 		
 		user.createProject(project1);
 		user.createProject(project2);
-		user.createProject(project3);
-
-		
+		user.createProject(project3);		
 		
 	}
 	
