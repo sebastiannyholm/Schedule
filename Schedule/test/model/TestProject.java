@@ -12,12 +12,12 @@ import org.junit.Test;
 public class TestProject {
 
 	Schedule schedule = new Schedule();
-	Employee user;
+	Employee user, employee;
 	
 	@Before
 	public void setup() throws Exception {
 		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");					//street, streetNumber, zipCode, city
-		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
+		employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
 		schedule.addEmployee(employee);
 		
 		schedule.login("seny");
@@ -114,7 +114,8 @@ public class TestProject {
 		user.createProject(project);
 		
 		try {
-			user.createProject(project);	
+			user.createProject(project);
+			fail("OperationNotAlloedException should have been thrown from the above statement");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("You can't create the same project multiple times.",e.getMessage());
 			assertEquals("Create project",e.getOperation());
@@ -207,5 +208,39 @@ public class TestProject {
 		assertEquals(1,newProjectLeader.getProjects().size());
 		
 		
+	}
+	
+	// You have to be project leader to change the project leader of the given project.
+	@Test
+	public void changeProjectLeaderIfNotProjectLeader() throws Exception {
+		
+		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
+		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
+		
+		schedule.addEmployee(employee2);
+		
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);						//projectName, projectNumber, totalTime (in weeks)
+
+		user.createProject(project);
+		assertEquals(user, project.getProjectLeader());
+		
+		schedule.logOut();
+		
+		schedule.login(employee2.getInitials());
+		user = schedule.getUser();
+		
+		assertEquals(0,user.getProjects().size());
+		
+		try {
+			user.changeProjectLeader(employee2, project);	
+			fail("OperationNotAlloedException should have been thrown from the above statement");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("You can't change the project leader, if you are not the current one",e.getMessage());
+			assertEquals("Change project leader",e.getOperation());
+		}
+		
+		assertEquals(0,user.getProjects().size());
+		assertEquals(1,employee.getProjects().size());
+		assertEquals(employee, project.getProjectLeader());
 	}
 }

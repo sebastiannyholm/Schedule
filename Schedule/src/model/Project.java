@@ -12,16 +12,19 @@ public class Project {
 	
 	List<Task> tasks;
 	
-	public Project(String projectName, Calendar startDate, Calendar endDate, Employee employee){
+	public Project(String projectName, Calendar startDate, Calendar endDate, Employee projectLeader){
 		
 		this.projectName = projectName;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.projectLeader = employee;
+		this.projectLeader = projectLeader;
 		
-		projectLeader.addProject(this);
 		tasks = new LinkedList<Task>();
 	
+	}
+	
+	public void addProjectToProjectLeader() {
+		projectLeader.addProject(this);
 	}
 
 	public Employee getProjectLeader() {
