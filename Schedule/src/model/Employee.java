@@ -48,8 +48,9 @@ public class Employee {
 		for (Project project : schedule.getAllProjects())
 			if (project.projectExist(newProject)) 
 				throw new OperationNotAllowedException("You can't create the same project multiple times.", "Create project");
+		System.out.println("hey");
 		schedule.addProject(newProject);
-		newProject.setProjectNumber(schedule.getAllProjects().size()-1);
+		newProject.setProjectNumber(schedule.getAllProjects().size()-1, schedule.getDate().get(GregorianCalendar.YEAR));
 	}
 
 	public List<Project> getProjects() {
@@ -111,7 +112,7 @@ public class Employee {
 			throw new OperationNotAllowedException("Task span does not comply with project bounds!", "Add task");
 		project.addTask(task);
 		schedule.addTask(task);
-		task.setTaskNumber(schedule.getAllTasks().size()-1);
+		task.setTaskNumber(schedule.getAllTasks().size()-1, schedule.getDate().get(GregorianCalendar.YEAR));
 	}
 
 	public void addEmployeeToTask(Employee employee, Task task) throws Exception {

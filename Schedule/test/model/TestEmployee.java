@@ -109,7 +109,7 @@ public class TestEmployee {
 			schedule.removeEmployee(employee);
 			fail("OperationNotAllowedException should have been thrown");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("You can't remove an employee that doens't exist",e.getMessage());
+			assertEquals("You can't remove an employee that doesn't exist",e.getMessage());
 			assertEquals("Remove employee",e.getOperation());
 		}
 		
@@ -139,7 +139,7 @@ public class TestEmployee {
 			schedule.removeEmployee(user);
 			fail("OperationNotAllowedException should have been thrown");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("You can't remove an employee that are project leader",e.getMessage());
+			assertEquals("You can't remove an employee that is project leader",e.getMessage());
 			assertEquals("Remove employee",e.getOperation());
 		}
 		

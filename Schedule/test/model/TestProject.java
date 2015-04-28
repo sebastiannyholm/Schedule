@@ -139,6 +139,7 @@ public class TestProject {
 		assertEquals(20150002, anotherProject.getProjectNumber());
 	}
 	
+	@Test
 	public void searchProjects() throws Exception {
 		
 		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);						//projectName, start, end (in weeks)

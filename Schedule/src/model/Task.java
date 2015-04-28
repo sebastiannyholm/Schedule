@@ -16,9 +16,9 @@ public class Task {
 	private Map<Employee, Integer> log = new HashMap<Employee, Integer>();
 
 	
-	public Task(String name, Calendar date, Calendar endDate, int budgetedTime){
+	public Task(String name, Calendar startDate, Calendar endDate, int budgetedTime){
 		this.name = name;
-		this.startDate = date;
+		this.startDate = startDate;
 		this.endDate = endDate;
 		this.budgetedTime = budgetedTime;
 		
@@ -34,14 +34,16 @@ public class Task {
 		
 	}
 
-	public void setTaskNumber(int taskCount) {
-				
-		int year = Calendar.getInstance().get(Calendar.YEAR);
+	public void setTaskNumber(int taskCount, int year) {
 		
-		// adds leading zeros so that the number reaches 6 digits.   --> projectCount = 6  becomes 000006
+		/*
+		 *  adds leading zeros so that the number reaches 6 digits.   --> projectCount = 6  becomes 000006
+		 *  Thus maximum number of tasks per year becomes 1 million (should suffice?)
+		 *  ex.  yyyy999999
+		 */
 		this.taskNumber = "" + year + String.format("%06d", (taskCount % 1000000));
 		
-		// total taskNumber:  2015000255   for the 254th task in 2015
+		// total taskNumber:  2015000255   for the 256th task in 2015
 	}
 
 	public void remove(Employee employee) {

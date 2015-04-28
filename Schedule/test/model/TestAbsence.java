@@ -51,10 +51,9 @@ public class TestAbsence {
 		
 		
 	}
-	
+
 	@Test
 	public void notifyVacation(){
-		
+		System.out.println(1);
 	}
-
 }

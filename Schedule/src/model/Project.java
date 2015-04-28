@@ -36,12 +36,19 @@ public class Project {
 		tasks.add(task);
 	}
 
-	public void setProjectNumber(int projectCount) {
-		int year = Calendar.getInstance().get(Calendar.YEAR);
+	public void setProjectNumber(int projectCount, int year) {
 		
-		// adds leading zeros so that the number reaches 4 digits.   --> projectCount = 4  becomes 0004
+		/* 
+		 * adds leading zeros so that the number reaches 4 digits.   --> projectCount = 4  becomes 0004
+		 * thus the upper limit for project creations per year is 9999.
+		 * =>  yyyy9999
+		 * if more projects are added after this point (during the same year) 
+		 * it will overwrite the first project, created that year.
+		 */
+		
 		this.projectNumber = "" + year + String.format("%04d", (projectCount % 10000));
-
+		
+		// Project number = 20150132    for the 133rd project created in 2015.
 	}
 
 	public boolean match(String critiria) {

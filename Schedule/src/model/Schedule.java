@@ -43,9 +43,9 @@ public class Schedule {
 	
 	public void removeEmployee(Employee employee) throws Exception {
 		if (!employees.contains(employee))
-			throw new OperationNotAllowedException("You can't remove an employee that doens't exist", "Remove employee");
+			throw new OperationNotAllowedException("You can't remove an employee that doesn't exist", "Remove employee");
 		if (employee.getProjects().size() > 0)
-			throw new OperationNotAllowedException("You can't remove an employee that are project leader", "Remove employee");
+			throw new OperationNotAllowedException("You can't remove an employee that is project leader", "Remove employee");
 		
 		employees.remove(employee);
 	}
@@ -128,8 +128,8 @@ public class Schedule {
 		return user;
 	}
 
-	public GregorianCalendar getDate() {
-		return (GregorianCalendar) dateServer.getDate(); 
+	public Calendar getDate() {
+		return dateServer.getDate(); 
 	}
 
 	public void setDateServer(DateServer dateServer) {
