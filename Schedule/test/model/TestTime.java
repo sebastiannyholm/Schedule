@@ -131,9 +131,9 @@ public class TestTime {
 		Task task3 = new Task("badTask", week+2, week+5, 80);		// outside week agenda
 		
 		user.createProject(project);
-		user.addTask(task1, project);
-		user.addTask(task2, project);
-		user.addTask(task3, project);
+		user.createTask(task1, project);
+		user.createTask(task2, project);
+		user.createTask(task3, project);
 		user.addEmployeeToTask(user, task1);
 		user.addEmployeeToTask(user, task2);
 		user.addEmployeeToTask(user, task3);
@@ -149,7 +149,7 @@ public class TestTime {
 		Project project = schedule.getAllProjects().get(0);
 		Task task = new Task("name", 4, 50, 1000);
 		
-		user.addTask(task, project);
+		user.createTask(task, project);
 		user.startWorkingOnTask(task);
 		
 		// work on the task for 270 minutes then stop
@@ -171,7 +171,7 @@ public class TestTime {
 		Project project = schedule.getAllProjects().get(0);
 		Task task = new Task("name", 4, 50, 1000);
 		
-		user.addTask(task, project);
+		user.createTask(task, project);
 		user.startWorkingOnTask(task);
 		
 		// work on the task for 270 minutes then stop

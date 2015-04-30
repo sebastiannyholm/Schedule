@@ -31,7 +31,7 @@ public class TestAbsence {
 		
 		schedule.login(employee1.getInitials());
 		employee1.createProject(project);
-		employee1.addTask(task, project);
+		employee1.createTask(task, project);
 		employee1.addEmployeeToTask(employee2, task);
 		
 		// ----------------------------------
