@@ -194,7 +194,7 @@ public class TestProject {
 		List<Employee> foundEmployees = schedule.searchEmployee("Lukas Villumsen");
 		assertEquals(1,foundEmployees.size());
 		
-		Employee newProjectLeader = foundEmployees.get(0);		
+		Employee newProjectLeader = foundEmployees.get(0);
 		
 		List<Project> foundProjects = schedule.searchProjects("ProjectAwesome");
 		assertEquals(1,foundProjects.size());

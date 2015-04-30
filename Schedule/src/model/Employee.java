@@ -18,7 +18,7 @@ public class Employee {
 	private Address address;
 	
 	private List<Project> projects;
-	private List<Task> tasks;
+	private Map<Task, List<SingleJob>> tasks;
 	private boolean superWorker;
 	private int punchIn, punchOut, taskIn, taskOut;
 	private Map<String, Integer> workLog = new HashMap<String, Integer>();
@@ -48,7 +48,7 @@ public class Employee {
 		for (Project project : schedule.getAllProjects())
 			if (project.projectExist(newProject)) 
 				throw new OperationNotAllowedException("You can't create the same project multiple times.", "Create project");
-		System.out.println("hey");
+
 		schedule.addProject(newProject);
 		newProject.setProjectNumber(schedule.getAllProjects().size()-1, schedule.getDate().get(GregorianCalendar.YEAR));
 		newProject.addProjectToProjectLeader();
@@ -100,7 +100,7 @@ public class Employee {
 		return this.initials.equals(initials);
 	}
 
-	public void addTask(Task task, Project project) throws Exception {
+	public void createTask(Task task, Project project) throws Exception {
 		if (!schedule.isLoggedIn())
 			throw new OperationNotAllowedException("You need to be logged in to add a task", "Add task");
 		else if (!this.equals(schedule.getUser()))
@@ -111,6 +111,7 @@ public class Employee {
 			throw new OperationNotAllowedException("Task ends before it even begins!", "Add task");
 		else if (task.isOutOfBounds(project.getStartDate(), project.getEndDate()))
 			throw new OperationNotAllowedException("Task span does not comply with project bounds!", "Add task");
+		
 		project.addTask(task);
 		schedule.addTask(task);
 		task.setTaskNumber(schedule.getAllTasks().size()-1, schedule.getDate().get(GregorianCalendar.YEAR));
@@ -124,10 +125,15 @@ public class Employee {
 			throw new OperationNotAllowedException("The employee " + employee + " is already working on the maximum amount of tasks!", 
 					"Add employee to task");
 
-		employee.setTasks(task);
+		employee.addTask(task);
 		task.addEmployee(employee);
 	}
 
+	public void addEmployeeToTaskJob(Employee employee, Task task, SingleJob job) {
+		jobs.add(job);
+		task.addJob(job);
+	}
+	
 	public boolean match(String critiria) {
 		return initials.contains(critiria) || name.contains(critiria);
 	}
@@ -141,7 +147,7 @@ public class Employee {
 		projects.remove(project);
 	}
 	
-	public void setTasks(Task task) {
+	public void addTask(Task task) {
 		tasks.add(task);
 		
 	}
@@ -259,5 +265,4 @@ public class Employee {
 		
 	}
 
-	
 }

@@ -9,6 +9,8 @@ import java.util.Map;
 public class Task {
 
 	List<Employee> employees;
+	List<SingleJob> jobs;
+	
 	
 	private String name, taskNumber;
 	private Calendar startDate, endDate;
@@ -23,6 +25,7 @@ public class Task {
 		this.budgetedTime = budgetedTime;
 		
 		employees = new LinkedList<Employee>();
+		jobs = new LinkedList<SingleJob>();
 	}
 	
 	public List<Employee> getEmployees() {
