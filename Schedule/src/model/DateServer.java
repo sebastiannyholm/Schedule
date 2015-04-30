@@ -11,6 +11,7 @@ public class DateServer {
 		this.calendar = new GregorianCalendar();
 	}
 	
+	@SuppressWarnings("static-access")
 	public Calendar getDate() {
         return calendar.getInstance();
     }

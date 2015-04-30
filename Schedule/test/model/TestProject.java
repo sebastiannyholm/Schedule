@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.junit.Before;
@@ -10,12 +12,12 @@ import org.junit.Test;
 public class TestProject {
 
 	Schedule schedule = new Schedule();
-	Employee user;
+	Employee user, employee;
 	
 	@Before
 	public void setup() throws Exception {
 		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");					//street, streetNumber, zipCode, city
-		Employee employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
+		employee = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);	// name, initials, age, address, schedule
 		schedule.addEmployee(employee);
 		
 		schedule.login("seny");
@@ -26,7 +28,7 @@ public class TestProject {
 	@Test
 	public void createProject() throws Exception{
 		
-		Project project = new Project("ProjectAwesome", 1, 5, user);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);						//projectName, projectNumber, totalTime (in weeks)
 	
 		assertEquals(0,user.getProjects().size());
 		user.createProject(project);
@@ -37,7 +39,7 @@ public class TestProject {
 	
 	@Test
 	public void createProjectWhenNotLoggedIn() throws Exception {
-		Project project = new Project("ProjectAwesome", 1, 5, user);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);						//projectName, projectNumber, totalTime (in weeks)
 		
 		schedule.logOut();
 		
@@ -65,7 +67,7 @@ public class TestProject {
 	@Test
 	public void deleteProject() throws Exception{
 		
-		Project project = new Project("ProjectAwesome",1, 5, user);							//projectName, totalTime (in weeks), employee
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);							//projectName, totalTime (in weeks), employee
 		
 		user.createProject(project);
 		
@@ -77,7 +79,7 @@ public class TestProject {
 	@Test
 	public void deleteProjectWhenNotProjectLeader() throws Exception {
 		
-		Project project = new Project("ProjectAwesome",1, 5, user);							//projectName, totalTime (in weeks), employee
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);							//projectName, totalTime (in weeks), employee
 		user.createProject(project);
 		
 		assertEquals(1,schedule.getAllProjects().size());
@@ -107,12 +109,13 @@ public class TestProject {
 	@Test
 	public void createTheSameProjectMultipleTimes() throws Exception {
 		
-		Project project = new Project("ProjectAwesome", 1, 5, user);							//projectName, totalTime (in weeks), employee
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);							//projectName, totalTime (in weeks), employee
 		
 		user.createProject(project);
 		
 		try {
-			user.createProject(project);	
+			user.createProject(project);
+			fail("OperationNotAlloedException should have been thrown from the above statement");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("You can't create the same project multiple times.",e.getMessage());
 			assertEquals("Create project",e.getOperation());
@@ -124,9 +127,9 @@ public class TestProject {
 	@Test
 	public void projectNumberGeneration() throws Exception {
 		
-		Project project = new Project("ProjectAwesome",1, 5, user);							//projectName, totalTime (in weeks), employee
-		Project newProject = new Project("ProjectEXO",4, 9, user);
-		Project anotherProject = new Project("Tea Party",5, 10, user);
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);							//projectName, totalTime (in weeks), employee
+		Project newProject = new Project("ProjectEXO", new GregorianCalendar(2015, Calendar.JANUARY, 3), new GregorianCalendar(2015, Calendar.JANUARY, 31), user);
+		Project anotherProject = new Project("Tea Party",new GregorianCalendar(2015, Calendar.JANUARY, 29), new GregorianCalendar(2015, Calendar.FEBRUARY, 29), user);
 		
 		user.createProject(project);
 		user.createProject(newProject);
@@ -137,9 +140,10 @@ public class TestProject {
 		assertEquals(20150002, anotherProject.getProjectNumber());
 	}
 	
+	@Test
 	public void searchProjects() throws Exception {
 		
-		Project project = new Project("ProjectAwesome",1, 5, user);						//projectName, start, end (in weeks)
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);						//projectName, start, end (in weeks)
 
 		user.createProject(project);
 		
@@ -161,7 +165,7 @@ public class TestProject {
 
 		schedule.addEmployee(employee2);
 		
-		Project project = new Project("ProjectAwesome",1, 5, user);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);						//projectName, projectNumber, totalTime (in weeks)
 
 		user.createProject(project);
 		assertEquals(user, project.getProjectLeader());
@@ -184,7 +188,7 @@ public class TestProject {
 
 		schedule.addEmployee(employee2);
 		
-		Project project = new Project("ProjectAwesome",1, 5, user);								//projectName, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);								//projectName, totalTime (in weeks)
 		user.createProject(project);
 		
 		List<Employee> foundEmployees = schedule.searchEmployee("Lukas Villumsen");
@@ -205,5 +209,39 @@ public class TestProject {
 		assertEquals(1,newProjectLeader.getProjects().size());
 		
 		
+	}
+	
+	// You have to be project leader to change the project leader of the given project.
+	@Test
+	public void changeProjectLeaderIfNotProjectLeader() throws Exception {
+		
+		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
+		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
+		
+		schedule.addEmployee(employee2);
+		
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);						//projectName, projectNumber, totalTime (in weeks)
+
+		user.createProject(project);
+		assertEquals(user, project.getProjectLeader());
+		
+		schedule.logOut();
+		
+		schedule.login(employee2.getInitials());
+		user = schedule.getUser();
+		
+		assertEquals(0,user.getProjects().size());
+		
+		try {
+			user.changeProjectLeader(employee2, project);	
+			fail("OperationNotAlloedException should have been thrown from the above statement");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("You can't change the project leader, if you are not the current one",e.getMessage());
+			assertEquals("Change project leader",e.getOperation());
+		}
+		
+		assertEquals(0,user.getProjects().size());
+		assertEquals(1,employee.getProjects().size());
+		assertEquals(employee, project.getProjectLeader());
 	}
 }

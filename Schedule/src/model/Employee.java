@@ -25,6 +25,7 @@ public class Employee {
 	private Map<Task, Integer> taskLog = new HashMap<Task, Integer>();
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	private boolean absence = false;
+	private Enum<Status> reason;
 	
 	public Employee(String name, String initials, int age, Address address, Schedule schedule) {
 		this.name = name;
@@ -47,9 +48,10 @@ public class Employee {
 		for (Project project : schedule.getAllProjects())
 			if (project.projectExist(newProject)) 
 				throw new OperationNotAllowedException("You can't create the same project multiple times.", "Create project");
-		projects.add(newProject);
+		System.out.println("hey");
 		schedule.addProject(newProject);
-		newProject.setProjectNumber(schedule.getAllProjects().size()-1);
+		newProject.setProjectNumber(schedule.getAllProjects().size()-1, schedule.getDate().get(GregorianCalendar.YEAR));
+		newProject.addProjectToProjectLeader();
 	}
 
 	public List<Project> getProjects() {
@@ -97,16 +99,15 @@ public class Employee {
 			throw new OperationNotAllowedException("You need to be logged in to add a task", "Add task");
 		else if (!this.equals(schedule.getUser()))
 			throw new OperationNotAllowedException("You need to be the one logged in to add a task", "Add task");
-		
-		if (!this.equals(project.getProjectLeader()))
+		else if (!this.equals(project.getProjectLeader()))
 			throw new OperationNotAllowedException("Only the project leader may add a task to a project", "Add task");
 		else if (task.endsBeforeStart()) 
 			throw new OperationNotAllowedException("Task ends before it even begins!", "Add task");
-		else if (task.isOutOfBounds(project.getStartWeek(), project.getEndWeek()))
+		else if (task.isOutOfBounds(project.getStartDate(), project.getEndDate()))
 			throw new OperationNotAllowedException("Task span does not comply with project bounds!", "Add task");
 		project.addTask(task);
 		schedule.addTask(task);
-		task.setTaskNumber(schedule.getAllTasks().size()-1);
+		task.setTaskNumber(schedule.getAllTasks().size()-1, schedule.getDate().get(GregorianCalendar.YEAR));
 	}
 	
 	public void removeTask(Task task) {
@@ -130,7 +131,10 @@ public class Employee {
 		return initials.contains(critiria) || name.contains(critiria);
 	}
 
-	public void changeProjectLeader(Employee newProjectLeader, Project project) {
+	public void changeProjectLeader(Employee newProjectLeader, Project project) throws Exception {
+		if (!this.equals(project.getProjectLeader())) 
+			throw new OperationNotAllowedException("You can't change the project leader, if you are not the current one", "Change project leader");
+		
 		project.changeProjectLeader(newProjectLeader);
 		newProjectLeader.projects.add(project);
 		projects.remove(project);
@@ -159,16 +163,19 @@ public class Employee {
 	}
 
 	public List<Task> getAgenda() {
-		int week = schedule.getDate().get(GregorianCalendar.WEEK_OF_YEAR);
-		return this.getTasksInPeriod(week, week);
+		Calendar date = schedule.getDate();
+		Calendar startDate = (GregorianCalendar) date.clone();
+		Calendar endDate = (GregorianCalendar) date.clone();
+		endDate.add(GregorianCalendar.DAY_OF_YEAR, 7);
+		return this.getTasksInPeriod(startDate, endDate);
 		
 	}
 
-	public List<Task> getTasksInPeriod(int startWeek, int endWeek) {
+	public List<Task> getTasksInPeriod(Calendar startDate, Calendar endDate) {
 		List<Task> tasksInPeriod = new ArrayList<Task>();
 		
 		for (Task task : tasks)
-			if (task.isInPeriod(startWeek, endWeek))
+			if (task.isInPeriod(startDate, endDate))
 				tasksInPeriod.add(task);
 		return tasksInPeriod;
 	}
@@ -228,17 +235,27 @@ public class Employee {
 		return taskLog.get(task);
 	}
 
-	public void reportAbsence(Employee employee) {
-		employee.setAbsent();
+	public void reportAbsence(Employee employee, Enum<Status> reason) {
+		employee.setAbsent(reason);
 		
 	}
 	
-	public void setAbsent(){
+	public void setAbsent(Enum<Status> reason){
 		this.absence = true;
+		this.reason = reason;
 	}
 
 	public boolean isAbsent() {
 		return absence;
+	}
+
+	public void addProject(Project project) {
+		this.projects.add(project);
+		
+	}
+	
+	public void returnFromAbsence(){
+		
 	}
 
 	

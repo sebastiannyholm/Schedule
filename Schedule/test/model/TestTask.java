@@ -2,6 +2,9 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +21,7 @@ public class TestTask {
 		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
 		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
 
-		Project project = new Project("ProjectAwesome", 1, 5, employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
 		
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
@@ -35,7 +38,7 @@ public class TestTask {
 		
 		Project project = schedule.getAllProjects().get(0);		// list of 1
 		
-		Task task = new Task("taskName", 1, 2, 37*(2-1));	// name, number, startWeek, endWeek, budgetedHours
+		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), 37*(2-1));	// name, number, startWeek, endWeek, budgetedHours
 		
 		assertEquals(0,project.getTasks().size());
 		user.createTask(task, project);
@@ -44,6 +47,7 @@ public class TestTask {
 		
 	}
 	
+	// only the project leader can add tasks to the project he is the leader of
 	@Test
 	public void addTaskFailed() throws Exception {
 		
@@ -53,7 +57,7 @@ public class TestTask {
 		schedule.login("seny");
 		user = schedule.getUser();
 		
-		Task task = new Task("taskName", 1, 2, 37*(2-1));	// name, number, startWeek, endWeek, budgetedHours
+		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), 37*(2-1));	// name, number, startWeek, endWeek, budgetedHours
 		
 		assertEquals(0,project.getTasks().size());
 		try {
@@ -67,7 +71,8 @@ public class TestTask {
 		
 	}
 	
-	/* Task exeeding project limits/bounds
+	/* 
+	 * Task exeeding project limits/bounds
 	 * A task with a startWeek after the project has expired or
 	 * a task with an endWeek before the project has begun or
 	 * a task with an endWeek after the project has expired or
@@ -78,7 +83,7 @@ public class TestTask {
 	public void addTaskOutOfBounds() throws Exception{
 		Project project = schedule.getAllProjects().get(0);				// list of 1
 		
-		Task task = new Task("taskName", 5, 8, 37*(8-5));		// name, number, startWeek, endWeek, budgetedHours - OUT OF BOUNDS
+		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 29), new GregorianCalendar(2015, Calendar.FEBRUARY, 16), 37*(8-5));		// name, number, startWeek, endWeek, budgetedHours - OUT OF BOUNDS
 		
 		assertEquals(0,project.getTasks().size());
 		try {
@@ -97,8 +102,8 @@ public class TestTask {
 	public void addTaskEndBeforeStart() throws Exception{
 		Project project = schedule.getAllProjects().get(0);				// list of 1
 		
-		Task fineTask =  new Task("Fine task", 3, 4, 37*(4-3));
-		Task badTask = new Task("Bad task", 4, 1, 37*(1-4));		// name, number, startWeek, endWeek, budgetedHours - 
+		Task fineTask =  new Task("Fine task", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), 37*(4-3));
+		Task badTask = new Task("Bad task", new GregorianCalendar(2015, Calendar.JANUARY, 17), new GregorianCalendar(2015, Calendar.JANUARY, 15), 37*(1-4));		// name, number, startWeek, endWeek, budgetedHours - 
 																	// begins before it begins with negative budget time..
 		user.createTask(fineTask, project);
 		assertEquals(1,project.getTasks().size());
@@ -162,7 +167,7 @@ public class TestTask {
 	public void addEmployeeToTask() throws Exception {
 		Project project = schedule.getAllProjects().get(0);		
 		Employee employee = schedule.getEmployees().get(0);		
-		Task task = new Task("taskName", 1, 2, 37*(2-1));	// name, startWeek, endWeek, budgetedHours
+		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));	// name, startWeek, endWeek, budgetedHours
 		
 		user.createTask(task, project);
 		
@@ -187,7 +192,7 @@ public class TestTask {
 	public void addEmployeeToTaskAlreadyWorkingOnIt() throws Exception {
 		Project project = schedule.getAllProjects().get(0);		
 		Employee employee = schedule.getEmployees().get(0);		
-		Task task = new Task("taskName", 1, 2, 37*(2-1));	// name, startWeek, endWeek, budgetedHours
+		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));	// name, startWeek, endWeek, budgetedHours
 		
 		user.createTask(task, project);
 		user.addEmployeeToTask(employee, task);
@@ -213,15 +218,15 @@ public class TestTask {
 		
 		for (int i = 0; i < 10; i++){
 			//add 10 tasks to the project leader
-			Task task = new Task("task"+i, 1, 2, 37*(2-1));
-			user.createTask(task, project);
+			Task task = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
+			user.addTask(task, project);
 			user.addEmployeeToTask(user, task);
 		}
 		
 		assertEquals(10, user.getTasks().size());
 		// add another tasks to the project leader -- file an error
-		Task task = new Task("taskName", 2, 3, 37*(3-2));				// name, startWeek, endWeek, budgetedHours
-		user.createTask(task, project); // add the task to the project
+		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 8), new GregorianCalendar(2015, Calendar.JANUARY, 15), 37*(3-2));				// name, startWeek, endWeek, budgetedHours
+		user.addTask(task, project); // add the task to the project
 		
 		try{
 			user.addEmployeeToTask(user, task);
@@ -241,8 +246,8 @@ public class TestTask {
 		
 		for (int i = 0; i < 10; i++){
 			//add 10 tasks to the project leader
-			Task task = new Task("task"+i, 1, 2, 37*(2-1));
-			user.createTask(task, project);
+			Task task = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
+			user.addTask(task, project);
 			user.addEmployeeToTask(user, task);
 		}
 		
@@ -250,7 +255,7 @@ public class TestTask {
 		
 		user.setSuperWorker(true);
 		// add another tasks to the project leader -- now allowed because super worker
-		Task task11 = new Task("taskName", 1, 2, 37*(2-1));				// name, startWeek, endWeek, budgetedHours
+		Task task11 = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));				// name, startWeek, endWeek, budgetedHours
 		
 		user.createTask(task11, project); // add the task to the project
 		user.addEmployeeToTask(user, task11);
@@ -260,14 +265,14 @@ public class TestTask {
 		// adding more than 20 tasks even though super worker
 		for (int i = 0; i < 9; i++){
 			//add 9 tasks to the project leader
-			Task task2 = new Task("task"+i, 1, 2, 37*(2-1));
-			user.createTask(task2, project);
+			Task task2 = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
+			user.addTask(task2, project);
 			user.addEmployeeToTask(user, task2);
 		}
 		
 		assertEquals(20, user.getTasks().size());
 		// add another tasks to the project leader -- not allowed even though super worker
-		Task task21 = new Task("taskName", 2, 3, 37*(3-2));				// name, startWeek, endWeek, budgetedHours
+		Task task21 = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 8), new GregorianCalendar(2015, Calendar.JANUARY, 15), 37*(3-2));				// name, startWeek, endWeek, budgetedHours
 		
 		user.createTask(task21, project); // add the task to the project
 		
@@ -287,7 +292,7 @@ public class TestTask {
 	public void removeTask() throws Exception{
 		Project project = schedule.getAllProjects().get(0);				
 		
-		Task task = new Task("taskName", 2, 4, 37*(4-2));	// name, number, startWeek, endWeek, budgetedHours
+		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 8), new GregorianCalendar(2015, Calendar.JANUARY, 22), 37*(4-2));	// name, number, startWeek, endWeek, budgetedHours
 		
 		user.createTask(task, project);
 		user.addEmployeeToTask(user, task);
@@ -307,8 +312,8 @@ public class TestTask {
 	public void removeTaskNonExist() throws Exception{
 		Project project = schedule.getAllProjects().get(0);				
 		
-		Task task = new Task("taskName", 1, 2, 37*(2-1));	// name, number, startWeek, endWeek, budgetedHours
-		Task task2 = new Task("taskName2", 2, 3, 37*(3-2));	// name, number, startWeek, endWeek, budgetedHours
+		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));	// name, number, startWeek, endWeek, budgetedHours
+		Task task2 = new Task("taskName2", new GregorianCalendar(2015, Calendar.JANUARY, 8), new GregorianCalendar(2015, Calendar.JANUARY, 15), 37*(3-2));	// name, number, startWeek, endWeek, budgetedHours
 		
 		user.createTask(task, project);
 		user.addEmployeeToTask(user, task);
@@ -329,8 +334,8 @@ public class TestTask {
 		
 		for (int i = 0; i < 7; i++){
 			//add 10 tasks to the project leader
-			Task task = new Task("task"+i, 1, 2, 37*(2-1));
-			user.createTask(task, project);
+			Task task = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
+			user.addTask(task, project);
 			user.addEmployeeToTask(user, task);
 		}
 		

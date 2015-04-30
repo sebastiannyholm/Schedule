@@ -31,9 +31,9 @@ public class TestTime {
 		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
 		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
 
-		Project project1 = new Project("Project1", 1, 52, employee1);		//projectName, projectNumber, totalTime (in weeks), project leader
-		Project project2 = new Project("Project2", 4, 6, employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
-		Project project3 = new Project("Project3", 8, 13, employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
+		Project project1 = new Project("Project1", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.DECEMBER, 31), employee1);		//projectName, projectNumber, totalTime (in weeks), project leader
+		Project project2 = new Project("Project2", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.FEBRUARY, 3), employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
+		Project project3 = new Project("Project3", new GregorianCalendar(2015, Calendar.FEBRUARY, 16), new GregorianCalendar(2015, Calendar.MARCH, 23), employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
 		
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
@@ -43,9 +43,7 @@ public class TestTime {
 		
 		user.createProject(project1);
 		user.createProject(project2);
-		user.createProject(project3);
-
-		
+		user.createProject(project3);		
 		
 	}
 	
@@ -110,10 +108,10 @@ public class TestTime {
 	@Test
 	public void projectsInPeriod(){
 		
-		int startWeek = 2;
-		int endWeek = 5;
+		Calendar startDate = new GregorianCalendar(2015, Calendar.JANUARY, 8);
+		Calendar endDate = new GregorianCalendar(2015, Calendar.JANUARY, 29);
 		
-		List<Project> projectsInPeriod = schedule.getProjectsInPeriod(startWeek, endWeek);
+		List<Project> projectsInPeriod = schedule.getProjectsInPeriod(startDate, endDate);
 		assertEquals(2, projectsInPeriod.size());
 	}
 
@@ -123,12 +121,25 @@ public class TestTime {
 	@Test
 	public void employeeAgenda() throws Exception {
 		
-		int week = schedule.getDate().get(GregorianCalendar.WEEK_OF_YEAR);
-
-		Project project = new Project("project!!022", week-4, week+6, schedule.getUser());
-		Task task1 = new Task("newTask", week-4, week+1, 200);		// within week agenda
-		Task task2 = new Task("popTask", week  , week + 1, 100);	// within week agenda
-		Task task3 = new Task("badTask", week+2, week+5, 80);		// outside week agenda
+		Calendar date = schedule.getDate();
+		Calendar startDate = (GregorianCalendar) date.clone();
+		Calendar endDate = (GregorianCalendar) date.clone();
+		
+		startDate.add(GregorianCalendar.WEEK_OF_YEAR,-4);
+		endDate.add(GregorianCalendar.WEEK_OF_YEAR, 6);
+		Project project = new Project("project!!022", startDate, endDate, schedule.getUser());
+		
+		Calendar endDate2 = (GregorianCalendar) date.clone();
+		endDate2.add(GregorianCalendar.WEEK_OF_YEAR, 1);
+		Task task1 = new Task("newTask", startDate, endDate2, 200);		// within week agenda
+		
+		Task task2 = new Task("popTask", date, endDate2, 100);			// within week agenda
+		Calendar startDate2 = (GregorianCalendar) date.clone();
+		startDate2.add(GregorianCalendar.WEEK_OF_YEAR, 2);
+		Calendar endDate3 = (GregorianCalendar) date.clone();
+		endDate3.add(GregorianCalendar.WEEK_OF_YEAR, 5);
+		
+		Task task3 = new Task("badTask", startDate2, endDate3, 80);		// outside week agenda
 		
 		user.createProject(project);
 		user.createTask(task1, project);
@@ -147,7 +158,8 @@ public class TestTime {
 	public void registerTaskTime() throws Exception{
 		
 		Project project = schedule.getAllProjects().get(0);
-		Task task = new Task("name", 4, 50, 1000);
+	
+		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 1000);
 		
 		user.createTask(task, project);
 		user.startWorkingOnTask(task);
@@ -169,7 +181,7 @@ public class TestTime {
 	public void registerTaskTimeMulitple() throws Exception{
 		
 		Project project = schedule.getAllProjects().get(0);
-		Task task = new Task("name", 4, 50, 1000);
+		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 1000);
 		
 		user.createTask(task, project);
 		user.startWorkingOnTask(task);

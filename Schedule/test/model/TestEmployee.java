@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.junit.Test;
@@ -107,7 +109,7 @@ public class TestEmployee {
 			schedule.removeEmployee(employee);
 			fail("OperationNotAllowedException should have been thrown");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("You can't remove an employee that doens't exist",e.getMessage());
+			assertEquals("You can't remove an employee that doesn't exist",e.getMessage());
 			assertEquals("Remove employee",e.getOperation());
 		}
 		
@@ -128,7 +130,7 @@ public class TestEmployee {
 		schedule.login(employee.getInitials());
 		Employee user = schedule.getUser();
 		
-		Project project = new Project("ProjectAwesome", 1, 5, user);						//projectName, projectNumber, totalTime (in weeks)
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);						//projectName, projectNumber, totalTime (in weeks)
 		
 		user.createProject(project);
 		assertEquals(1,user.getProjects().size());
@@ -137,7 +139,7 @@ public class TestEmployee {
 			schedule.removeEmployee(user);
 			fail("OperationNotAllowedException should have been thrown");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("You can't remove an employee that are project leader",e.getMessage());
+			assertEquals("You can't remove an employee that is project leader",e.getMessage());
 			assertEquals("Remove employee",e.getOperation());
 		}
 		

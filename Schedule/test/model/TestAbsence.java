@@ -2,6 +2,9 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import org.junit.Test;
 
 public class TestAbsence {
@@ -10,8 +13,8 @@ public class TestAbsence {
 	public void employeeCallsInSick() throws Exception{
 		
 		/* 
-		 * Given the situation where an employee calls in sick, informing a project leader
-		 * the project leader then adds the employee to the "absence" project.
+		 * Given the situation where an employee calls in sick, informing the project leader
+		 * the project leader then adds the employee to the "absence" project, specifically the "sick" task
 		 * The employee is assigned to at least one project and at least one task
 		 */
 		
@@ -26,8 +29,8 @@ public class TestAbsence {
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
 		
-		Project project = new Project("title", 5, 10, employee1); 			// employee is assigned project leader
-		Task task = new Task("title", 6,8, 50);
+		Project project = new Project("title", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.DECEMBER, 31), employee1); 			// employee1 is assigned project leader
+		Task task = new Task("title", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.DECEMBER, 31), 50);
 		
 		schedule.login(employee1.getInitials());
 		employee1.createProject(project);
@@ -39,19 +42,18 @@ public class TestAbsence {
 		
 		// Now the employee calls in sick
 		// the project leader acts accordingly
-		
+		Status status = Status.SICK;
 		assertFalse(employee2.isAbsent());
 		
-		employee1.reportAbsence(employee2);
+		employee1.reportAbsence(employee2, status);
 		
 		assertTrue(employee2.isAbsent());
 		
 		
 	}
-	
+
 	@Test
 	public void notifyVacation(){
-		
+		System.out.println(1);
 	}
-
 }

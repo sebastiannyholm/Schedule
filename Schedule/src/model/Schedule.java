@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,9 +43,9 @@ public class Schedule {
 	
 	public void removeEmployee(Employee employee) throws Exception {
 		if (!employees.contains(employee))
-			throw new OperationNotAllowedException("You can't remove an employee that doens't exist", "Remove employee");
+			throw new OperationNotAllowedException("You can't remove an employee that doesn't exist", "Remove employee");
 		if (employee.getProjects().size() > 0)
-			throw new OperationNotAllowedException("You can't remove an employee that are project leader", "Remove employee");
+			throw new OperationNotAllowedException("You can't remove an employee that is project leader", "Remove employee");
 		
 		employees.remove(employee);
 	}
@@ -114,11 +115,11 @@ public class Schedule {
 		return foundEmployees;
 	}
 
-	public List<Project> getProjectsInPeriod(int startWeek, int endWeek) {
+	public List<Project> getProjectsInPeriod(Calendar startDate, Calendar endDate) {
 		List<Project> projectsInPeriod = new ArrayList<Project>();
 		
 		for (Project project : allProjects)
-			if (project.isInPeriod(startWeek, endWeek))
+			if (project.isInPeriod(startDate, endDate))
 				projectsInPeriod.add(project);
 		return projectsInPeriod;
 	}
