@@ -28,9 +28,9 @@ public class Driver {
 		
 		schedule.login("AbMa");
 		ABSENCE_MANAGER.createProject(ABSENCE);
-		ABSENCE_MANAGER.addTask(SICKNESS, ABSENCE);
-		ABSENCE_MANAGER.addTask(VACATION, ABSENCE);
-		ABSENCE_MANAGER.addTask(COURSE, ABSENCE);
+		ABSENCE_MANAGER.createTask(SICKNESS, ABSENCE);
+		ABSENCE_MANAGER.createTask(VACATION, ABSENCE);
+		ABSENCE_MANAGER.createTask(COURSE, ABSENCE);
 		schedule.logOut();
 		
 		/*

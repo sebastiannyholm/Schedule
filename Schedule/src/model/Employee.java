@@ -78,12 +78,6 @@ public class Employee {
 		project = null;	
 	}
 
-	public void removeTask(Task task) {
-		tasks.remove(task);
-		task.remove(this);
-		
-	}
-
 	public String getInitials() {
 		return initials;
 	}
@@ -100,7 +94,7 @@ public class Employee {
 		return this.initials.equals(initials);
 	}
 
-	public void addTask(Task task, Project project) throws Exception {
+	public void createTask(Task task, Project project) throws Exception {
 		if (!schedule.isLoggedIn())
 			throw new OperationNotAllowedException("You need to be logged in to add a task", "Add task");
 		else if (!this.equals(schedule.getUser()))
@@ -116,6 +110,11 @@ public class Employee {
 		task.setTaskNumber(schedule.getAllTasks().size()-1, schedule.getDate().get(GregorianCalendar.YEAR));
 		task.belongsTo(project);
 	}
+	
+	public void removeTask(Task task) {
+		tasks.remove(task);
+		task.remove(this);	
+	}
 
 	public void addEmployeeToTask(Employee employee, Task task) throws Exception {
 		// regular employees can't work on more than 10 tasks at once
@@ -125,7 +124,7 @@ public class Employee {
 			throw new OperationNotAllowedException("The employee " + employee + " is already working on the maximum amount of tasks!", 
 					"Add employee to task");
 
-		employee.setTasks(task);
+		employee.addTasks(task);
 		task.addEmployee(employee);
 		task.getProject().addEmployee(this);
 		
@@ -144,7 +143,7 @@ public class Employee {
 		projects.remove(project);
 	}
 	
-	public void setTasks(Task task) {
+	public void addTasks(Task task) {
 		tasks.add(task);
 		
 	}

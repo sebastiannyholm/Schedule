@@ -34,14 +34,14 @@ public class TestTask {
 	}
 	
 	@Test
-	public void addTask() throws Exception {
+	public void createTask() throws Exception {
 		
 		Project project = schedule.getAllProjects().get(0);		// list of 1
 		
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), 37*(2-1));	// name, number, startWeek, endWeek, budgetedHours
 		
 		assertEquals(0,project.getTasks().size());
-		user.addTask(task, project);
+		user.createTask(task, project);
 		assertEquals(1,project.getTasks().size());
 		
 		
@@ -49,7 +49,7 @@ public class TestTask {
 	
 	// only the project leader can add tasks to the project he is the leader of
 	@Test
-	public void addTaskFailed() throws Exception {
+	public void createTaskFailed() throws Exception {
 		
 		Project project = schedule.getAllProjects().get(0);		// list of 1
 		
@@ -61,7 +61,7 @@ public class TestTask {
 		
 		assertEquals(0,project.getTasks().size());
 		try {
-			user.addTask(task, project);
+			user.createTask(task, project);
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Only the project leader may add a task to a project", e.getMessage());
 			assertEquals("Add task", e.getOperation());
@@ -80,14 +80,14 @@ public class TestTask {
 	 * cannot be applied to the project
 	 */
 	@Test
-	public void addTaskOutOfBounds() throws Exception{
+	public void createTaskOutOfBounds() throws Exception{
 		Project project = schedule.getAllProjects().get(0);				// list of 1
 		
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 29), new GregorianCalendar(2015, Calendar.FEBRUARY, 16), 37*(8-5));		// name, number, startWeek, endWeek, budgetedHours - OUT OF BOUNDS
 		
 		assertEquals(0,project.getTasks().size());
 		try {
-			user.addTask(task, project);
+			user.createTask(task, project);
 			fail("OperationNotAllowedException should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Task span does not comply with project bounds!", e.getMessage());
@@ -99,17 +99,17 @@ public class TestTask {
 	
 	// cannot have a task where it ends before it begins!
 	@Test
-	public void addTaskEndBeforeStart() throws Exception{
+	public void createTaskEndBeforeStart() throws Exception{
 		Project project = schedule.getAllProjects().get(0);				// list of 1
 		
 		Task fineTask =  new Task("Fine task", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), 37*(4-3));
 		Task badTask = new Task("Bad task", new GregorianCalendar(2015, Calendar.JANUARY, 17), new GregorianCalendar(2015, Calendar.JANUARY, 15), 37*(1-4));		// name, number, startWeek, endWeek, budgetedHours - 
 																	// begins before it begins with negative budget time..
-		user.addTask(fineTask, project);
+		user.createTask(fineTask, project);
 		assertEquals(1,project.getTasks().size());
 		
 		try {
-			user.addTask(badTask, project);
+			user.createTask(badTask, project);
 			fail("OperationNotAllowedException should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Task ends before it even begins!", e.getMessage());
@@ -135,7 +135,7 @@ public class TestTask {
 		Employee employee = schedule.getEmployees().get(0);		
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));	// name, startWeek, endWeek, budgetedHours
 		
-		user.addTask(task, project);
+		user.createTask(task, project);
 		
 		// task knows which employees are working on it
 		// and the employee knows which tasks they are working on
@@ -160,7 +160,7 @@ public class TestTask {
 		Employee employee = schedule.getEmployees().get(0);		
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));	// name, startWeek, endWeek, budgetedHours
 		
-		user.addTask(task, project);
+		user.createTask(task, project);
 		user.addEmployeeToTask(employee, task);
 		
 		assertEquals(1, employee.getTasks().size());
@@ -185,14 +185,14 @@ public class TestTask {
 		for (int i = 0; i < 10; i++){
 			//add 10 tasks to the project leader
 			Task task = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
-			user.addTask(task, project);
+			user.createTask(task, project);
 			user.addEmployeeToTask(user, task);
 		}
 		
 		assertEquals(10, user.getTasks().size());
 		// add another tasks to the project leader -- file an error
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 8), new GregorianCalendar(2015, Calendar.JANUARY, 15), 37*(3-2));				// name, startWeek, endWeek, budgetedHours
-		user.addTask(task, project); // add the task to the project
+		user.createTask(task, project); // add the task to the project
 		
 		try{
 			user.addEmployeeToTask(user, task);
@@ -213,7 +213,7 @@ public class TestTask {
 		for (int i = 0; i < 10; i++){
 			//add 10 tasks to the project leader
 			Task task = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
-			user.addTask(task, project);
+			user.createTask(task, project);
 			user.addEmployeeToTask(user, task);
 		}
 		
@@ -223,7 +223,7 @@ public class TestTask {
 		// add another tasks to the project leader -- now allowed because super worker
 		Task task11 = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));				// name, startWeek, endWeek, budgetedHours
 		
-		user.addTask(task11, project); // add the task to the project
+		user.createTask(task11, project); // add the task to the project
 		user.addEmployeeToTask(user, task11);
 		
 		assertEquals(11, user.getTasks().size());
@@ -232,7 +232,7 @@ public class TestTask {
 		for (int i = 0; i < 9; i++){
 			//add 9 tasks to the project leader
 			Task task2 = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
-			user.addTask(task2, project);
+			user.createTask(task2, project);
 			user.addEmployeeToTask(user, task2);
 		}
 		
@@ -240,7 +240,7 @@ public class TestTask {
 		// add another tasks to the project leader -- not allowed even though super worker
 		Task task21 = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 8), new GregorianCalendar(2015, Calendar.JANUARY, 15), 37*(3-2));				// name, startWeek, endWeek, budgetedHours
 		
-		user.addTask(task21, project); // add the task to the project
+		user.createTask(task21, project); // add the task to the project
 		
 		try{
 			user.addEmployeeToTask(user, task21);
@@ -260,7 +260,7 @@ public class TestTask {
 		
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 8), new GregorianCalendar(2015, Calendar.JANUARY, 22), 37*(4-2));	// name, number, startWeek, endWeek, budgetedHours
 		
-		user.addTask(task, project);
+		user.createTask(task, project);
 		user.addEmployeeToTask(user, task);
 		
 		assertEquals(1, user.getTasks().size());
@@ -281,7 +281,7 @@ public class TestTask {
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));	// name, number, startWeek, endWeek, budgetedHours
 		Task task2 = new Task("taskName2", new GregorianCalendar(2015, Calendar.JANUARY, 8), new GregorianCalendar(2015, Calendar.JANUARY, 15), 37*(3-2));	// name, number, startWeek, endWeek, budgetedHours
 		
-		user.addTask(task, project);
+		user.createTask(task, project);
 		user.addEmployeeToTask(user, task);
 		
 		assertEquals(1, user.getTasks().size());
@@ -301,7 +301,7 @@ public class TestTask {
 		for (int i = 0; i < 7; i++){
 			//add 10 tasks to the project leader
 			Task task = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
-			user.addTask(task, project);
+			user.createTask(task, project);
 			user.addEmployeeToTask(user, task);
 		}
 		
