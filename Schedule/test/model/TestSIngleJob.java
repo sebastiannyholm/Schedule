@@ -27,14 +27,13 @@ public class TestSIngleJob {
 		schedule.login("seny");
 		user = schedule.getUser();
 		
-		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), employee2);		//projectName, projectNumber, totalTime (in weeks), project leader
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), employee1);		//projectName, projectNumber, totalTime (in weeks), project leader
 		user.createProject(project);
 		
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 5), 37);	// name, number, startWeek, endWeek, budgetedHours
 		user.createTask(task, project);
 		
 		user.addEmployeeToTask(employee2, task);				// main focus here, adds an employee to the created task
-		
 	}
 	
 	@Test
@@ -45,14 +44,17 @@ public class TestSIngleJob {
 		
 		Task task = schedule.getAllTasks().get(0);
 		
-		assertEquals(0, task.getJobs());
-		assertEquals(0, employee.getJobs());
+		assertEquals(0, task.getJobs().size());
+		assertEquals(0, employee.getJobs().size());
 		
 		user.addEmployeeToTaskJob(employee, task, job);
 		
-		assertEquals(1, task.getJobs());
-		assertEquals(1, employee.getJobs());
+		assertEquals(1, task.getJobs().size());
+		assertEquals(1, employee.getJobs().size());
 		
+		assertEquals(1, task.getJobsForAnEmployee(employee).size());
+		assertEquals(1, employee.getJobsForATask(task).size());
+	
 	}
 
 }

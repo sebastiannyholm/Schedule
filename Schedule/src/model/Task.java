@@ -1,15 +1,16 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class Task {
 
-	List<Employee> employees;
-	List<SingleJob> jobs;
+	private List<Employee> employees;
+	private List<SingleJob> jobs;
+	private Map<Employee, List<SingleJob>> employeesAndJobs;
 	
 	
 	private String name, taskNumber;
@@ -23,9 +24,9 @@ public class Task {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.budgetedTime = budgetedTime;
-		
-		employees = new LinkedList<Employee>();
-		jobs = new LinkedList<SingleJob>();
+		this.employees = new ArrayList<Employee>();
+		this.jobs = new ArrayList<SingleJob>();
+		this.employeesAndJobs = new HashMap<Employee, List<SingleJob>>();
 	}
 	
 	public List<Employee> getEmployees() {
@@ -34,9 +35,16 @@ public class Task {
 
 	public void addEmployee(Employee employee) {
 		this.employees.add(employee);
-		
+		this.employeesAndJobs.put(employee, new ArrayList<SingleJob>());
 	}
 
+	public void addJob(Employee employee, SingleJob job) {
+		jobs.add(job);
+		if (!employees.contains(employee))
+			addEmployee(employee);
+		employeesAndJobs.get(employee).add(job);
+	}
+	
 	public void setTaskNumber(int taskCount, int year) {
 		
 		/*
@@ -51,7 +59,7 @@ public class Task {
 
 	public void remove(Employee employee) {
 		employees.remove(employee);
-		
+		employeesAndJobs.remove(employee);
 	}
 	
 	public String toString(){
@@ -83,4 +91,13 @@ public class Task {
 			log.put(employee, timeWorkedOnTask);
 		
 	}
+
+	public List<SingleJob> getJobs() {
+		return jobs;
+	}
+	
+	public List<SingleJob> getJobsForAnEmployee(Employee employee) {
+		return employeesAndJobs.get(employee);
+	}
+
 }

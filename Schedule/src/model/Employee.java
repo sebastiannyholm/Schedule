@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,9 @@ public class Employee {
 	private Address address;
 	
 	private List<Project> projects;
-	private Map<Task, List<SingleJob>> tasks;
+	private List<Task> tasks;
+	private List<SingleJob> jobs;
+	private Map<Task, List<SingleJob>> tasksAndJobs;
 	private boolean superWorker;
 	private int punchIn, punchOut, taskIn, taskOut;
 	private Map<String, Integer> workLog = new HashMap<String, Integer>();
@@ -37,6 +40,8 @@ public class Employee {
 		
 		projects = new ArrayList<Project>();
 		tasks = new ArrayList<Task>();
+		jobs = new ArrayList<SingleJob>();
+		tasksAndJobs = new HashMap<Task, List<SingleJob>>();
 	}
 
 	public void createProject(Project newProject) throws Exception {
@@ -78,12 +83,6 @@ public class Employee {
 		project = null;	
 	}
 
-	public void removeTask(Task task) {
-		tasks.remove(task);
-		task.remove(this);
-		
-	}
-
 	public String getInitials() {
 		return initials;
 	}
@@ -116,6 +115,13 @@ public class Employee {
 		schedule.addTask(task);
 		task.setTaskNumber(schedule.getAllTasks().size()-1, schedule.getDate().get(GregorianCalendar.YEAR));
 	}
+	
+	public void removeTask(Task task) {
+		tasks.remove(task);
+		tasksAndJobs.remove(task);
+		task.remove(this);
+		
+	}
 
 	public void addEmployeeToTask(Employee employee, Task task) throws Exception {
 		// regular employees can't work on more than 10 tasks at once
@@ -126,12 +132,25 @@ public class Employee {
 					"Add employee to task");
 
 		employee.addTask(task);
+		employee.addTask(task);
 		task.addEmployee(employee);
+	}
+	
+	public void addTask(Task task) {
+		tasks.add(task);
+		tasksAndJobs.put(task, new ArrayList<SingleJob>());
 	}
 
 	public void addEmployeeToTaskJob(Employee employee, Task task, SingleJob job) {
+		if (employee.getTasks().contains(task))
+			employee.addTask(task);
+		employee.addJob(task, job);
+		task.addJob(employee, job);
+	}
+	
+	public void addJob(Task task, SingleJob job) {
 		jobs.add(job);
-		task.addJob(job);
+		tasksAndJobs.get(task).add(job);
 	}
 	
 	public boolean match(String critiria) {
@@ -145,11 +164,6 @@ public class Employee {
 		project.changeProjectLeader(newProjectLeader);
 		newProjectLeader.projects.add(project);
 		projects.remove(project);
-	}
-	
-	public void addTask(Task task) {
-		tasks.add(task);
-		
 	}
 
 	public String toString(){
@@ -263,6 +277,14 @@ public class Employee {
 	
 	public void returnFromAbsence(){
 		
+	}
+	
+	public List<SingleJob> getJobs() {
+		return jobs;
+	}
+	
+	public List<SingleJob> getJobsForATask(Task task) {
+		return tasksAndJobs.get(task);
 	}
 
 }
