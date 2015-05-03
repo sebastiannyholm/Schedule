@@ -10,7 +10,7 @@ public class Project {
 	private Calendar startDate, endDate;
 	private Employee projectLeader;
 	
-	private List<Employee> employees;
+//	private List<Employee> employees;
 	private List<Task> tasks;
 	
 	public Project(String projectName, Calendar startDate, Calendar endDate, Employee projectLeader){
@@ -21,7 +21,7 @@ public class Project {
 		this.projectLeader = projectLeader;
 		
 		tasks = new LinkedList<Task>();
-		employees = new LinkedList<Employee>();
+//		employees = new LinkedList<Employee>();
 	
 	}
 	
@@ -39,6 +39,10 @@ public class Project {
 
 	public void addTask(Task task) {
 		tasks.add(task);
+	}
+	
+	public void removeTask(Task task) {
+		tasks.remove(task);
 	}
 
 	public void setProjectNumber(int projectCount, int year) {
@@ -95,8 +99,15 @@ public class Project {
 		return projectName;
 	}
 
-	public void addEmployee(Employee employee) {
-		this.employees.add(employee);
+//	public void addEmployee(Employee employee) {
+//		this.employees.add(employee);
+//	}
+
+	public void removeTasks() throws Exception {
+		for (Task task : tasks)
+			task.removeEmployees();
+		tasks.clear();
 		
 	}
+
 }

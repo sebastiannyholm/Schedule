@@ -68,6 +68,7 @@ public class TestProject {
 		Employee projectLeader = project.getProjectLeader();
 		projectLeader.deleteProject(project);
 		assertEquals(0,projectLeader.getProjects().size());
+		assertEquals(0,schedule.getAllProjects().size());
 	}
 	
 	@Test

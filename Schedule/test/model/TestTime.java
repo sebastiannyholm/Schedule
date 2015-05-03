@@ -75,7 +75,7 @@ public class TestTime {
 	}
 	
 	@Test
-	public void registerTimeMultipleTimesADay() throws Exception{
+	public void registerTimeMultipleTimesADay() throws Exception {
 		
 		// set the time of punchIn
 		// skip 5 hours ahead, set time -- hours += 5
@@ -100,7 +100,7 @@ public class TestTime {
 		when(dateServer.getDate()).thenReturn(newCal);
 		
 		schedule.logOut();
-		
+	
 		assertEquals(8*60, user.getWorkLogValue(schedule.getDate().getTime()));
 	}
 	
@@ -145,9 +145,9 @@ public class TestTime {
 		user.createTask(task1, project);
 		user.createTask(task2, project);
 		user.createTask(task3, project);
-		user.addEmployeeToTask(user, task1);
-		user.addEmployeeToTask(user, task2);
-		user.addEmployeeToTask(user, task3);
+		user.addEmployeeToTask(user, task1,200);
+		user.addEmployeeToTask(user, task2,200);
+		user.addEmployeeToTask(user, task3,200);
 		
 		List<Task> employeeAgenda = user.getAgenda();
 		assertEquals(2, employeeAgenda.size());
