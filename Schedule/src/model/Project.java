@@ -10,7 +10,8 @@ public class Project {
 	private Calendar startDate, endDate;
 	private Employee projectLeader;
 	
-	List<Task> tasks;
+	private List<Employee> employees;
+	private List<Task> tasks;
 	
 	public Project(String projectName, Calendar startDate, Calendar endDate, Employee projectLeader){
 		
@@ -20,6 +21,7 @@ public class Project {
 		this.projectLeader = projectLeader;
 		
 		tasks = new LinkedList<Task>();
+		employees = new LinkedList<Employee>();
 	
 	}
 	
@@ -87,5 +89,14 @@ public class Project {
 	
 	public boolean projectExist(Project newProject) {
 		return this.equals(newProject);
+	}
+
+	public String getName() {
+		return projectName;
+	}
+
+	public void addEmployee(Employee employee) {
+		this.employees.add(employee);
+		
 	}
 }

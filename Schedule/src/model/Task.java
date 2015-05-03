@@ -15,6 +15,8 @@ public class Task {
 	private int budgetedTime;
 	private Map<Employee, Integer> log = new HashMap<Employee, Integer>();
 
+	private Project project;		// the project connected to this task
+
 	
 	public Task(String name, Calendar startDate, Calendar endDate, int budgetedTime){
 		this.name = name;
@@ -79,5 +81,14 @@ public class Task {
 		else 
 			log.put(employee, timeWorkedOnTask);
 		
+	}
+
+	public void belongsTo(Project project) {
+		this.project = project;
+		
+	}
+
+	public Project getProject() {
+		return project;
 	}
 }

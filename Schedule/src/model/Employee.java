@@ -25,7 +25,7 @@ public class Employee {
 	private Map<Task, Integer> taskLog = new HashMap<Task, Integer>();
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	private boolean absence = false;
-	private Enum<Status> reason;
+	private Enum<Status> status;
 	
 	public Employee(String name, String initials, int age, Address address, Schedule schedule) {
 		this.name = name;
@@ -114,6 +114,7 @@ public class Employee {
 		project.addTask(task);
 		schedule.addTask(task);
 		task.setTaskNumber(schedule.getAllTasks().size()-1, schedule.getDate().get(GregorianCalendar.YEAR));
+		task.belongsTo(project);
 	}
 
 	public void addEmployeeToTask(Employee employee, Task task) throws Exception {
@@ -126,6 +127,8 @@ public class Employee {
 
 		employee.setTasks(task);
 		task.addEmployee(employee);
+		task.getProject().addEmployee(this);
+		
 	}
 
 	public boolean match(String critiria) {
@@ -241,9 +244,10 @@ public class Employee {
 		
 	}
 	
-	public void setAbsent(Enum<Status> reason){
+	public void setAbsent(Enum<Status> status){
+		// add the employee to the project defined by status (Sickness, Vacation or Course)
 		this.absence = true;
-		this.reason = reason;
+		this.status = status;
 	}
 
 	public boolean isAbsent() {
@@ -257,6 +261,10 @@ public class Employee {
 	
 	public void returnFromAbsence(){
 		
+	}
+
+	public Enum<Status> getStatus() {
+		return status;
 	}
 
 	

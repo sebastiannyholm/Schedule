@@ -48,6 +48,10 @@ public class TestAbsence {
 		employee1.reportAbsence(employee2, status);
 		
 		assertTrue(employee2.isAbsent());
+		assertEquals(employee2.getStatus(), status);
+		
+		// the employee should now have projects, the one he is working on and the sickness "project"
+		assertEquals(employee2.getProjects().get(1).getName(), "Sickness");
 		
 		
 	}

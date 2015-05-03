@@ -44,7 +44,6 @@ public class TestProject {
 		schedule.logOut();
 		
 		assertFalse(schedule.isLoggedIn());
-		
 		assertEquals(0,user.getProjects().size());
 		
 		try {
@@ -56,11 +55,6 @@ public class TestProject {
 		}
 		
 		assertEquals(0,schedule.getAllProjects().size());
-		
-	}
-	
-	@Test
-	public void projectOverlapNewYear(){
 		
 	}
 	
