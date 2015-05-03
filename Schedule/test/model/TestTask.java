@@ -2,8 +2,6 @@ package model;
 
 import static org.junit.Assert.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -418,6 +416,24 @@ public class TestTask {
 		}
 		
 		assertEquals(2, employee.getTasks().size());
+		
+	}
+	
+	@Test
+	public void checkIfEmployeesAreWorkingInATimespan() throws Exception {
+		Project project = schedule.getAllProjects().get(0);		// list of 1
+		
+		Task task = new Task("taskName1", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 80);	// name, number, startWeek, endWeek, budgetedHours
+		
+		user.createTask(task, project);
+		
+		Employee employee1 = schedule.getEmployees().get(0);
+		Employee employee2 = schedule.getEmployees().get(1);
+		
+		user.addEmployeeToTask(employee1, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 24*60);
+		user.addEmployeeToTask(employee2, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 16*60);
+		
+		assertEquals(user.getFreeEmployeesInPeriod(new GregorianCalendar(2015, Calendar.JANUARY, 5, 8, 0), 20).size(), 1);
 		
 	}
 	

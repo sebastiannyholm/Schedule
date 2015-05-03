@@ -352,5 +352,21 @@ public class Employee {
 	public Map<Task, LinkedList<Timer>> getTasksAndTime() {
 		return tasksAndTime;
 	}
+
+	public List<Employee> getFreeEmployeesInPeriod(Calendar startDate, int time) {
+		List<Employee> freeEmployeesInPeriod = new LinkedList<Employee>();
+		
+		Calendar endDate = new GregorianCalendar();
+		endDate.setTime(startDate.getTime());
+		setEndDate(endDate, time);
+		
+		for (Employee employee : schedule.getEmployees())
+			for (Task task : employee.tasksAndTime.keySet())
+				for (Timer timer : employee.tasksAndTime.get(task))
+					if (!timer.isInPeriod(startDate, endDate))
+						freeEmployeesInPeriod.add(employee);
+		
+		return freeEmployeesInPeriod;
+	}
 	
 }
