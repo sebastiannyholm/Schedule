@@ -297,7 +297,6 @@ public class TestTask {
 		Project project = schedule.getAllProjects().get(0);		
 		
 		for (int i = 0; i < 7; i++){
-			System.out.println("hej");
 			//add 10 tasks to the project leader
 			Task task = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
 			user.createTask(task, project);

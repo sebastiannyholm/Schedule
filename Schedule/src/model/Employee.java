@@ -314,7 +314,6 @@ public class Employee {
 
 	public void addProject(Project project) {
 		this.projects.add(project);
-		
 	}
 	
 	public void returnFromAbsence(){
