@@ -145,9 +145,9 @@ public class TestTime {
 		user.createTask(task1, project);
 		user.createTask(task2, project);
 		user.createTask(task3, project);
-		user.addEmployeeToTask(user, task1,200);
-		user.addEmployeeToTask(user, task2,200);
-		user.addEmployeeToTask(user, task3,200);
+		user.addEmployeeToTask(user, task1, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 200);
+		user.addEmployeeToTask(user, task2, new GregorianCalendar(2015, Calendar.JANUARY, 1, 11, 20), 200);
+		user.addEmployeeToTask(user, task3, new GregorianCalendar(2015, Calendar.JANUARY, 1, 14, 40), 200);
 		
 		List<Task> employeeAgenda = user.getAgenda();
 		assertEquals(2, employeeAgenda.size());
