@@ -419,6 +419,12 @@ public class TestTask {
 		
 	}
 	
+	/*
+	 * Test which employees that are free to work on a new task in a given timespan
+	 * We have two employees, which both are assigned to a job, but one of them are free from monday the 5. 8am.
+	 * The other one is first ready tuesday the 6. 2pm.
+	 * We wanna test how many employees that are ready to work on a task monday the 5. 8am and 20 hours ahead.
+	 */
 	@Test
 	public void checkIfEmployeesAreWorkingInATimespan() throws Exception {
 		Project project = schedule.getAllProjects().get(0);		// list of 1
