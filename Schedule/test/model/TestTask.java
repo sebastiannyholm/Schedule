@@ -134,13 +134,13 @@ public class TestTask {
 		assertEquals(0, employee.getTasks().size());
 		assertEquals(0, task.getEmployees().size());	
 		
-		user.addEmployeeToTask(employee, task, 200);				// main focus here, adds an employee to the created task
+		user.addEmployeeToTask(employee, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 200);				// main focus here, adds an employee to the created task
 		
 		assertEquals(1, employee.getTasks().size());
 		assertEquals(1, task.getEmployees().size());
 		
 		// add more than 1 employee to the task, here the project leader adds him-/herself to the task
-		user.addEmployeeToTask(user, task, 200);
+		user.addEmployeeToTask(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 200);
 		
 		assertEquals(2, task.getEmployees().size());
 	}
@@ -153,17 +153,13 @@ public class TestTask {
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));	// name, startWeek, endWeek, budgetedHours
 		
 		user.createTask(task, project);
-		user.addEmployeeToTask(employee, task, 200);
+		user.addEmployeeToTask(employee, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 200);
 		
 		assertEquals(1, employee.getTasks().size());
 		
-		try{
-			user.addEmployeeToTask(employee, task, 200);		// add another instance of the task to the employee
-			fail("OperationNotAllowedException should have been thrown");
-		} catch (OperationNotAllowedException e){
-			assertEquals("The employee " + employee + " is already working on this task!", e.getMessage());
-			assertEquals("Add employee to task", e.getOperation());
-		}
+		user.addEmployeeToTask(employee, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 11, 20), 200);		// add another instance of the task to the employee
+		
+		// the task has not been added to the employee
 		assertEquals(1, employee.getTasks().size());
 	}
 	
@@ -178,7 +174,7 @@ public class TestTask {
 			//add 10 tasks to the project leader
 			Task task = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
 			user.createTask(task, project);
-			user.addEmployeeToTask(user, task, 200);
+			user.addEmployeeToTask(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, i), 1);
 		}
 		
 		assertEquals(10, user.getTasks().size());
@@ -187,7 +183,7 @@ public class TestTask {
 		user.createTask(task, project); // add the task to the project
 		
 		try{
-			user.addEmployeeToTask(user, task, 200);
+			user.addEmployeeToTask(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 10), 200);
 			fail("OperationNotAlloedException should have been thrown from the above statement");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("The employee " + user + " is already working on the maximum amount of tasks!", e.getMessage());
@@ -206,7 +202,7 @@ public class TestTask {
 			//add 10 tasks to the project leader
 			Task task = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
 			user.createTask(task, project);
-			user.addEmployeeToTask(user, task, 100);
+			user.addEmployeeToTask(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, i), 1);
 		}
 		
 		assertEquals(10, user.getTasks().size());
@@ -216,16 +212,16 @@ public class TestTask {
 		Task task11 = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));				// name, startWeek, endWeek, budgetedHours
 		
 		user.createTask(task11, project); // add the task to the project
-		user.addEmployeeToTask(user, task11, 100);
+		user.addEmployeeToTask(user, task11, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 10), 1);
 		
 		assertEquals(11, user.getTasks().size());
-
+		
 		// adding more than 20 tasks even though super worker
 		for (int i = 0; i < 9; i++){
 			//add 9 tasks to the project leader
 			Task task2 = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
 			user.createTask(task2, project);
-			user.addEmployeeToTask(user, task2, 100);
+			user.addEmployeeToTask(user, task2, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, i+11), 1);
 		}
 		
 		assertEquals(20, user.getTasks().size());
@@ -235,7 +231,7 @@ public class TestTask {
 		user.createTask(task21, project); // add the task to the project
 		
 		try{
-			user.addEmployeeToTask(user, task21, 100);
+			user.addEmployeeToTask(user, task21, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 21), 100);
 			fail("OperationNotAlloedException should have been thrown from the above statement");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("The employee " + user + " is already working on the maximum amount of tasks!", e.getMessage());
@@ -253,7 +249,7 @@ public class TestTask {
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 8), new GregorianCalendar(2015, Calendar.JANUARY, 22), 37*(4-2));	// name, number, startWeek, endWeek, budgetedHours
 		
 		user.createTask(task, project);
-		user.addEmployeeToTask(user, task, 200);
+		user.addEmployeeToTask(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 8, 8, 0), 200);
 		
 		assertEquals(1, user.getTasks().size());
 		assertEquals(1, task.getEmployees().size());
@@ -297,11 +293,10 @@ public class TestTask {
 		Project project = schedule.getAllProjects().get(0);		
 		
 		for (int i = 0; i < 7; i++){
-			System.out.println("hej");
 			//add 10 tasks to the project leader
 			Task task = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
 			user.createTask(task, project);
-			user.addEmployeeToTask(user, task, 200);
+			user.addEmployeeToTask(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, i), 1);
 		}
 		
 		assertEquals(7, user.getTasks().size());
@@ -322,10 +317,10 @@ public class TestTask {
 		user.createTask(task, project);
 		
 		try{
-			user.addEmployeeToTask(user, task, 38*60);
+			user.addEmployeeToTask(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 38*60);
 			fail("OperationNotAlloedException should have been thrown from the above statement");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("You have excited the time limit fot the task", e.getMessage());
+			assertEquals("You have exceeded the time limit fot the task", e.getMessage());
 			assertEquals("Add employee to task", e.getOperation());
 		}
 		
@@ -342,14 +337,14 @@ public class TestTask {
 		user.createTask(task, project);
 		
 		Employee employee = schedule.getEmployees().get(0);
-		System.out.println("hej");
-		user.addEmployeeToTask(employee, task, 34*60);
+
+		user.addEmployeeToTask(employee, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 34*60);
 		
 		try{
-			user.addEmployeeToTask(user, task, 4*60); // will excite the limit by one hour
+			user.addEmployeeToTask(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 5, 10, 0), 4*60); // will excite the limit by one hour
 			fail("OperationNotAllowedException should have been thrown from the above statement");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("You have excited the time limit fot the task", e.getMessage());
+			assertEquals("You have exceeded the time limit fot the task", e.getMessage());
 			assertEquals("Add employee to task", e.getOperation());
 		}
 		
@@ -360,7 +355,6 @@ public class TestTask {
 	
 	@Test
 	public void addTwoTaskToAnEmployeeAndCheckIfDatesAreCorrect() throws Exception {
-		DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
 		
 		Project project = schedule.getAllProjects().get(0);		// list of 1
 		
@@ -374,11 +368,13 @@ public class TestTask {
 		
 		assertEquals(0, employee.getTasks().size());
 		
-		user.addEmployeeToTask(employee, task1, 30*60);
-		user.addEmployeeToTask(employee, task2, 7*60);
+		user.addEmployeeToTask(employee, task1, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 30*60);
+		user.addEmployeeToTask(employee, task2, new GregorianCalendar(2015, Calendar.JANUARY, 6, 14, 0), 7*60);
+		
+		Calendar checkEndDate = new GregorianCalendar(2015, Calendar.JANUARY, 7, 13, 0);
 		
 		assertEquals(2, employee.getTasks().size());
-		assertEquals(df.format(employee.getTasksAndTime().get(employee.getTasks().get(employee.getTasks().size()-1)).getEndDate().getTime()), "07/01/2015 - 13:00:00");		
+		assertTrue(employee.getTasksAndTime().get(task2).get(0).getEndDate().getTime().equals(checkEndDate.getTime()));		
 	}	
 
 	
@@ -395,8 +391,8 @@ public class TestTask {
 		user.createTask(task3, project);
 		
 		Employee employee = schedule.getEmployees().get(0);
-		System.out.println("123123");
-		user.addEmployeeToTask(employee, task3, 24*60);
+		
+		user.addEmployeeToTask(employee, task3, new GregorianCalendar(2015, Calendar.JANUARY, 4, 8, 0), 24*60);
 		
 		assertEquals(1, employee.getTasks().size());
 		
@@ -404,20 +400,21 @@ public class TestTask {
 		
 		assertEquals(0, employee.getTasks().size());
 		
-		user.addEmployeeToTask(employee, task1, 30*60);
-		user.addEmployeeToTask(employee, task2, 7*60);
+		user.addEmployeeToTask(employee, task1, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 30*60);
+		user.addEmployeeToTask(employee, task2, new GregorianCalendar(2015, Calendar.JANUARY, 6, 14, 0), 7*60);
 		
 		assertEquals(2, employee.getTasks().size());
 		
 		try {
-			user.addEmployeeToTask(employee, task3, 2*60);
+			user.addEmployeeToTask(employee, task3, new GregorianCalendar(2015, Calendar.JANUARY, 6, 14, 0), 2*60);
 			fail("OperationNotAllowedException should have been thrown from the above statement");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("The employee does not have time for this task", e.getMessage());
+			assertEquals("The employee does not have time in this period", e.getMessage());
 			assertEquals("Add employee to task", e.getOperation());
 		}
 		
 		assertEquals(2, employee.getTasks().size());
 		
-	}	
+	}
+	
 }

@@ -169,4 +169,9 @@ public class TestEmployee {
 		assertEquals(2,foundEmployees.size());
 		
 	}	
+	
+	@Test
+	public void requireAssistance(){
+		
+	}
 }

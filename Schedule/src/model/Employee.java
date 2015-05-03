@@ -20,7 +20,7 @@ public class Employee {
 	
 	private LinkedList<Project> projects;
 	private LinkedList<Task> tasks;
-	private Map<Task,Timer> tasksAndTime;
+	private Map<Task,LinkedList<Timer>> tasksAndTime;
 	private boolean superWorker;
 	private int punchIn, punchOut, taskIn, taskOut;
 	private Map<String, Integer> workLog = new HashMap<String, Integer>();
@@ -40,7 +40,7 @@ public class Employee {
 //		this.agenda = new Agenda();
 		this.projects = new LinkedList<Project>();
 		this.tasks = new LinkedList<Task>();
-		this.tasksAndTime = new HashMap<Task, Timer>();
+		this.tasksAndTime = new HashMap<Task, LinkedList<Timer>>();
 	}
 
 	public void createProject(Project newProject) throws Exception {
@@ -116,39 +116,94 @@ public class Employee {
 		project.removeTask(task);
 	}
 
-	public void addEmployeeToTask(Employee employee, Task task, int time) throws Exception { // time is measured in minutes
-		// regular employees can't work on more than 10 tasks at once
-		if (employee.getTasks().contains(task)) 
-			throw new OperationNotAllowedException("The employee " + employee + " is already working on this task!", "Add employee to task");
-		else if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
+	public void addEmployeeToTask(Employee employee, Task task, Calendar startDate, int time) throws Exception { // time is measured in minutes
+//		// regular employees can't work on more than 10 tasks at once
+//		if (employee.getTasks().contains(task)) 
+//			throw new OperationNotAllowedException("The employee " + employee + " is already working on this task!", "Add employee to task");
+		if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
 			throw new OperationNotAllowedException("The employee " + employee + " is already working on the maximum amount of tasks!", "Add employee to task");
 		else if (time + task.getTimeSpent() > task.getBudgetedTime()*60)
-			throw new OperationNotAllowedException("You have excited the time limit fot the task", "Add employee to task");
-		else if (employee.checkAgenda(task, time))
-			throw new OperationNotAllowedException("The employee does not have time for this task", "Add employee to task");
+			throw new OperationNotAllowedException("You have exceeded the time limit fot the task", "Add employee to task");
+		else if (employee.checkAgenda(startDate, time))
+			throw new OperationNotAllowedException("The employee does not have time in this period", "Add employee to task");
 		
-		employee.addTask(task, time);
+		employee.addTask(task, startDate, time);
 		task.addEmployee(employee);
 //		task.getProject().addEmployee(employee);
 		
 	}
 
-	private boolean checkAgenda(Task newTask, int time) {
-		newTask.getStartDate();
-		newTask.getEndDate();
+	public void addEmployeeToAbsence(Employee employee, Task task, Calendar startDate, int time) throws Exception { // time is measured in minutes
+		employee.addTask(task, startDate, time);
+		task.addEmployee(employee);
+//		task.getProject().addEmployee(employee);
 		
-		if (!tasks.isEmpty()) {
-			Task latestTask = tasks.getLast();
-			Calendar latestAgenda = new GregorianCalendar();
-			
-			latestAgenda.setTime(tasksAndTime.get(latestTask).getEndDate().getTime());
-			
-			setEndDate(latestAgenda, time + latestAgenda.get(Calendar.HOUR_OF_DAY)*60 + latestAgenda.get(Calendar.MINUTE) - 8*60);
-			
-			if (latestAgenda.after(newTask.getEndDate()))
-				return true;
-		}
+	}
+	
+	private boolean checkAgenda(Calendar startDate, int time) {
+		
+		Calendar endDate = new GregorianCalendar();
+		endDate.setTime(startDate.getTime());
+		
+		setEndDate(endDate, time + startDate.get(Calendar.HOUR_OF_DAY)*60 + startDate.get(Calendar.MINUTE) - 8*60);
+		
+		for (Task task : tasksAndTime.keySet())
+			for (Timer timer : tasksAndTime.get(task))
+				if (timer.isInPeriod(startDate, endDate))
+					return true;
+		
 		return false;
+	}
+	
+	public void addTask(Task task, Calendar startDate, int time) {
+		Calendar endDate = new GregorianCalendar();
+		endDate.setTime(startDate.getTime());
+		
+		setEndDate(endDate, time + startDate.get(Calendar.HOUR_OF_DAY)*60 + startDate.get(Calendar.MINUTE) - 8*60);
+		
+		if (!tasksAndTime.containsKey(task)){
+			tasks.add(task);
+			tasksAndTime.put(task, new LinkedList<Timer>());
+		}
+		tasksAndTime.get(task).add(new Timer(startDate, endDate, time));
+	}
+	
+	private void setEndDate(Calendar endDate, int time) {
+		
+		Calendar fakeStartDate = new GregorianCalendar();
+		fakeStartDate.setTime(endDate.getTime());
+		
+		while (time >= 480) {
+			endDate.add(Calendar.DAY_OF_YEAR, 1);
+			time-=480;
+		}
+				
+		endDate.set(Calendar.HOUR_OF_DAY, 8);
+		while (time >= 60) {
+			endDate.add(Calendar.HOUR_OF_DAY, 1);
+			time -= 60;
+		}
+		
+		endDate.set(Calendar.MINUTE, time + 0);
+
+		Calendar fakeEndDate = new GregorianCalendar();
+		fakeEndDate.setTime(endDate.getTime());
+		
+		int weekendDays = 0;
+		while(fakeEndDate.after(fakeStartDate)) {
+		    if(fakeStartDate.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || fakeStartDate.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+		    	weekendDays++;
+		    	fakeEndDate.add(Calendar.DAY_OF_YEAR,1);
+		    }
+		    
+		    fakeStartDate.add(Calendar.DAY_OF_YEAR,1);
+		}
+		
+		endDate.add(Calendar.DAY_OF_YEAR, weekendDays);
+		
+		if (endDate.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || endDate.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+			endDate.add(Calendar.DAY_OF_YEAR, 2);
+		
 	}
 
 	public void removeEmployeeFromTask(Employee employee, Task task) throws Exception {
@@ -170,43 +225,6 @@ public class Employee {
 		projects.remove(project);
 	}
 	
-	public void addTask(Task task, int time) {
-		Calendar endDateOfPrevious, startDate = task.getStartDate(), endDate = new GregorianCalendar();;
-		startDate.set(Calendar.HOUR_OF_DAY, 8);
-		if (!tasks.isEmpty()) {
-			Task latestTask = tasks.get(tasks.size()-1);
-			endDateOfPrevious = tasksAndTime.get(latestTask).getEndDate();
-			if (endDateOfPrevious.after(startDate))
-				startDate = endDateOfPrevious;
-		}
-		
-		endDate.setTime(startDate.getTime());
-		setEndDate(endDate, time + startDate.get(Calendar.HOUR_OF_DAY)*60 + startDate.get(Calendar.MINUTE) - 8*60);
-		
-		tasks.add(task);
-		tasksAndTime.put(task, new Timer(startDate, endDate, time));
-	}
-	
-	private void setEndDate(Calendar endDate, int time) {
-		
-		while (time >= 480) {
-			endDate.add(Calendar.DAY_OF_YEAR, 1);
-			time-=480;
-		}
-				
-		endDate.set(Calendar.HOUR_OF_DAY, 8);
-		while (time >= 60) {
-			endDate.add(Calendar.HOUR_OF_DAY, 1);
-			time -= 60;
-		}
-		
-		endDate.set(Calendar.MINUTE, time + 0);
-
-		if (endDate.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || endDate.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
-			endDate.add(Calendar.DAY_OF_YEAR, 2);
-
-	}
-
 	public String toString(){
 		return name + ", " + initials + ", aged " + age + ", living in " + address;
 	}
@@ -297,25 +315,48 @@ public class Employee {
 		return taskLog.get(task);
 	}
 
-	public void reportAbsence(Employee employee, Enum<Status> reason) {
+	public void reportAbsence(Employee employee, Enum<Status> reason, Calendar startDate, int time) throws Exception {
 		employee.setAbsent(reason);
-
+		
+		/*
+		 * Premade project and tasks in schedule:
+		 * PROJECT 0 --> ABSENCE project which contains 3 tasks (0-based):
+		 * 0) Sickness
+		 * 1) Vacation
+		 * 2) Course
+		 */
+		
+		if (reason == Status.SICK)
+			this.addEmployeeToAbsence(employee, schedule.getAllProjects().get(0).getTasks().get(0), startDate, time);
+		else if (reason == Status.VACATION)
+			this.addEmployeeToTask(employee, schedule.getAllProjects().get(0).getTasks().get(1), startDate, time);
+			
 	}
 	
 	public void setAbsent(Enum<Status> status){
 		// add the employee to the project defined by status (Sickness, Vacation or Course)
 		this.absence = true;
+		
 		this.status = status;
-		
-		
 	}
 
 	public boolean isAbsent() {
-		return absence;
+		
+		for (Task absent : schedule.getAllProjects().get(0).getTasks()) {
+			if (tasksAndTime.get(absent) == null)
+				continue;
+			for (Timer timer : tasksAndTime.get(absent))
+				if(timer.isToday(schedule.getDate()))
+					return true;
+		}
+		return false;
 	}
 
 	public void addProject(Project project) {
 		this.projects.add(project);
+	}
+	
+	public void returnFromAbsence(){
 		
 	}
 
@@ -324,15 +365,14 @@ public class Employee {
 	}
 
 	public int getTimeForATask(Task task) {
-		return tasksAndTime.get(task).getTimeForATask(); 
+		int time = 0;
+		for (Timer timer : tasksAndTime.get(task))
+			time += timer.getTimeForATask();
+		return time; 
 	}
 
-	public Map<Task, Timer> getTasksAndTime() {
+	public Map<Task, LinkedList<Timer>> getTasksAndTime() {
 		return tasksAndTime;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public List<Employee> getAbsentEmployees() {
@@ -349,4 +389,9 @@ public class Employee {
 		
 		return absentEmployees;
 	}
+
+	public String getName() {
+		return name;
+	}
+	
 }

@@ -19,47 +19,8 @@ public class Timer {
 		this.endDate.setTime(endDate.getTime());
 		
 		this.time = time;
-//		
-//		int timeInDay = startDate.get(Calendar.HOUR_OF_DAY)*60 + startDate.get(Calendar.MINUTE) - 8*60;
-//		
-//		setDays(time + timeInDay);
-//		setHours(time + timeInDay);
-//		setMinutes(time + timeInDay);
-//		
-//		this.endDate = new GregorianCalendar();
-//		this.endDate.setTime(startDate.getTime());
-//		this.endDate.add(Calendar.DAY_OF_YEAR, days);
-//		this.endDate.set(Calendar.HOUR_OF_DAY, hours + 8);
-//		this.endDate.set(Calendar.MINUTE, minutes + 0);
-//		
-//		skipWeekend(endDate);
 		
 		agenda();
-	}
-	
-	private void skipWeekend(Calendar endDate) {
-		if (endDate.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)
-			endDate.add(Calendar.DAY_OF_YEAR, 2);
-		else if (endDate.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
-			endDate.add(Calendar.DAY_OF_YEAR, 2);
-	}
-	
-	private void setDays(int time) {
-		if (time >= 480) {
-			days++;
-			setDays(time-480);
-		}
-	}
-	
-	private void setHours(int time) {
-		if ((time % 480) >= 60) {
-			hours++;
-			setHours(time-60);
-		}
-	}
-	
-	private void setMinutes(int time) {
-		minutes = (time % 60);
 	}
 	
 	private void agenda() {
@@ -68,24 +29,26 @@ public class Timer {
 		System.out.println();
 	}
 	
-//	public Calendar getStartDate() {
-//		return startDate;
-//	}
-//
-//	public void setStartDate(Calendar startDate) {
-//		this.startDate = startDate;
-//	}
-
+	public Calendar getStartDate() {
+		return startDate;
+	}
+	
 	public Calendar getEndDate() {
 		return endDate;
 	}
-
-//	public void setEndDate(Calendar endDate) {
-//		this.endDate = endDate;
-//	}
 	
 	public int getTimeForATask() {
 		return time;
+	}
+
+	public boolean isInPeriod(Calendar startDate, Calendar endDate) {
+		return (this.startDate.compareTo(startDate) >= 0 && this.startDate.before(endDate)) 
+				|| (this.endDate.after(startDate) && this.endDate.compareTo(endDate) <= 0)
+				|| (this.startDate.compareTo(startDate) <= 0 && this.endDate.compareTo(endDate) >= 0);
+	}
+
+	public boolean isToday(Calendar today) {
+		return startDate.compareTo(today) <= 0 && endDate.compareTo(today) >= 0;
 	}
 	
 }
