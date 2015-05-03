@@ -2,8 +2,6 @@ package model;
 
 import static org.junit.Assert.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -414,6 +412,30 @@ public class TestTask {
 		}
 		
 		assertEquals(2, employee.getTasks().size());
+		
+	}
+	
+	/*
+	 * Test which employees that are free to work on a new task in a given timespan
+	 * We have two employees, which both are assigned to a job, but one of them are free from monday the 5. 8am.
+	 * The other one is first ready tuesday the 6. 2pm.
+	 * We wanna test how many employees that are ready to work on a task monday the 5. 8am and 20 hours ahead.
+	 */
+	@Test
+	public void checkIfEmployeesAreWorkingInATimespan() throws Exception {
+		Project project = schedule.getAllProjects().get(0);		// list of 1
+		
+		Task task = new Task("taskName1", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 80);	// name, number, startWeek, endWeek, budgetedHours
+		
+		user.createTask(task, project);
+		
+		Employee employee1 = schedule.getEmployees().get(0);
+		Employee employee2 = schedule.getEmployees().get(1);
+		
+		user.addEmployeeToTask(employee1, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 24*60);
+		user.addEmployeeToTask(employee2, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 16*60);
+		
+		assertEquals(user.getFreeEmployeesInPeriod(new GregorianCalendar(2015, Calendar.JANUARY, 5, 8, 0), 20).size(), 1);
 		
 	}
 	
