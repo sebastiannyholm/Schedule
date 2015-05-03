@@ -12,6 +12,7 @@ public class Project {
 	
 //	private List<Employee> employees;
 	private List<Task> tasks;
+	private List<Employee> absentEmployees;
 	
 	public Project(String projectName, Calendar startDate, Calendar endDate, Employee projectLeader){
 		
@@ -20,7 +21,8 @@ public class Project {
 		this.endDate = endDate;
 		this.projectLeader = projectLeader;
 		
-		tasks = new LinkedList<Task>();
+		this.absentEmployees = new LinkedList<Employee>();
+		this.tasks = new LinkedList<Task>();
 //		employees = new LinkedList<Employee>();
 	
 	}
@@ -107,6 +109,15 @@ public class Project {
 		for (Task task : tasks)
 			task.removeEmployees();
 		tasks.clear();
+		
+	}
+
+	public List<Employee> getAbsentEmployees() {
+		return absentEmployees;
+	}
+
+	public void addAbsentEmployee(Employee employee) {
+		this.absentEmployees.add(employee);
 		
 	}
 

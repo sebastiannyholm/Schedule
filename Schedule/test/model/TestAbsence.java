@@ -42,16 +42,17 @@ public class TestAbsence {
 		
 		// Now the employee calls in sick
 		// the project leader acts accordingly
-		Status status = Status.SICK;
+		
 		assertFalse(employee2.isAbsent());
 		
-		employee1.reportAbsence(employee2, status);
+		employee1.reportAbsence(employee2, Status.SICK);
 		
 		assertTrue(employee2.isAbsent());
-		assertEquals(employee2.getStatus(), status);
+		assertEquals(employee2.getStatus(), Status.SICK);
 		
-		// the employee should now have projects, the one he is working on and the sickness "project"
-		assertEquals(employee2.getProjects().get(1).getName(), "Sickness");
+		// the employee should now show up on the Absent list for the day.
+		System.out.println(project.getAbsentEmployees().size());
+		assertEquals(employee1.getAbsentEmployees().get(0).getName(),"Lukas Villumsen");
 		
 		
 	}

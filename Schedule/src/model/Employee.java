@@ -299,13 +299,15 @@ public class Employee {
 
 	public void reportAbsence(Employee employee, Enum<Status> reason) {
 		employee.setAbsent(reason);
-		
+
 	}
 	
 	public void setAbsent(Enum<Status> status){
 		// add the employee to the project defined by status (Sickness, Vacation or Course)
 		this.absence = true;
 		this.status = status;
+		
+		
 	}
 
 	public boolean isAbsent() {
@@ -314,10 +316,6 @@ public class Employee {
 
 	public void addProject(Project project) {
 		this.projects.add(project);
-		
-	}
-	
-	public void returnFromAbsence(){
 		
 	}
 
@@ -331,5 +329,24 @@ public class Employee {
 
 	public Map<Task, Timer> getTasksAndTime() {
 		return tasksAndTime;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public List<Employee> getAbsentEmployees() {
+		List<Employee> absentEmployees = new LinkedList<Employee>();
+		
+		for (Project project : projects){
+			for (Task task : project.getTasks()){
+				for (Employee employee : task.getEmployees()){
+					if (employee.isAbsent())
+						absentEmployees.add(employee);
+				}
+			}
+		}
+		
+		return absentEmployees;
 	}
 }
