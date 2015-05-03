@@ -16,7 +16,4 @@ public class OperationNotAllowedException extends Exception {
 	public String getOperation() {
 		return operation;
 	}
-	
-	
-
 }

@@ -15,7 +15,7 @@ public class Task {
 	private int budgetedTime;
 	private Map<Employee, Integer> log = new HashMap<Employee, Integer>();
 
-	private Project project;		// the project connected to this task
+//	private Project project;		// the project connected to this task
 
 	
 	public Task(String name, Calendar startDate, Calendar endDate, int budgetedTime){
@@ -48,9 +48,14 @@ public class Task {
 		// total taskNumber:  2015000255   for the 256th task in 2015
 	}
 
-	public void remove(Employee employee) {
+	public void removeEmployee(Employee employee) {
 		employees.remove(employee);
-		
+	}
+	
+	public void removeEmployees() throws Exception {
+		for (Employee employee : employees)
+			employee.removeEmployeeFromTask(employee, this);
+		employees.clear();
 	}
 	
 	public String toString(){
@@ -83,12 +88,41 @@ public class Task {
 		
 	}
 
-	public void belongsTo(Project project) {
-		this.project = project;
-		
+//	public void belongsTo(Project project) {
+//		this.project = project;
+//		
+//	}
+//
+//	public Project getProject() {
+//		return project;
+//	}
+
+	public int getBudgetedTime() {
+		return budgetedTime;
 	}
 
-	public Project getProject() {
-		return project;
+	public int getTimeSpent() {
+		int time = 0;
+		for (Employee employee : employees) {
+			time += employee.getTimeForATask(this);
+		}
+		return time;
 	}
+	
+	public Calendar getStartDate() {
+		return startDate;
+	}
+
+//	public void setStartDate(Calendar startDate) {
+//		this.startDate = startDate;
+//	}
+
+	public Calendar getEndDate() {
+		return endDate;
+	}
+
+//	public void setEndDate(Calendar endDate) {
+//		this.endDate = endDate;
+//	}
+
 }

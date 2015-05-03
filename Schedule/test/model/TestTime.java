@@ -75,7 +75,7 @@ public class TestTime {
 	}
 	
 	@Test
-	public void registerTimeMultipleTimesADay() throws Exception{
+	public void registerTimeMultipleTimesADay() throws Exception {
 		
 		// set the time of punchIn
 		// skip 5 hours ahead, set time -- hours += 5
@@ -100,7 +100,7 @@ public class TestTime {
 		when(dateServer.getDate()).thenReturn(newCal);
 		
 		schedule.logOut();
-		
+	
 		assertEquals(8*60, user.getWorkLogValue(schedule.getDate().getTime()));
 	}
 	
@@ -142,12 +142,12 @@ public class TestTime {
 		Task task3 = new Task("badTask", startDate2, endDate3, 80);		// outside week agenda
 		
 		user.createProject(project);
-		user.addTask(task1, project);
-		user.addTask(task2, project);
-		user.addTask(task3, project);
-		user.addEmployeeToTask(user, task1);
-		user.addEmployeeToTask(user, task2);
-		user.addEmployeeToTask(user, task3);
+		user.createTask(task1, project);
+		user.createTask(task2, project);
+		user.createTask(task3, project);
+		user.addEmployeeToTask(user, task1,200);
+		user.addEmployeeToTask(user, task2,200);
+		user.addEmployeeToTask(user, task3,200);
 		
 		List<Task> employeeAgenda = user.getAgenda();
 		assertEquals(2, employeeAgenda.size());
@@ -161,7 +161,7 @@ public class TestTime {
 	
 		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 1000);
 		
-		user.addTask(task, project);
+		user.createTask(task, project);
 		user.startWorkingOnTask(task);
 		
 		// work on the task for 270 minutes then stop
@@ -183,7 +183,7 @@ public class TestTime {
 		Project project = schedule.getAllProjects().get(0);
 		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 1000);
 		
-		user.addTask(task, project);
+		user.createTask(task, project);
 		user.startWorkingOnTask(task);
 		
 		// work on the task for 270 minutes then stop

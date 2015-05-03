@@ -1,16 +1,14 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.LinkedList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Schedule {
 
 	private List<Employee> employees;
 	private List<Project> allProjects;
-	private List<Task> allTasks;
+//	private List<Task> allTasks;
 	private boolean loggedIn = false;
 	private Employee user;
 	private DateServer dateServer = new DateServer();
@@ -19,9 +17,7 @@ public class Schedule {
 
 		this.employees = new LinkedList<Employee>();
 		this.allProjects = new LinkedList<Project>();
-		this.allTasks = new LinkedList<Task>();
-		this.employees = new ArrayList<Employee>();
-		this.allProjects = new ArrayList<Project>();
+//		this.allTasks = new LinkedList<Task>();
 
 	}
 	
@@ -86,17 +82,26 @@ public class Schedule {
 		
 	}
 
+	public void removeProject(Project project) {
+		allProjects.remove(project);
+	}
+	
 	public List<Task> getAllTasks() {
+		List<Task> allTasks = new LinkedList<Task>();
+		
+		for (Project project : allProjects) {
+			allTasks.addAll(project.getTasks());
+		}
+		
 		return allTasks;
 	}
 
-	public void addTask(Task task) {
-		allTasks.add(task);
-		
-	}
+//	public void addTask(Task task) {
+//		allTasks.add(task);
+//	}
 		
 	public List<Employee> searchEmployee(String criteria) {
-		List<Employee> foundEmployees = new ArrayList<Employee>();
+		List<Employee> foundEmployees = new LinkedList<Employee>();
 		
 		for (Employee employee : employees)
 			if(employee.match(criteria))
@@ -106,7 +111,7 @@ public class Schedule {
 	}
 
 	public List<Project> searchProjects(String critiria) {
-		List<Project> foundEmployees = new ArrayList<Project>();
+		List<Project> foundEmployees = new LinkedList<Project>();
 		
 		for (Project project : allProjects)
 			if(project.match(critiria))
@@ -116,7 +121,7 @@ public class Schedule {
 	}
 
 	public List<Project> getProjectsInPeriod(Calendar startDate, Calendar endDate) {
-		List<Project> projectsInPeriod = new ArrayList<Project>();
+		List<Project> projectsInPeriod = new LinkedList<Project>();
 		
 		for (Project project : allProjects)
 			if (project.isInPeriod(startDate, endDate))
