@@ -169,5 +169,183 @@ public class TestEmployee {
 		assertEquals(2,foundEmployees.size());
 		
 	}	
+
+	@Test
+	public void adminAddEmployee() throws Exception {
+		Schedule schedule = new Schedule();
+		
+		List<Employee> employees = schedule.getEmployees();
+		
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
+		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);
+		employee1.setAdmin(true);
+		
+		schedule.addEmployee(employee1);
+		
+		assertEquals(1,employees.size());
+		
+		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
+		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
+		
+		schedule.login("seny");
+		Employee user = schedule.getUser();
+		
+		user.addEmployee(employee2);
+		
+		assertEquals(2,employees.size());
+		
+	}	
 	
+	@Test
+	public void notLoggedInAddEmployee() throws Exception {
+		Schedule schedule = new Schedule();
+		
+		List<Employee> employees = schedule.getEmployees();
+		
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
+		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);
+		employee1.setAdmin(true);
+		
+		schedule.addEmployee(employee1);
+		
+		assertEquals(1,employees.size());
+		
+		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
+		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
+		
+		try {
+			employee1.addEmployee(employee2);
+			fail("OperationNotAllowedException should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("You can't add an employee if you are not logged in!",e.getMessage());
+			assertEquals("Add employee",e.getOperation());
+		}
+		
+		assertEquals(1,employees.size());
+		
+	}
+	
+	@Test
+	public void notAdminAddEmployee() throws Exception {
+		Schedule schedule = new Schedule();
+		
+		List<Employee> employees = schedule.getEmployees();
+		
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
+		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);
+		employee1.setAdmin(false);
+		
+		schedule.addEmployee(employee1);
+		
+		assertEquals(1,employees.size());
+		
+		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
+		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
+		
+		schedule.login("seny");
+		Employee user = schedule.getUser();
+		
+		try {
+			user.addEmployee(employee2);
+			fail("OperationNotAllowedException should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("Only administrators can add employees!",e.getMessage());
+			assertEquals("Add employee",e.getOperation());
+		}
+		
+		assertEquals(1,employees.size());
+		
+	}
+	
+	@Test
+	public void adminRemoveEmployee() throws Exception {
+		Schedule schedule = new Schedule();
+		
+		List<Employee> employees = schedule.getEmployees();
+		
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
+		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);
+		
+		employee1.setAdmin(true);
+		
+		schedule.addEmployee(employee1);
+		
+		assertEquals(1,employees.size());
+		
+		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
+		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
+		
+		schedule.login("seny");
+		Employee user = schedule.getUser();
+		
+		user.addEmployee(employee2);
+		
+		assertEquals(2,employees.size());
+		
+	}	
+	
+	@Test
+	public void notLoggedInRemoveEmployee() throws Exception {
+		Schedule schedule = new Schedule();
+		
+		List<Employee> employees = schedule.getEmployees();
+		
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
+		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);
+		
+		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
+		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
+		
+		employee1.setAdmin(true);
+		
+		schedule.addEmployee(employee1);
+		schedule.addEmployee(employee2);
+		
+		assertEquals(2,employees.size());
+		
+		try {
+			employee1.removeEmployee(employee2);
+			fail("OperationNotAllowedException should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("You can't remove an employee if you are not logged in!",e.getMessage());
+			assertEquals("Remove employee",e.getOperation());
+		}
+		
+		assertEquals(2,employees.size());
+		
+	}
+	
+	@Test
+	public void notAdminRemoveEmployee() throws Exception {
+		Schedule schedule = new Schedule();
+		
+		List<Employee> employees = schedule.getEmployees();
+		
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
+		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);
+		
+		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
+		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
+		
+		employee1.setAdmin(false);
+		
+		schedule.addEmployee(employee1);
+		schedule.addEmployee(employee2);
+		
+		assertEquals(2,employees.size());
+		
+		schedule.login("seny");
+		Employee user = schedule.getUser();
+		
+		try {
+			user.removeEmployee(employee2);
+			fail("OperationNotAllowedException should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("Only administrators can remove employees!",e.getMessage());
+			assertEquals("Remove employee",e.getOperation());
+		}
+		
+		assertEquals(2,employees.size());
+		
+	}
 }

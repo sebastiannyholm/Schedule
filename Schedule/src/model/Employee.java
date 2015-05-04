@@ -16,6 +16,7 @@ public class Employee {
 	private String initials, name;
 	private int age;
 	private Address address;
+	private boolean admin = false;
 //	private Agenda agenda;
 	
 	private LinkedList<Project> projects;
@@ -86,7 +87,7 @@ public class Employee {
 	}
 	
 	public boolean hasInitialsOnFourLetters() {
-		return initials.length() != 4;
+		return initials.length() == 4;
 	}
 	
 	public boolean hasSameInitials(String initials) {
@@ -425,6 +426,32 @@ public class Employee {
 		
 		employee.addTask(task, startDate, time);
 		task.addEmployeeAsAssistance(employee);
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+	
+	public void addEmployee(Employee employee) throws Exception {
+		if (!schedule.isLoggedIn())
+			throw new OperationNotAllowedException("You can't add an employee if you are not logged in!", "Add employee");
+		if (!isAdmin())
+			throw new OperationNotAllowedException("Only administrators can add employees!", "Add employee");
+		
+		schedule.addEmployee(employee);
+	}
+
+	public void removeEmployee(Employee employee) throws Exception {
+		if (!schedule.isLoggedIn())
+			throw new OperationNotAllowedException("You can't remove an employee if you are not logged in!", "Remove employee");
+		if (!isAdmin())
+			throw new OperationNotAllowedException("Only administrators can remove employees!", "Remove employee");
+		
+		schedule.removeEmployee(employee);
 	}
 	
 }

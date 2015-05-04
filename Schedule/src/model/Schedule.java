@@ -26,7 +26,7 @@ public class Schedule {
 	}
 
 	public void addEmployee(Employee employee) throws Exception {
-		if (employee.hasInitialsOnFourLetters()) 
+		if (!employee.hasInitialsOnFourLetters()) 
 			throw new OperationNotAllowedException("An employee can only have four initials.", "Add employee");
 		
 		for (Employee employeeInSystem : employees) {
