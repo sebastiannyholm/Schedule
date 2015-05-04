@@ -68,7 +68,7 @@ public class TestAbsence {
 		assertFalse(employee.isAbsent());
 		
 		projectLeader.reportAbsence(employee, Status.SICK, schedule.getDate(), 8*60);
-		
+
 		assertTrue(employee.isAbsent());
 //		assertEquals(employee.getStatus(), Status.SICK);
 		

@@ -519,4 +519,90 @@ public class TestTask {
 		
 	}
 	
+	@Test
+	public void requireAssistanceTooManyTasks() throws Exception {
+		Project project = schedule.getAllProjects().get(0);
+		Employee employee = schedule.getEmployees().get(0);
+		
+		for (int i = 0; i < 10; i++){
+			//add 10 tasks to the employee
+			Task task = new Task("task"+i, new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
+			user.createTask(task, project);
+			user.addEmployeeToTask(employee, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, i), 1);
+		}
+		
+		assertEquals(10, employee.getTasks().size());
+		Task task = new Task("task", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));
+		user.createTask(task, project);
+		user.addEmployeeToTask(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 1,8,0), 37*60);
+		// the employee asks the project leader for assistance but has too many tasks
+		
+		try{
+			user.requireAssistance(employee, task, new GregorianCalendar(2015, Calendar.JANUARY, 1,8,0), 2*60);
+			fail("OperationNotAllowedException should have been thrown from the above statement");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("The employee " + employee + " is already working on the maximum amount of tasks!", e.getMessage());
+			assertEquals("Add employee to task", e.getOperation());
+		}
+		
+		assertEquals(10, employee.getTasks().size());
+		
+	}
+	
+	@Test
+	public void requireAssistanceOverBudget() throws Exception {
+		Project project = schedule.getAllProjects().get(0);
+		Employee employee = schedule.getEmployees().get(0); 
+		
+		// employee = seny
+		// user = luvi
+		
+		// task has 37 hours of budgeted time
+		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), 37);	// name, number, startWeek, endWeek, budgetedHours
+		
+		user.createTask(task, project);
+		// add the employee to the task with an estimated time of 30 hours.
+		user.addEmployeeToTask(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 1,8,0), 30*60);
+		
+		// the employee requires assistance in order to complete the task.
+		// the amount of time the employee needs assistance for exceeds the budgeted time of the task.
+		
+		try{
+			user.requireAssistance(employee, task, new GregorianCalendar(2015, Calendar.JANUARY, 6, 14, 0), 8*60);
+			fail("OperationNotAllowedException should have been thrown from the above statement");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("You have exceeded the time limit fot the task", e.getMessage());
+			assertEquals("Add employee to task", e.getOperation());
+		}
+	}
+	
+	@Test
+	public void requireAssistanceBusy() throws Exception{
+		Project project = schedule.getAllProjects().get(0);
+		Employee employee = schedule.getEmployees().get(0);
+		
+		// employee = seny
+		// user = luvi
+		
+		// have two different tasks in the same period with two employees working on one each.
+		Task task = new Task("taskName1", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 80);	// name, number, startWeek, endWeek, budgetedHours
+		Task task2 = new Task("taskName2", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 80);	// name, number, startWeek, endWeek, budgetedHours
+		
+		user.createTask(task, project);
+		user.createTask(task2, project);
+		
+		user.addEmployeeToTask(employee, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 24*60);
+		user.addEmployeeToTask(user, task2, new GregorianCalendar(2015, Calendar.JANUARY, 5, 8, 0), 16*60);
+		
+		try {
+			// the employee asks for assistance on the 5th of January at 12:45 for just 15 minutes.
+			// this is not possible, as the user himself is working on another task at this moment.
+			employee.requireAssistance(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 5, 12, 45), 15);
+			fail("OperationNotAllowedException should have been thrown from the above statement");
+		} catch (OperationNotAllowedException e){
+			assertEquals("The employee does not have time in this period", e.getMessage());
+			assertEquals("Add employee to task", e.getOperation());
+		}
+		
+	}
 }

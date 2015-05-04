@@ -27,8 +27,6 @@ public class Employee {
 	private Map<String, Integer> workLog = new HashMap<String, Integer>();
 	private Map<Task, Integer> taskLog = new HashMap<Task, Integer>();
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-	private boolean absence = false;
-	private Enum<Status> status;
 	
 	public Employee(String name, String initials, int age, Address address, Schedule schedule) {
 		this.name = name;
@@ -326,7 +324,6 @@ public class Employee {
 	}
 
 	public void reportAbsence(Employee employee, Enum<Status> reason, Calendar startDate, int time) throws Exception {
-		employee.setAbsent(reason);
 		
 		/*
 		 * Premade project and tasks in schedule:
@@ -341,13 +338,6 @@ public class Employee {
 		else if (reason == Status.VACATION)
 			this.addEmployeeToTask(employee, schedule.getAllProjects().get(0).getTasks().get(1), startDate, time);
 			
-	}
-	
-	public void setAbsent(Enum<Status> status){
-		// add the employee to the project defined by status (Sickness, Vacation or Course)
-		this.absence = true;
-		
-		this.status = status;
 	}
 
 	public boolean isAbsent() {
@@ -364,14 +354,6 @@ public class Employee {
 
 	public void addProject(Project project) {
 		this.projects.add(project);
-	}
-	
-	public void returnFromAbsence(){
-		
-	}
-
-	public Enum<Status> getStatus() {
-		return status;
 	}
 
 	public int getTimeForATask(Task task) {
@@ -423,6 +405,12 @@ public class Employee {
 	public void requireAssistance(Employee employee, Task task, Calendar startDate, int time) throws Exception {
 		if (!task.getEmployees().contains(this))
 			throw new OperationNotAllowedException("You can not require assistance if you are not on the task!", "Require assistance");		
+		else if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
+			throw new OperationNotAllowedException("The employee " + employee + " is already working on the maximum amount of tasks!", "Add employee to task");
+		else if (time + task.getTimeSpent() > task.getBudgetedTime()*60)
+			throw new OperationNotAllowedException("You have exceeded the time limit fot the task", "Add employee to task");
+		else if (employee.checkAgenda(startDate, time))
+			throw new OperationNotAllowedException("The employee does not have time in this period", "Add employee to task");
 		
 		employee.addTask(task, startDate, time);
 		task.addEmployeeAsAssistance(employee);
