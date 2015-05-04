@@ -121,4 +121,8 @@ public class Project {
 		
 	}
 
+	public boolean hasTask(Task task) {
+		return tasks.contains(task);
+	}
+
 }

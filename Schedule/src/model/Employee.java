@@ -120,7 +120,9 @@ public class Employee {
 //		// regular employees can't work on more than 10 tasks at once
 //		if (employee.getTasks().contains(task)) 
 //			throw new OperationNotAllowedException("The employee " + employee + " is already working on this task!", "Add employee to task");
-		if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
+		if (!isProjectLeader(task)) 
+			throw new OperationNotAllowedException("Only the project leader may add an employee to the task", "Add employee to task");
+		else if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
 			throw new OperationNotAllowedException("The employee " + employee + " is already working on the maximum amount of tasks!", "Add employee to task");
 		else if (time + task.getTimeSpent() > task.getBudgetedTime()*60)
 			throw new OperationNotAllowedException("You have exceeded the time limit fot the task", "Add employee to task");
@@ -131,6 +133,13 @@ public class Employee {
 		task.addEmployee(employee);
 //		task.getProject().addEmployee(employee);
 		
+	}
+	
+	public boolean isProjectLeader(Task task) {
+		for (Project project : projects)
+			if (project.hasTask(task))
+				return true;
+		return false; 
 	}
 
 	public void addEmployeeToAbsence(Employee employee, Task task, Calendar startDate, int time) throws Exception { // time is measured in minutes
@@ -408,6 +417,14 @@ public class Employee {
 						freeEmployeesInPeriod.add(employee);
 		
 		return freeEmployeesInPeriod;
+	}
+
+	public void requireAssistance(Employee employee, Task task, Calendar startDate, int time) throws Exception {
+		if (!task.getEmployees().contains(this))
+			throw new OperationNotAllowedException("You can not require assistance if you are not on the task!", "Require assistance");		
+		
+		employee.addTask(task, startDate, time);
+		task.addEmployeeAsAssistance(employee);
 	}
 	
 }

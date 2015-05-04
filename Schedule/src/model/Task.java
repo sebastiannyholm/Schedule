@@ -9,7 +9,7 @@ import java.util.Map;
 public class Task {
 
 	List<Employee> employees;
-	
+	List<Employee> employeesAsAssistance;
 	private String name, taskNumber;
 	private Calendar startDate, endDate;
 	private int budgetedTime;
@@ -25,6 +25,7 @@ public class Task {
 		this.budgetedTime = budgetedTime;
 		
 		employees = new LinkedList<Employee>();
+		employeesAsAssistance = new LinkedList<Employee>();
 	}
 	
 	public List<Employee> getEmployees() {
@@ -119,6 +120,14 @@ public class Task {
 
 	public Calendar getEndDate() {
 		return endDate;
+	}
+
+	public void addEmployeeAsAssistance(Employee employee) {
+		employeesAsAssistance.add(employee);
+	}
+	
+	public List<Employee> getEmployeesAsAssistance() {
+		return employeesAsAssistance;
 	}
 
 //	public void setEndDate(Calendar endDate) {

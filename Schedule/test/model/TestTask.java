@@ -143,6 +143,34 @@ public class TestTask {
 		assertEquals(2, task.getEmployees().size());
 	}
 	
+	@Test
+	public void addEmployeeToTaskIfNotProjectLeader() throws Exception {
+		Project project = schedule.getAllProjects().get(0);		
+		Employee employee = schedule.getEmployees().get(0);
+		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));	// name, startWeek, endWeek, budgetedHours
+		
+		user.createTask(task, project);
+		
+		// task knows which employees are working on it
+		// and the employee knows which tasks they are working on	
+		
+		schedule.logOut();
+		schedule.login("seny");
+		user = schedule.getUser();
+		
+		// A user that is not project leader of the given project tries to add a employee to a task.
+		try{
+			user.addEmployeeToTask(employee, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 200);				// main focus here, adds an employee to the created task
+			fail("OperationNotAlloedException should have been thrown from the above statement");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("Only the project leader may add an employee to the task", e.getMessage());
+			assertEquals("Add employee to task", e.getOperation());
+		}
+		
+		assertEquals(0, employee.getTasks().size());
+		
+	}
+	
 	// If an employee is already working on one activity, he/she cannot be assigned the very same activity.
 	@Test
 	public void addEmployeeToTaskAlreadyWorkingOnIt() throws Exception {
@@ -419,7 +447,7 @@ public class TestTask {
 	 * Test which employees that are free to work on a new task in a given timespan
 	 * We have two employees, which both are assigned to a job, but one of them are free from monday the 5. 8am.
 	 * The other one is first ready tuesday the 6. 2pm.
-	 * We wanna test how many employees that are ready to work on a task monday the 5. 8am and 20 hours ahead.
+	 * We want to test how many employees that are ready to work on a task monday the 5. 8am and 20 hours ahead.
 	 */
 	@Test
 	public void checkIfEmployeesAreWorkingInATimespan() throws Exception {
@@ -436,6 +464,58 @@ public class TestTask {
 		user.addEmployeeToTask(employee2, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 16*60);
 		
 		assertEquals(user.getFreeEmployeesInPeriod(new GregorianCalendar(2015, Calendar.JANUARY, 5, 8, 0), 20).size(), 1);
+		
+	}
+
+	@Test
+	public void requireAssistance() throws Exception{
+		Project project = schedule.getAllProjects().get(0);		// list of 1
+		
+		Employee employee1 = schedule.getEmployees().get(0);
+		Employee employee2 = schedule.getEmployees().get(1);
+		
+		Task task = new Task("taskName1", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 80);	// name, number, startWeek, endWeek, budgetedHours
+
+		user.createTask(task, project);
+		
+		user.addEmployeeToTask(employee1, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 24*60);
+		
+		schedule.logOut();
+		schedule.login("seny");
+		user = schedule.getUser();
+		
+		user.requireAssistance(employee2, task, new GregorianCalendar(2015, Calendar.JANUARY, 2, 8, 0), 16*60);
+		
+		assertEquals(task.getEmployeesAsAssistance().size(), 1);
+		
+	}
+	
+	@Test
+	public void requireAssistanceIfNotOnTheTask() throws Exception{
+		Project project = schedule.getAllProjects().get(0);		// list of 1
+		
+		Employee employee1 = schedule.getEmployees().get(0);
+		Employee employee2 = schedule.getEmployees().get(1);
+		
+		Task task = new Task("taskName1", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 80);	// name, number, startWeek, endWeek, budgetedHours
+
+		user.createTask(task, project);
+		
+		user.addEmployeeToTask(employee2, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 24*60);
+		
+		schedule.logOut();
+		schedule.login("seny");
+		user = schedule.getUser();
+		
+		try {
+			user.requireAssistance(employee1, task, new GregorianCalendar(2015, Calendar.JANUARY, 2, 8, 0), 16*60);
+			fail("OperationNotAllowedException should have been thrown from the above statement");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("You can not require assistance if you are not on the task!", e.getMessage());
+			assertEquals("Require assistance", e.getOperation());
+		}
+		
+		assertEquals(task.getEmployeesAsAssistance().size(), 0);
 		
 	}
 	

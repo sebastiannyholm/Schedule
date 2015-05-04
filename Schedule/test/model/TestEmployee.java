@@ -170,8 +170,4 @@ public class TestEmployee {
 		
 	}	
 	
-	@Test
-	public void requireAssistance(){
-		
-	}
 }
