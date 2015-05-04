@@ -254,7 +254,7 @@ public class Employee {
 		Calendar date = schedule.getDate();
 		Calendar startDate = (GregorianCalendar) date.clone();
 		Calendar endDate = (GregorianCalendar) date.clone();
-		endDate.add(GregorianCalendar.DAY_OF_YEAR, 7);
+		endDate.add(GregorianCalendar.DAY_OF_YEAR, 7);		
 		return this.getTasksInPeriod(startDate, endDate);
 		
 	}

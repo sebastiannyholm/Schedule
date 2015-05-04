@@ -466,7 +466,7 @@ public class TestTask {
 		assertEquals(user.getFreeEmployeesInPeriod(new GregorianCalendar(2015, Calendar.JANUARY, 5, 8, 0), 20).size(), 1);
 		
 	}
-
+	
 	@Test
 	public void requireAssistance() throws Exception{
 		Project project = schedule.getAllProjects().get(0);		// list of 1
