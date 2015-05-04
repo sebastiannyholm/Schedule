@@ -5,12 +5,20 @@ import model.Schedule;
 
 public class Controller {
 
-	Schedule schedule;
-	View view;
+	private Schedule schedule;
+	private View view;
 	
 	public Controller(Schedule schedule, View view) {
 		this.schedule = schedule;
 		this.view = view;
+		
+		new LogInController(schedule, view, this);
+	}
+	
+	public void setUpController() {
+		new ControlController(schedule, view);
+		new ProjectController(schedule, view);
+		new AbsenceController(schedule, view);
 	}
 	
 }

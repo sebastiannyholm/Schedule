@@ -62,7 +62,7 @@ public class Employee {
 	public List<Project> getProjects() {
 		return projects;
 	}
-
+		
 	public void deleteProject(Project project) throws Exception {
 		if (!schedule.isLoggedIn())
 			throw new OperationNotAllowedException("You need to be logged in to delete a project", "Create project");

@@ -1,5 +1,7 @@
 package model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +15,7 @@ public class Project {
 //	private List<Employee> employees;
 	private List<Task> tasks;
 	private List<Employee> absentEmployees;
+	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public Project(String projectName, Calendar startDate, Calendar endDate, Employee projectLeader){
 		
@@ -72,7 +75,7 @@ public class Project {
 	}	
 	
 	public String toString(){
-		return projectName + " " + projectNumber + ", Project period from " + startDate + " to " + endDate + " -- Project leader: " + projectLeader;
+		return projectName + " " + projectNumber + ", Project period from " + df.format(startDate.getTime()) + " to " + df.format(endDate.getTime()) + " -- Project leader: " + projectLeader;
 	}
 
 	public int getProjectNumber() {
@@ -117,8 +120,7 @@ public class Project {
 	}
 
 	public void addAbsentEmployee(Employee employee) {
-		this.absentEmployees.add(employee);
-		
+		this.absentEmployees.add(employee);	
 	}
 
 	public boolean hasTask(Task task) {
