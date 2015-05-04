@@ -23,9 +23,9 @@ public class Driver {
 		final Address address = new Address("XXXXXX", 0, 9999, "YYYYYY");	
 		final Employee ABSENCE_MANAGER = new Employee("Absence Manager", "abma", 100, address, schedule);
 		final Project ABSENCE = new Project("Absence", startupDate, terminationDate, ABSENCE_MANAGER);
-		final Task SICKNESS = new Task("Sickness", startupDate, terminationDate, 0);
-		final Task VACATION = new Task("Vacation", startupDate, terminationDate, 0);
-		final Task COURSE = new Task("Course", startupDate, terminationDate, 0);
+		final Task SICKNESS = new Task("Sickness", startupDate, terminationDate, 99999999);
+		final Task VACATION = new Task("Vacation", startupDate, terminationDate, 99999999);
+		final Task COURSE = new Task("Course", startupDate, terminationDate, 9999999);
 		
 		final Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
 		final Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address1, schedule);

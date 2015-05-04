@@ -336,6 +336,10 @@ public class Employee {
 		 * 2) Course
 		 */
 		
+		startDate.set(Calendar.HOUR_OF_DAY, 8);
+		startDate.set(Calendar.MINUTE, 0);
+		startDate.set(Calendar.SECOND, 0);
+		
 		if (reason == Status.SICK)
 			this.addEmployeeToAbsence(employee, schedule.getAllProjects().get(0).getTasks().get(0), startDate, time);
 		else if (reason == Status.VACATION)

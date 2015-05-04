@@ -26,7 +26,7 @@ public class TestAbsence {
 		
 		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					//street, streetNumber, zipCode, city
 		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
-
+		
 		schedule.addEmployee(employee1);
 		schedule.addEmployee(employee2);
 		
@@ -43,7 +43,7 @@ public class TestAbsence {
 		employee1.createTask(sickness, ABSENCE);
 		employee1.createTask(vacation, ABSENCE);
 		employee1.createTask(course, ABSENCE);
-		
+	
 		employee1.createProject(project);
 		employee1.createTask(task, project);
 		employee1.addEmployeeToTask(employee2, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 80*60);
