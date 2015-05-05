@@ -51,4 +51,7 @@ public class Timer {
 		return startDate.compareTo(today) <= 0 && endDate.compareTo(today) >= 0;
 	}
 	
+	public String toString(){
+		return "from " + df.format(startDate.getTime()) + " to " + df.format(endDate.getTime());
+	}
 }

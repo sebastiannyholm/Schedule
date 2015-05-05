@@ -1,6 +1,8 @@
 package model;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -605,4 +607,102 @@ public class TestTask {
 		}
 		
 	}
+	
+	// for the user to see which tasks he/she is working on today
+	@Test
+	public void getTodaysAgenda() throws Exception{
+		
+		// setup mock
+		//--------
+		DateServer dateServer = mock(DateServer.class);
+		
+		//make this the "today" date and time the user checks his/her agenda
+		Calendar cal = new GregorianCalendar(2015,Calendar.JANUARY,13,8,0);
+		
+		schedule.setDateServer(dateServer);
+		when(dateServer.getDate()).thenReturn(cal);
+		
+		//---------
+		
+		Project project = schedule.getAllProjects().get(0);
+		Employee employee = schedule.getEmployees().get(0);
+		
+
+		// employee = seny
+		// user = luvi
+		
+		// create a couple of tasks, one for today and one for the future
+		Task task = new Task("taskName1", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 15), 80);	// name, number, startWeek, endWeek, budgetedHours
+		Task task2 = new Task("taskName2", new GregorianCalendar(2015, Calendar.JANUARY, 14), new GregorianCalendar(2015, Calendar.JANUARY, 18), 40);	// name, number, startWeek, endWeek, budgetedHours
+		
+		user.createTask(task, project);
+		user.createTask(task2, project);
+		
+		assertEquals(0, user.getTodaysAgenda().size());
+		// add the employee to one task of today (or overlapping today)
+		// and the other not - hence checking todays agenda should only yield 1 task
+		user.addEmployeeToTask(employee, task, new GregorianCalendar(2015, Calendar.JANUARY, 11, 8, 0), 24*60);
+		user.addEmployeeToTask(employee, task2, new GregorianCalendar(2015, Calendar.JANUARY, 15, 8, 0), 8*60);
+		
+		assertEquals(1, employee.getTodaysAgenda().size());
+		
+		
+	}
+	
+	// for the user to see which tasks he/she is working on today
+		@Test
+		public void getTodaysAgendaWithMultipleTasks() throws Exception{
+			
+			// setup mock
+			//--------
+			DateServer dateServer = mock(DateServer.class);
+			
+			//make this the "today" date and time the user checks his/her agenda
+			Calendar cal = new GregorianCalendar(2015,Calendar.JANUARY,15,8,0);
+			
+			schedule.setDateServer(dateServer);
+			when(dateServer.getDate()).thenReturn(cal);
+			
+			//---------
+			
+			Project project = schedule.getAllProjects().get(0);
+			Employee employee = schedule.getEmployees().get(0);
+			
+
+			// employee = seny
+			// user = luvi
+			
+			// create a couple of tasks, one for today ending at noon 
+			// and another one starting right after, thus giving the employee 2 tasks on his agenda "today"
+			Task task = new Task("taskName1", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 16), 80);	// name, number, startWeek, endWeek, budgetedHours
+			Task task2 = new Task("taskName2", new GregorianCalendar(2015, Calendar.JANUARY, 10), new GregorianCalendar(2015, Calendar.JANUARY, 18), 40);	// name, number, startWeek, endWeek, budgetedHours
+			
+			user.createTask(task, project);
+			user.createTask(task2, project);
+			
+			assertEquals(0, user.getTodaysAgenda().size());
+			// add the employee to both tasks of today
+			// hence checking todays agenda should yield both of the tasks
+
+			user.addEmployeeToTask(employee, task, new GregorianCalendar(2015, Calendar.JANUARY, 11, 8, 0), 28*60); // ends on the 15th at 12:00
+			user.addEmployeeToTask(employee, task2, new GregorianCalendar(2015, Calendar.JANUARY, 15, 13, 0), 8*60);	// begins on the 15th at 13:00
+			
+			// expecting both tasks, as both are in the period 13th, January, 08:00 - 16:00
+			assertEquals(2, employee.getTodaysAgenda().size());
+		}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

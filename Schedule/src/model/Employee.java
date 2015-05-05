@@ -60,7 +60,7 @@ public class Employee {
 	public List<Project> getProjects() {
 		return projects;
 	}
-
+		
 	public void deleteProject(Project project) throws Exception {
 		if (!schedule.isLoggedIn())
 			throw new OperationNotAllowedException("You need to be logged in to delete a project", "Create project");
@@ -119,6 +119,7 @@ public class Employee {
 //		// regular employees can't work on more than 10 tasks at once
 //		if (employee.getTasks().contains(task)) 
 //			throw new OperationNotAllowedException("The employee " + employee + " is already working on this task!", "Add employee to task");
+		
 		if (!isProjectLeader(task)) 
 			throw new OperationNotAllowedException("Only the project leader may add an employee to the task", "Add employee to task");
 		else if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
@@ -149,19 +150,35 @@ public class Employee {
 	}
 	
 	private boolean checkAgenda(Calendar startDate, int time) {
-		
 		Calendar endDate = new GregorianCalendar();
 		endDate.setTime(startDate.getTime());
-		
+		// convert to minutes
 		setEndDate(endDate, time + startDate.get(Calendar.HOUR_OF_DAY)*60 + startDate.get(Calendar.MINUTE) - 8*60);
 		
 		for (Task task : tasksAndTime.keySet())
-			for (Timer timer : tasksAndTime.get(task))
+			for (Timer timer : tasksAndTime.get(task)){
 				if (timer.isInPeriod(startDate, endDate))
 					return true;
-		
+			}
 		return false;
 	}
+	
+	public List<Task> getTodaysAgenda(){
+			List<Task> todaysAgenda = new LinkedList<Task>();
+			Calendar date = schedule.getDate();
+			Calendar startDate = (GregorianCalendar) date.clone();
+			Calendar endDate = (GregorianCalendar) date.clone();
+			startDate.set(GregorianCalendar.HOUR_OF_DAY, 8);
+			endDate.add(GregorianCalendar.HOUR_OF_DAY, 16);
+			for (Task task : tasks){
+				for (Timer timer : tasksAndTime.get(task)){
+					if (timer.isInPeriod(startDate, endDate)){
+						todaysAgenda.add(task);
+					}
+				}
+			}
+			return todaysAgenda;
+		}
 	
 	public void addTask(Task task, Calendar startDate, int time) {
 		Calendar endDate = new GregorianCalendar();
@@ -332,6 +349,10 @@ public class Employee {
 		 * 1) Vacation
 		 * 2) Course
 		 */
+		
+		startDate.set(Calendar.HOUR_OF_DAY, 8);
+		startDate.set(Calendar.MINUTE, 0);
+		startDate.set(Calendar.SECOND, 0);
 		
 		if (reason == Status.SICK)
 			this.addEmployeeToAbsence(employee, schedule.getAllProjects().get(0).getTasks().get(0), startDate, time);
