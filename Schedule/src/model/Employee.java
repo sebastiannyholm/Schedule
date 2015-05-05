@@ -163,21 +163,26 @@ public class Employee {
 		return false;
 	}
 	
-	public List<Task> getTodaysAgenda(){
-			List<Task> todaysAgenda = new LinkedList<Task>();
+	public List<Timer> getTodaysAgenda() {
+			PriorityQueue<Timer> priorityQueue = new PriorityQueue<Timer>();
 			Calendar date = schedule.getDate();
 			Calendar startDate = (GregorianCalendar) date.clone();
 			Calendar endDate = (GregorianCalendar) date.clone();
 			startDate.set(GregorianCalendar.HOUR_OF_DAY, 8);
 			endDate.add(GregorianCalendar.HOUR_OF_DAY, 16);
-			for (Task task : tasks){
-				for (Timer timer : tasksAndTime.get(task)){
-					if (timer.isInPeriod(startDate, endDate)){
-						todaysAgenda.add(task);
-					}
-				}
-			}
-			return todaysAgenda;
+			
+			for (Task task : tasksAndTime.keySet())
+				for (Timer timer : tasksAndTime.get(task))
+					if (timer.isInPeriod(startDate, endDate))
+						priorityQueue.insert(timer, timer.getStartDate());
+			
+			LinkedList<Timer> timers = new LinkedList<Timer>();
+			
+			while (!priorityQueue.isEmpty())
+				timers.add(priorityQueue.extractMin());
+				
+			
+			return timers;
 		}
 	
 	public void addTask(Task task, Calendar startDate, int time) {
@@ -190,7 +195,7 @@ public class Employee {
 			tasks.add(task);
 			tasksAndTime.put(task, new LinkedList<Timer>());
 		}
-		tasksAndTime.get(task).add(new Timer(startDate, endDate, time));
+		tasksAndTime.get(task).add(new Timer(task, startDate, endDate, time));
 	}
 	
 	private void setEndDate(Calendar endDate, int time) {
@@ -331,13 +336,22 @@ public class Employee {
 			taskLog.put(task, taskLog.get(task) + timeWorkedOnTask);
 		else 
 			taskLog.put(task, timeWorkedOnTask);
-	
+		
 		task.setTaskLog(this, timeWorkedOnTask);
 		
+	}
+	
+
+	public void changeTimeWorkedOnTask(Task task, int time) { 
+		taskLog.put(task, time);
 	}
 
 	public int getTaskLogValue(Task task) {
 		return taskLog.get(task);
+	}
+	
+	public Map<Task, Integer> getTaskLog() {
+		return taskLog;
 	}
 
 	public void reportAbsence(Employee employee, Enum<Status> reason, Calendar startDate, int time) throws Exception {

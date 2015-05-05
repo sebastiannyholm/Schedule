@@ -1,6 +1,6 @@
 package model;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -162,6 +162,9 @@ public class TestTime {
 		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 1000);
 		
 		user.createTask(task, project);
+		
+		assertFalse(user.getTaskLog().containsKey(task));
+		
 		user.startWorkingOnTask(task);
 		
 		// work on the task for 270 minutes then stop
@@ -210,5 +213,30 @@ public class TestTime {
 		assertEquals(270+40, user.getTaskLogValue(task));
 		
 	}
+	
+	@Test
+	public void changeTimeWorkedOnATask() throws Exception{
+		
+		Project project = schedule.getAllProjects().get(0);
+		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 1000);
+		
+		user.createTask(task, project);
+		user.startWorkingOnTask(task);
+		
+		// work on the task for 270 minutes then stop
+		Calendar newCal = new GregorianCalendar();
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 270);
+		when(dateServer.getDate()).thenReturn(newCal);
+		
+		user.stopWorkingOnTask(task);
+		
+		user.changeTimeWorkedOnTask(task, 200);
+		
+		assertEquals(200, user.getTaskLogValue(task));
+		
+	}
+	
+	
 	
 }

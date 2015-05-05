@@ -21,6 +21,10 @@ public class Controller {
 		new AbsenceController(schedule, view);
 		new CreateProjectController(schedule, view);
 		new ManageProjectController(schedule, view);
+		new AgendaController(schedule, view);
+		new CreateTaskController(schedule, view);
+		new ManageTaskController(schedule, view);
+		new WorkingController(schedule, view);
 	}
 	
 }

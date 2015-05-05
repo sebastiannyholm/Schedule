@@ -689,6 +689,9 @@ public class TestTask {
 			
 			// expecting both tasks, as both are in the period 13th, January, 08:00 - 16:00
 			assertEquals(2, employee.getTodaysAgenda().size());
+			
+			assertEquals(employee.getTodaysAgenda().get(0).getTask(), task);
+			assertEquals(employee.getTodaysAgenda().get(1).getTask(), task2);
 		}
 }
 
