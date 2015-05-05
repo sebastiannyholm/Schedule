@@ -41,6 +41,12 @@ public class ControlController implements ActionListener {
 				view.reset();
 				break;
 				
+			case "Manage employees":
+				view.remove(view.getControlPanel());
+				view.add(view.getManageEmployeesPanel());
+				view.reset();
+				break;
+			
 			case "Log out":
 				try {
 					schedule.logOut();

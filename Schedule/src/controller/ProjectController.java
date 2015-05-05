@@ -46,7 +46,7 @@ public class ProjectController implements ActionListener {
 				if ( view.getProjectPanel().getSelectedIndex() > -1 ) {
 					project = view.getProjectPanel().getSelected();
 					view.getManageProjectPanel().setProject(project);
-					view.getManageProjectPanel().updateList(schedule.getUser().getProjects().indexOf(project));
+					view.getManageProjectPanel().updateList(project);
 				} else {
 					break;
 				}

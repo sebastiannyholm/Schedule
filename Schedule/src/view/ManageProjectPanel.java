@@ -79,11 +79,11 @@ public class ManageProjectPanel extends JPanel {
 		return tasks.get(index);
 	}	
 	
-	public void updateList(int index) {
+	public void updateList(Project project) {
 		
 		tasks.clear();
 		
-		for (Task task : schedule.getUser().getProjects().get(index).getTasks())
+		for (Task task : schedule.getUser().getProjects().get(schedule.getUser().getProjects().indexOf(project)).getTasks())
 			tasks.addElement(task);
 		
 	}

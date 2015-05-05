@@ -34,7 +34,7 @@ public class AgendaPanel extends JPanel {
 	private List<Timer> todaysTimers;
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
 	
-	private JLabel titleLabel, dateLabel;
+	private JLabel titleLabel, dailyListLabel, dateLabel;
 	private JLabel[] tasksTodayLabel;
 	private JButton checkTask, back;
 	
@@ -52,6 +52,7 @@ public class AgendaPanel extends JPanel {
 		
 		this.titleLabel = new JLabel("Agenda");
 		this.checkTask = new JButton("Check task");
+		this.dailyListLabel = new JLabel("Todays agenda");
 		this.back = new JButton("Back");
 		this.timerList = new JList(timers);
 		this.scrollPane = new JScrollPane();
@@ -67,6 +68,7 @@ public class AgendaPanel extends JPanel {
 	    
 		titleLabel.setBounds(20, 20, 460, 40);
 		checkTask.setBounds(250, 120, 120, 40);
+		dailyListLabel.setBounds(20, 80, 200, 40);
 		scrollPane.setBounds(20, 120, 200, 300);
 		
 		back.setBounds(250, 360, 120, 40);
@@ -74,6 +76,7 @@ public class AgendaPanel extends JPanel {
 		
 		this.setLayout(null);
 		this.add(titleLabel);
+		this.add(dailyListLabel);
 		this.add(checkTask);
 		this.add(back);
 		this.add(scrollPane);

@@ -25,6 +25,7 @@ public class Controller {
 		new CreateTaskController(schedule, view);
 		new ManageTaskController(schedule, view);
 		new WorkingController(schedule, view);
+		new ManageEmployeesController(schedule, view);
 	}
 	
 }
