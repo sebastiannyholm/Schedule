@@ -27,8 +27,6 @@ public class Employee {
 	private Map<String, Integer> workLog = new HashMap<String, Integer>();
 	private Map<Task, Integer> taskLog = new HashMap<Task, Integer>();
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-	private boolean absence = false;
-	private Enum<Status> status;
 	
 	public Employee(String name, String initials, int age, Address address, Schedule schedule) {
 		this.name = name;
@@ -121,6 +119,7 @@ public class Employee {
 //		// regular employees can't work on more than 10 tasks at once
 //		if (employee.getTasks().contains(task)) 
 //			throw new OperationNotAllowedException("The employee " + employee + " is already working on this task!", "Add employee to task");
+		
 		if (!isProjectLeader(task)) 
 			throw new OperationNotAllowedException("Only the project leader may add an employee to the task", "Add employee to task");
 		else if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
@@ -151,19 +150,35 @@ public class Employee {
 	}
 	
 	private boolean checkAgenda(Calendar startDate, int time) {
-		
 		Calendar endDate = new GregorianCalendar();
 		endDate.setTime(startDate.getTime());
-		
+		// convert to minutes
 		setEndDate(endDate, time + startDate.get(Calendar.HOUR_OF_DAY)*60 + startDate.get(Calendar.MINUTE) - 8*60);
 		
 		for (Task task : tasksAndTime.keySet())
-			for (Timer timer : tasksAndTime.get(task))
+			for (Timer timer : tasksAndTime.get(task)){
 				if (timer.isInPeriod(startDate, endDate))
 					return true;
-		
+			}
 		return false;
 	}
+	
+	public List<Task> getTodaysAgenda(){
+			List<Task> todaysAgenda = new LinkedList<Task>();
+			Calendar date = schedule.getDate();
+			Calendar startDate = (GregorianCalendar) date.clone();
+			Calendar endDate = (GregorianCalendar) date.clone();
+			startDate.set(GregorianCalendar.HOUR_OF_DAY, 8);
+			endDate.add(GregorianCalendar.HOUR_OF_DAY, 16);
+			for (Task task : tasks){
+				for (Timer timer : tasksAndTime.get(task)){
+					if (timer.isInPeriod(startDate, endDate)){
+						todaysAgenda.add(task);
+					}
+				}
+			}
+			return todaysAgenda;
+		}
 	
 	public void addTask(Task task, Calendar startDate, int time) {
 		Calendar endDate = new GregorianCalendar();
@@ -256,7 +271,7 @@ public class Employee {
 		Calendar date = schedule.getDate();
 		Calendar startDate = (GregorianCalendar) date.clone();
 		Calendar endDate = (GregorianCalendar) date.clone();
-		endDate.add(GregorianCalendar.DAY_OF_YEAR, 7);
+		endDate.add(GregorianCalendar.DAY_OF_YEAR, 7);		
 		return this.getTasksInPeriod(startDate, endDate);
 		
 	}
@@ -326,7 +341,6 @@ public class Employee {
 	}
 
 	public void reportAbsence(Employee employee, Enum<Status> reason, Calendar startDate, int time) throws Exception {
-		employee.setAbsent(reason);
 		
 		/*
 		 * Premade project and tasks in schedule:
@@ -346,13 +360,6 @@ public class Employee {
 			this.addEmployeeToTask(employee, schedule.getAllProjects().get(0).getTasks().get(1), startDate, time);
 			
 	}
-	
-	public void setAbsent(Enum<Status> status){
-		// add the employee to the project defined by status (Sickness, Vacation or Course)
-		this.absence = true;
-		
-		this.status = status;
-	}
 
 	public boolean isAbsent() {
 		
@@ -368,14 +375,6 @@ public class Employee {
 
 	public void addProject(Project project) {
 		this.projects.add(project);
-	}
-	
-	public void returnFromAbsence(){
-		
-	}
-
-	public Enum<Status> getStatus() {
-		return status;
 	}
 
 	public int getTimeForATask(Task task) {
@@ -427,6 +426,12 @@ public class Employee {
 	public void requireAssistance(Employee employee, Task task, Calendar startDate, int time) throws Exception {
 		if (!task.getEmployees().contains(this))
 			throw new OperationNotAllowedException("You can not require assistance if you are not on the task!", "Require assistance");		
+		else if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
+			throw new OperationNotAllowedException("The employee " + employee + " is already working on the maximum amount of tasks!", "Add employee to task");
+		else if (time + task.getTimeSpent() > task.getBudgetedTime()*60)
+			throw new OperationNotAllowedException("You have exceeded the time limit fot the task", "Add employee to task");
+		else if (employee.checkAgenda(startDate, time))
+			throw new OperationNotAllowedException("The employee does not have time in this period", "Add employee to task");
 		
 		employee.addTask(task, startDate, time);
 		task.addEmployeeAsAssistance(employee);

@@ -134,4 +134,8 @@ public class Task {
 //		this.endDate = endDate;
 //	}
 
+	public String getName(){
+		return name;
+	}
+	
 }
