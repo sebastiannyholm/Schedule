@@ -1,8 +1,6 @@
 package view;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -102,11 +100,8 @@ public class AbsencePanel extends JPanel {
 		back.addActionListener(controller);
 	}
 	
-	public Calendar getStartDate() {
-		Date date = (Date) datePicker.getModel().getValue();
-        Calendar startDate = new GregorianCalendar();
-        startDate.setTime(date);
-        return startDate;
+	public Date getStartDate() {
+        return (Date) datePicker.getModel().getValue();
 	}
 
 	public String getSickEmployee() {
@@ -117,6 +112,10 @@ public class AbsencePanel extends JPanel {
 		return employee.getText();
 	}
 
+	public String getTime() {
+		return time.getText();
+	}
+	
 	public void setErrorLabel(String error) {
 		errorLabel.setText(error);
 	}
@@ -129,10 +128,6 @@ public class AbsencePanel extends JPanel {
 			if (employee.isAbsent())
 				employees.addElement(employee);
 		
-	}
-
-	public int getTime() {
-		return Integer.parseInt(time.getText());
 	}
 	
 }

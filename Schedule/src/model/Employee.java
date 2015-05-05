@@ -457,5 +457,11 @@ public class Employee {
 		
 		schedule.removeEmployee(employee);
 	}
+
+	public void createProject(String projectName, Employee projectLeader,
+			Calendar startDate, Calendar endDate) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

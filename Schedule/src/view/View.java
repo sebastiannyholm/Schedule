@@ -23,6 +23,10 @@ public class View extends JFrame {
 	private AbsencePanel absencePanel;
 	private AgendaPanel agendaPanel;
 	private ProjectPanel projectPanel;
+	private CreateProjectPanel createProjectPanel;
+	private ManageProjectPanel manageProjectPanel;
+	private CreateTaskPanel createTaskPanel;
+	private ManageTaskPanel manageTaskPanel;
 //	private ProjectPanel gamePanel;
 //	private ManageProjectPanel manageProjectPanel;
 //	private CreateProjectPanel createProjectPanel;
@@ -63,6 +67,10 @@ public class View extends JFrame {
 		this.absencePanel = new AbsencePanel(schedule);
 		this.agendaPanel = new AgendaPanel(schedule);
 		this.projectPanel = new ProjectPanel(schedule);
+		this.createProjectPanel = new CreateProjectPanel(schedule);
+		this.manageProjectPanel = new ManageProjectPanel(schedule);
+		this.createTaskPanel = new CreateTaskPanel(schedule);
+		this.manageTaskPanel = new ManageTaskPanel(schedule);
 	}
 	
 	public LogInPanel getLogInPanel() {
@@ -83,6 +91,23 @@ public class View extends JFrame {
 
 	public ProjectPanel getProjectPanel() {
 		return projectPanel;
+	}
+
+	public CreateProjectPanel getCreateProjectPanel() {
+		return createProjectPanel;
+	}
+
+	public ManageProjectPanel getManageProjectPanel() {
+		// TODO Auto-generated method stub
+		return manageProjectPanel;
+	}
+
+	public CreateTaskPanel getCreateTaskPanel() {
+		return createTaskPanel;
+	}
+
+	public ManageTaskPanel getManageTaskPanel() {
+		return manageTaskPanel;
 	}
 	
 }

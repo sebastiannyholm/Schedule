@@ -19,6 +19,8 @@ public class Controller {
 		new ControlController(schedule, view);
 		new ProjectController(schedule, view);
 		new AbsenceController(schedule, view);
+		new CreateProjectController(schedule, view);
+		new ManageProjectController(schedule, view);
 	}
 	
 }

@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import controller.ProjectController;
+import model.Employee;
 import model.Project;
 import model.Schedule;
 
@@ -69,29 +70,23 @@ public class ProjectPanel extends JPanel {
 		manageProject.addActionListener(controller);
 		back.addActionListener(controller);
 	}
-
-//	public int getSelectedIndex() {
-//		return getContactList().getSelectedIndex();
-//	}
-//	
-//	public Contact getSelected() {
-//		int index = getContactList().getSelectedIndex();
-//		
-//		Contact contact = listModel.get(index);
-//		
-//		return contact;
-//	}
-//	
-//	public void updateContactBookList( ContactBook book ) {
-//		
-//		listModel.clear();
-//		
-//		for ( int i = 0; i < book.getSize(); i++ ) {
-//			
-//			listModel.addElement(book.getContact(i));
-//
-//		}
-//		
-//	}
 	
+	public int getSelectedIndex() {
+		return projectList.getSelectedIndex();
+	}
+	
+	public Project getSelected() {
+		int index = projectList.getSelectedIndex();
+		
+		return projects.get(index);
+	}	
+	
+	public void updateList() {
+		
+		projects.clear();
+		
+		for (Project project : schedule.getUser().getProjects())
+			projects.addElement(project);
+		
+	}
 }
