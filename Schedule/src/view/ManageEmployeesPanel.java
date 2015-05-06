@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Color;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -8,17 +10,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import controller.ManageEmployeesController;
-import model.Address;
 import model.Employee;
-import model.Project;
 import model.Schedule;
+import controller.ManageEmployeesController;
 
 public class ManageEmployeesPanel extends JPanel {
 
 	private Schedule schedule;
 	
-	private JLabel titleLabel, employeeListTitleLabel, addEmployeeLabel, nameLabel, initialLabel, ageLabel, addressLabel, streetLabel, streetNumberLabel, zipCodeLabel, cityLabel;;
+	private JLabel titleLabel, employeeListTitleLabel, addEmployeeLabel, nameLabel, initialLabel, ageLabel, addressLabel, streetLabel, streetNumberLabel, zipCodeLabel, cityLabel, errorLabel;
 	private JButton addEmployee, removeEmployee, back;
 	private JTextField nameText, initialText, ageText, streetText, streetNumberText, zipCodeText, cityText;
 	
@@ -40,6 +40,7 @@ public class ManageEmployeesPanel extends JPanel {
 		this.scrollPane.setViewportView(employeeList);
 		this.addEmployeeLabel = new JLabel("Add new employee");
 		this.nameLabel = new JLabel("Name");
+		this.errorLabel = new JLabel("");
 		this.nameText = new JTextField("");
 		this.initialLabel = new JLabel("Initials");
 		this.initialText = new JTextField("");
@@ -84,7 +85,10 @@ public class ManageEmployeesPanel extends JPanel {
 		removeEmployee.setBounds(370, 380, 120, 40);
 		
 		back.setBounds(370, 430, 120, 40);
-
+		
+		errorLabel.setBounds(20, 430, 300, 40);
+		errorLabel.setForeground(Color.RED);
+		
 		updateList();
 		
 		this.setLayout(null);
@@ -110,6 +114,7 @@ public class ManageEmployeesPanel extends JPanel {
 		this.add(addEmployee);
 		this.add(removeEmployee);
 		this.add(back);
+		this.add(errorLabel);
 	}
 
 	public void registerListener(ManageEmployeesController controller) {
@@ -154,6 +159,10 @@ public class ManageEmployeesPanel extends JPanel {
 	
 	public String getCityLabel() {
 		return cityText.getText();
+	}
+	
+	public void setErrorLabel(String error){
+		errorLabel.setText(error);
 	}
 	public void updateList() {
 		

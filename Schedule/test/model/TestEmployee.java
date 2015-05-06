@@ -382,6 +382,8 @@ public class TestEmployee {
 			assertEquals("Remove employee", e.getOperation());
 		}
 		
+		assertEquals(1,schedule.getEmployees().size());
+		
 		
 	}
 	

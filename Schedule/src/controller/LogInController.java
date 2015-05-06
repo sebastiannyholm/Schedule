@@ -29,12 +29,13 @@ public class LogInController implements ActionListener {
 				try {
 					schedule.login(view.getLogInPanel().getInitials());
 				} catch (Exception error) {
-					System.err.println(error.getMessage());
+					view.getLogInPanel().setErrorLabel(error.getMessage());
 				}
 				
 				if (schedule.isLoggedIn()) {
 					view.setUpPanels();
 					controller.setUpController();
+					view.getLogInPanel().setErrorLabel("");
 					view.remove(view.getLogInPanel());
 					view.add(view.getControlPanel());
 					view.reset();
