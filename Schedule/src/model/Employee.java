@@ -473,7 +473,8 @@ public class Employee {
 			throw new OperationNotAllowedException("You can't remove an employee if you are not logged in!", "Remove employee");
 		if (!isAdmin())
 			throw new OperationNotAllowedException("Only administrators can remove employees!", "Remove employee");
-		
+		if (employee == this)
+			throw new OperationNotAllowedException("You cannot remove yourself from the system!", "Remove employee");
 		schedule.removeEmployee(employee);
 	}
 
