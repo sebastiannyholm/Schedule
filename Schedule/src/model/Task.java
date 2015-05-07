@@ -8,8 +8,8 @@ import java.util.Map;
 
 public class Task {
 
-	List<Employee> employees;
-	List<Employee> employeesAsAssistance;
+	private List<Employee> employees;
+	private List<Employee> employeesAsAssistance;
 	private String name, taskNumber;
 	private Calendar startDate, endDate;
 	private int budgetedTime;
@@ -24,8 +24,8 @@ public class Task {
 		this.endDate = endDate;
 		this.budgetedTime = budgetedTime;
 		
-		employees = new LinkedList<Employee>();
-		employeesAsAssistance = new LinkedList<Employee>();
+		this.employees = new LinkedList<Employee>();
+		this.employeesAsAssistance = new LinkedList<Employee>();
 	}
 	
 	public List<Employee> getEmployees() {
@@ -60,7 +60,7 @@ public class Task {
 	}
 	
 	public String toString(){
-		return name + ", " + taskNumber + ", from " + startDate + " to " + endDate + " = " + budgetedTime + " hours";
+		return taskNumber + " - " + name;
 	}
 
 	// this.startWeek > 45 to make up for tasks overlapping new years eve

@@ -72,8 +72,10 @@ public class CreateProjectController implements ActionListener {
 				Project project = new Project(projectName, startDate, endDate, projectLeader);
 				try {
 					schedule.getUser().createProject(project);
+					view.resetErrorLabels();
 				} catch (Exception error) {
-					System.err.println(error);
+					view.getCreateProjectPanel().setErrorLabel(error.getMessage());
+					break;
 				}
 				view.getProjectPanel().updateList();
 				
@@ -83,6 +85,7 @@ public class CreateProjectController implements ActionListener {
 				break;
 				
 			case "Back":
+				view.resetErrorLabels();
 				view.remove(view.getCreateProjectPanel());
 				view.add(view.getProjectPanel());
 				view.reset();

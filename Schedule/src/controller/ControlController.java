@@ -24,24 +24,28 @@ public class ControlController implements ActionListener {
 		switch(e.getActionCommand()) {
 		
 			case "Absence":
+				view.getAbsencePanel().updateList();
 				view.remove(view.getControlPanel());
 				view.add(view.getAbsencePanel());
 				view.reset();
 				break;
 				
 			case "My agenda":
+				view.getAgendaPanel().updateList();
 				view.remove(view.getControlPanel());
 				view.add(view.getAgendaPanel());
 				view.reset();
 				break;
 				
 			case "My projects":
+				view.getProjectPanel().updateList();
 				view.remove(view.getControlPanel());
 				view.add(view.getProjectPanel());
 				view.reset();
 				break;
 				
 			case "Manage employees":
+				view.getManageEmployeesPanel().updateList();
 				view.remove(view.getControlPanel());
 				view.add(view.getManageEmployeesPanel());
 				view.reset();
@@ -51,7 +55,7 @@ public class ControlController implements ActionListener {
 				try {
 					schedule.logOut();
 				} catch (OperationNotAllowedException error) {
-					System.err.println(error.getMessage());
+					view.getControlPanel().setErrorLabel(error.getMessage());
 				}
 				view.remove(view.getControlPanel());
 				view.add(view.getLogInPanel());

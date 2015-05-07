@@ -17,7 +17,7 @@ public class CreateTaskController implements ActionListener {
 	private Schedule schedule;
 	private View view;
 	
-	private String projectName;
+	private String taskName;
 	private Project project;
 	private Calendar startDate = null, endDate = null;
 	
@@ -32,7 +32,7 @@ public class CreateTaskController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		switch (e.getActionCommand()) {
-			case "Create project":
+			case "Create task":
 				
 				String name = view.getCreateTaskPanel().getTaskName(); 
 				String bugetTime = view.getCreateTaskPanel().getbudgetTime();
@@ -58,8 +58,7 @@ public class CreateTaskController implements ActionListener {
 				try {  
 					time = Integer.parseInt(bugetTime);
 				} catch(NumberFormatException error) {
-					System.err.println(error);
-					view.getCreateTaskPanel().setErrorLabel("Correct your time");
+					view.getCreateTaskPanel().setErrorLabel(error.getMessage());
 					break;
 				}
 				
@@ -76,8 +75,9 @@ public class CreateTaskController implements ActionListener {
 				Task task = new Task(name, startDate, endDate, time);
 				try {
 					schedule.getUser().createTask(task, project);
+					view.resetErrorLabels();
 				} catch (Exception error) {
-					System.err.println(error);
+					view.getCreateTaskPanel().setErrorLabel(error.getMessage());
 				}
 				
 				view.getManageProjectPanel().updateList(project);
@@ -88,6 +88,7 @@ public class CreateTaskController implements ActionListener {
 				break;
 				
 			case "Back":
+				view.resetErrorLabels();
 				view.remove(view.getCreateTaskPanel());
 				view.add(view.getManageProjectPanel());
 				view.reset();

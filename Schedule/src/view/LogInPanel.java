@@ -28,7 +28,7 @@ public class LogInPanel extends JPanel {
 		this.titleLabel = new JLabel("Welcome");
 		this.initialslabel = new JLabel("Login (initials):");
 		this.errorLabel = new JLabel("");
-		this.initialsText = new JTextField("xxxx");
+		this.initialsText = new JTextField("");
 		this.logInButton = new JButton("Log in");
 		this.shutDownButton = new JButton("Shut down");
 		

@@ -55,7 +55,7 @@ public class ManageEmployeesPanel extends JPanel {
 		this.zipCodeText = new JTextField("");
 		this.cityLabel = new JLabel("City");
 		this.cityText = new JTextField("");
-
+	
 		titleLabel.setBounds(20, 20, 460, 40);
 		employeeListTitleLabel.setBounds(20, 80, 200, 40);
 		scrollPane.setBounds(20, 120, 200, 300);
@@ -164,6 +164,7 @@ public class ManageEmployeesPanel extends JPanel {
 	public void setErrorLabel(String error){
 		errorLabel.setText(error);
 	}
+
 	public void updateList() {
 		
 		employees.clear();

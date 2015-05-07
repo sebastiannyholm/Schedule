@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Color;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,7 +24,7 @@ public class ManageProjectPanel extends JPanel {
 	private Schedule schedule;
 	private Project project;
 	
-	private JLabel titleLabel, taskListTitleLabel;
+	private JLabel titleLabel, taskListTitleLabel, errorLabel;
 	private JButton createTask, deleteTask, manageTask, back;
 	private JList taskList;
 	private JScrollPane scrollPane;
@@ -40,6 +42,7 @@ public class ManageProjectPanel extends JPanel {
 		this.back = new JButton("Back");
 		this.scrollPane = new JScrollPane();
 		this.scrollPane.setViewportView(taskList);
+		this.errorLabel = new JLabel("");
 		
 		this.setLayout(null);
 		
@@ -52,6 +55,9 @@ public class ManageProjectPanel extends JPanel {
 		manageTask.setBounds(250, 240, 120, 40);
 		back.setBounds(250, 300, 120, 40);
 		
+		errorLabel.setBounds(20, 430, 300, 40);
+		errorLabel.setForeground(Color.RED);
+		
 		this.add(titleLabel);
 		this.add(taskListTitleLabel);
 		this.add(scrollPane);
@@ -59,6 +65,7 @@ public class ManageProjectPanel extends JPanel {
 		this.add(deleteTask);
 		this.add(manageTask);
 		this.add(back);
+		this.add(errorLabel);
 		
 	}
 
@@ -94,5 +101,9 @@ public class ManageProjectPanel extends JPanel {
 	
 	public Project getProject() {
 		return project;
+	}
+	
+	public void setErrorLabel(String error){
+		errorLabel.setText(error);
 	}
 }

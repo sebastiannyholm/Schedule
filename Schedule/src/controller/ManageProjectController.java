@@ -26,10 +26,10 @@ public class ManageProjectController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		project = view.getManageProjectPanel().getProject();
-		task = view.getManageProjectPanel().getSelected();
 		
 		switch (e.getActionCommand()) {
 			case "Create task":
+				view.resetErrorLabels();
 				view.getCreateTaskPanel().setProject(project);
 				view.remove(view.getManageProjectPanel());
 				view.add(view.getCreateTaskPanel());
@@ -38,30 +38,41 @@ public class ManageProjectController implements ActionListener {
 				
 			case "Delete task":
 				if ( view.getManageProjectPanel().getSelectedIndex() > -1 ) {
+					task = view.getManageProjectPanel().getSelected();
 					try {
 						schedule.getUser().deleteTask(task, project);
+						view.resetErrorLabels();
 					} catch (Exception error) {
-						System.err.println(error);
+						view.getManageProjectPanel().setErrorLabel(error.getMessage());
 					}
 					
 					view.getManageProjectPanel().updateList(project);
 				}
+				else
+					view.getManageProjectPanel().setErrorLabel("Please select a task");
 				break;
 
 			case "Manage task":
 				if ( view.getManageProjectPanel().getSelectedIndex() > -1 ) {
+					view.resetErrorLabels();					
+					task = view.getManageProjectPanel().getSelected();
 					task = view.getManageProjectPanel().getSelected();
 					view.getManageTaskPanel().setTask(task);
+					view.getManageTaskPanel().setTitleLabel(task.getName());
+					view.getManageTaskPanel().updateList();
+					view.getManageTaskPanel().updateAssistenceList();
 				} else {
+					view.getManageProjectPanel().setErrorLabel("Please select a task");
 					break;
 				}
 				
-				view.remove(view.getProjectPanel());
-				view.add(view.getManageProjectPanel());
+				view.remove(view.getManageProjectPanel());
+				view.add(view.getManageTaskPanel());
 				view.reset();
 				break;
 				
 			case "Back":
+				view.resetErrorLabels();
 				view.remove(view.getManageProjectPanel());
 				view.add(view.getProjectPanel());
 				view.reset();

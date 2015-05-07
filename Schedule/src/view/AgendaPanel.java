@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,8 +35,7 @@ public class AgendaPanel extends JPanel {
 	private List<Timer> todaysTimers;
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
 	
-	private JLabel titleLabel, dailyListLabel, dateLabel;
-	private JLabel[] tasksTodayLabel;
+	private JLabel titleLabel, dailyListLabel, errorLabel;
 	private JButton checkTask, back;
 	
 	private JList timerList;
@@ -57,22 +57,22 @@ public class AgendaPanel extends JPanel {
 		this.timerList = new JList(timers);
 		this.scrollPane = new JScrollPane();
 		this.scrollPane.setViewportView(timerList);
-		
+		this.errorLabel = new JLabel("");
 		this.dateModel = new UtilDateModel();
 	    this.datePanel = new JDatePanelImpl(dateModel);
 	    this.datePicker = new JDatePickerImpl(datePanel);
-		
-	    this.todaysTimers = schedule.getUser().getTodaysAgenda();
-	    for (Timer timer : todaysTimers)
-	    	timers.addElement(timer);
+	    
+	    updateList();
 	    
 		titleLabel.setBounds(20, 20, 460, 40);
 		checkTask.setBounds(250, 120, 120, 40);
 		dailyListLabel.setBounds(20, 80, 200, 40);
 		scrollPane.setBounds(20, 120, 200, 300);
-		
 		back.setBounds(250, 360, 120, 40);
 		datePicker.setBounds(250,240,200,40);
+		
+		errorLabel.setBounds(20, 430, 300, 40);
+		errorLabel.setForeground(Color.RED);
 		
 		this.setLayout(null);
 		this.add(titleLabel);
@@ -80,6 +80,7 @@ public class AgendaPanel extends JPanel {
 		this.add(checkTask);
 		this.add(back);
 		this.add(scrollPane);
+		this.add(errorLabel);
 		
 	}
 	
@@ -99,11 +100,17 @@ public class AgendaPanel extends JPanel {
 	}
 	
 	public void updateList() {
+
+		todaysTimers = schedule.getUser().getTodaysAgenda();
 		
 		timers.clear();
-		
-
+	
+		for (Timer timer : todaysTimers)
+	    	timers.addElement(timer);
 		
 	}
 	
+	public void setErrorLabel(String error){
+		errorLabel.setText(error);
+	}
 }

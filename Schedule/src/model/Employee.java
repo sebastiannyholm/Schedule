@@ -41,12 +41,14 @@ public class Employee {
 		this.tasks = new LinkedList<Task>();
 		this.tasksAndTime = new HashMap<Task, LinkedList<Timer>>();
 	}
-
+	
 	public void createProject(Project newProject) throws Exception {
 		if (!schedule.isLoggedIn())
 			throw new OperationNotAllowedException("You need to be logged in to create a project", "Create project");
 		else if (!this.equals(schedule.getUser()))
 			throw new OperationNotAllowedException("You need to be the one logged in to create a project", "Add task");
+		else if (newProject.getStartDate().after(newProject.getEndDate()))
+			throw new OperationNotAllowedException("Bad project bounds - Project ends before it begins", "Create project");
 		
 		for (Project project : schedule.getAllProjects())
 			if (project.projectExist(newProject)) 
@@ -125,7 +127,7 @@ public class Employee {
 		else if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
 			throw new OperationNotAllowedException("The employee " + employee + " is already working on the maximum amount of tasks!", "Add employee to task");
 		else if (time + task.getTimeSpent() > task.getBudgetedTime()*60)
-			throw new OperationNotAllowedException("You have exceeded the time limit fot the task", "Add employee to task");
+			throw new OperationNotAllowedException("You have exceeded the time limit for the task", "Add employee to task");
 		else if (employee.checkAgenda(startDate, time))
 			throw new OperationNotAllowedException("The employee does not have time in this period", "Add employee to task");
 		
@@ -240,6 +242,8 @@ public class Employee {
 		employee.tasks.remove(task);
 		employee.tasksAndTime.remove(task);
 		task.removeEmployee(employee);
+		System.out.println(task);
+		System.out.println(tasksAndTime.size());
 	}
 	
 	public boolean match(String critiria) {
@@ -256,7 +260,7 @@ public class Employee {
 	}
 	
 	public String toString(){
-		return name + ", " + initials + ", aged " + age + ", living in " + address;
+		return name;
 	}
 
 	public List<Task> getTasks() {
@@ -372,7 +376,7 @@ public class Employee {
 			this.addEmployeeToAbsence(employee, schedule.getAllProjects().get(0).getTasks().get(0), startDate, time);
 		else if (reason == Status.VACATION)
 			this.addEmployeeToTask(employee, schedule.getAllProjects().get(0).getTasks().get(1), startDate, time);
-			
+	
 	}
 
 	public boolean isAbsent() {
@@ -423,7 +427,7 @@ public class Employee {
 
 	public List<Employee> getFreeEmployeesInPeriod(Calendar startDate, int time) {
 		List<Employee> freeEmployeesInPeriod = new LinkedList<Employee>();
-		
+		freeEmployeesInPeriod.addAll(schedule.getEmployees());
 		Calendar endDate = new GregorianCalendar();
 		endDate.setTime(startDate.getTime());
 		setEndDate(endDate, time);
@@ -431,8 +435,8 @@ public class Employee {
 		for (Employee employee : schedule.getEmployees())
 			for (Task task : employee.tasksAndTime.keySet())
 				for (Timer timer : employee.tasksAndTime.get(task))
-					if (!timer.isInPeriod(startDate, endDate))
-						freeEmployeesInPeriod.add(employee);
+					if (timer.isInPeriod(startDate, endDate)) 
+						freeEmployeesInPeriod.remove(employee);			
 		
 		return freeEmployeesInPeriod;
 	}

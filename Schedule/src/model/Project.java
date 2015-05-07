@@ -75,7 +75,7 @@ public class Project {
 	}	
 	
 	public String toString(){
-		return projectName + " " + projectNumber + ", Project period from " + df.format(startDate.getTime()) + " to " + df.format(endDate.getTime()) + " -- Project leader: " + projectLeader;
+		return projectNumber + " - " + projectName;
 	}
 
 	public int getProjectNumber() {

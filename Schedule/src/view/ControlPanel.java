@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,7 +18,7 @@ public class ControlPanel extends JPanel {
 
 	private Schedule schedule;
 	
-	private JLabel titleLabel;
+	private JLabel titleLabel, errorLabel;
 	private JButton absence, myAgenda, myProjects, logOut, manageEmployee;
 	
 	public ControlPanel(Schedule schedule) {
@@ -27,6 +29,7 @@ public class ControlPanel extends JPanel {
 		this.myProjects = new JButton("My projects");
 		this.manageEmployee = new JButton("Manage employees");
 		this.logOut = new JButton("Log out");
+		this.errorLabel = new JLabel("");
 		
 		this.setLayout(null);
 		
@@ -37,11 +40,16 @@ public class ControlPanel extends JPanel {
 		manageEmployee.setBounds(250,80,140,40);
 		logOut.setBounds(20,260,120,40);
 		
+		errorLabel.setBounds(20, 430, 300, 40);
+		errorLabel.setForeground(Color.RED);
+		
+		
 		this.add(titleLabel);
 		this.add(absence);
 		this.add(myAgenda);
 		this.add(myProjects);
 		this.add(logOut);
+		this.add(errorLabel);
 		
 		if (schedule.getUser().isAdmin())
 			this.add(manageEmployee);
@@ -54,6 +62,10 @@ public class ControlPanel extends JPanel {
 		myProjects.addActionListener(controller);
 		manageEmployee.addActionListener(controller);
 		logOut.addActionListener(controller);
+	}
+	
+	public void setErrorLabel(String error){
+		errorLabel.setText(error);
 	}
 
 }

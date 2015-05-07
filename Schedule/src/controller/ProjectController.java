@@ -25,6 +25,7 @@ public class ProjectController implements ActionListener {
 		
 		switch (e.getActionCommand()) {
 			case "Create project":
+				view.resetErrorLabels();
 				view.remove(view.getProjectPanel());
 				view.add(view.getCreateProjectPanel());
 				view.reset();
@@ -34,12 +35,16 @@ public class ProjectController implements ActionListener {
 				if ( view.getProjectPanel().getSelectedIndex() > -1 ) {
 					try {
 						schedule.getUser().deleteProject(view.getProjectPanel().getSelected());
+						view.resetErrorLabels();
 					} catch (Exception error) {
-						System.err.println(error);
+						view.getProjectPanel().setErrorLabel(error.getMessage());
 					}
 					
 					view.getProjectPanel().updateList();
+					
 				}
+				else 
+					view.getProjectPanel().setErrorLabel("Please select a project");
 				break;
 
 			case "Manage project":
@@ -48,6 +53,7 @@ public class ProjectController implements ActionListener {
 					view.getManageProjectPanel().setProject(project);
 					view.getManageProjectPanel().updateList(project);
 				} else {
+					view.getProjectPanel().setErrorLabel("Please select a project");
 					break;
 				}
 				
@@ -57,6 +63,7 @@ public class ProjectController implements ActionListener {
 				break;
 
 			case "Back":
+				view.resetErrorLabels();
 				view.remove(view.getProjectPanel());
 				view.add(view.getControlPanel());
 				view.reset();
