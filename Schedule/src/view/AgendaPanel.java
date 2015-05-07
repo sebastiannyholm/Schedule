@@ -61,10 +61,8 @@ public class AgendaPanel extends JPanel {
 		this.dateModel = new UtilDateModel();
 	    this.datePanel = new JDatePanelImpl(dateModel);
 	    this.datePicker = new JDatePickerImpl(datePanel);
-		
-	    this.todaysTimers = schedule.getUser().getTodaysAgenda();
-	    for (Timer timer : todaysTimers)
-	    	timers.addElement(timer);
+	    
+	    updateList();
 	    
 		titleLabel.setBounds(20, 20, 460, 40);
 		checkTask.setBounds(250, 120, 120, 40);
@@ -99,10 +97,13 @@ public class AgendaPanel extends JPanel {
 	}
 	
 	public void updateList() {
+
+		todaysTimers = schedule.getUser().getTodaysAgenda();
 		
 		timers.clear();
-		
-
+	
+		for (Timer timer : todaysTimers)
+	    	timers.addElement(timer);
 		
 	}
 	

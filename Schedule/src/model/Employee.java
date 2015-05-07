@@ -41,7 +41,7 @@ public class Employee {
 		this.tasks = new LinkedList<Task>();
 		this.tasksAndTime = new HashMap<Task, LinkedList<Timer>>();
 	}
-
+	
 	public void createProject(Project newProject) throws Exception {
 		if (!schedule.isLoggedIn())
 			throw new OperationNotAllowedException("You need to be logged in to create a project", "Create project");
@@ -240,6 +240,8 @@ public class Employee {
 		employee.tasks.remove(task);
 		employee.tasksAndTime.remove(task);
 		task.removeEmployee(employee);
+		System.out.println(task);
+		System.out.println(tasksAndTime.size());
 	}
 	
 	public boolean match(String critiria) {
@@ -256,7 +258,7 @@ public class Employee {
 	}
 	
 	public String toString(){
-		return name + ", " + initials + ", aged " + age + ", living in " + address;
+		return name;
 	}
 
 	public List<Task> getTasks() {
@@ -372,7 +374,7 @@ public class Employee {
 			this.addEmployeeToAbsence(employee, schedule.getAllProjects().get(0).getTasks().get(0), startDate, time);
 		else if (reason == Status.VACATION)
 			this.addEmployeeToTask(employee, schedule.getAllProjects().get(0).getTasks().get(1), startDate, time);
-			
+	
 	}
 
 	public boolean isAbsent() {
@@ -423,7 +425,7 @@ public class Employee {
 
 	public List<Employee> getFreeEmployeesInPeriod(Calendar startDate, int time) {
 		List<Employee> freeEmployeesInPeriod = new LinkedList<Employee>();
-		
+		freeEmployeesInPeriod.addAll(schedule.getEmployees());
 		Calendar endDate = new GregorianCalendar();
 		endDate.setTime(startDate.getTime());
 		setEndDate(endDate, time);
@@ -431,8 +433,8 @@ public class Employee {
 		for (Employee employee : schedule.getEmployees())
 			for (Task task : employee.tasksAndTime.keySet())
 				for (Timer timer : employee.tasksAndTime.get(task))
-					if (!timer.isInPeriod(startDate, endDate))
-						freeEmployeesInPeriod.add(employee);
+					if (timer.isInPeriod(startDate, endDate)) 
+						freeEmployeesInPeriod.remove(employee);			
 		
 		return freeEmployeesInPeriod;
 	}

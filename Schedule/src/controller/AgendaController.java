@@ -37,6 +37,9 @@ public class AgendaController implements ActionListener {
 						view.getWorkingPanel().setTimeSpentLabel("0");
 					}
 					
+					if (task.getEmployees().contains(schedule.getUser()))
+						view.getWorkingPanel().setAddAssistence();
+					
 					view.remove(view.getAgendaPanel());
 					view.add(view.getWorkingPanel());
 					view.reset();

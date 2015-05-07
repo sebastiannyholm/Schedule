@@ -61,7 +61,6 @@ public class View extends JFrame {
 
 	public void reset() {
 		this.pack();
-		this.setLocationRelativeTo(null);
 	}
 	
 	public void setUpPanels() {

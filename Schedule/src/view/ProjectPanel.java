@@ -40,9 +40,6 @@ public class ProjectPanel extends JPanel {
 		this.scrollPane = new JScrollPane();
 		this.scrollPane.setViewportView(projectList);
 		
-		for (Project project : schedule.getUser().getProjects())
-			projects.addElement(project);
-		
 		this.setLayout(null);
 		
 		titleLabel.setBounds(20, 20, 460, 40);

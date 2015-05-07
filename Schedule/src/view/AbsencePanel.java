@@ -58,10 +58,6 @@ public class AbsencePanel extends JPanel {
 	    this.datePanel = new JDatePanelImpl(dateModel);
 	    this.datePicker = new JDatePickerImpl(datePanel);
 		
-		for (Employee employee : schedule.getEmployees())
-			if (employee.isAbsent())
-				employees.addElement(employee);
-		
 		titleLabel.setBounds(20, 20, 460, 40);
 		employeeListTitleLabel.setBounds(20, 80, 200, 40);
 		scrollPane.setBounds(20, 120, 200, 300);

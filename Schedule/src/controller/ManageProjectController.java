@@ -26,7 +26,6 @@ public class ManageProjectController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		project = view.getManageProjectPanel().getProject();
-		task = view.getManageProjectPanel().getSelected();
 		
 		switch (e.getActionCommand()) {
 			case "Create task":
@@ -38,6 +37,7 @@ public class ManageProjectController implements ActionListener {
 				
 			case "Delete task":
 				if ( view.getManageProjectPanel().getSelectedIndex() > -1 ) {
+					task = view.getManageProjectPanel().getSelected();
 					try {
 						schedule.getUser().deleteTask(task, project);
 					} catch (Exception error) {
@@ -51,13 +51,17 @@ public class ManageProjectController implements ActionListener {
 			case "Manage task":
 				if ( view.getManageProjectPanel().getSelectedIndex() > -1 ) {
 					task = view.getManageProjectPanel().getSelected();
+					task = view.getManageProjectPanel().getSelected();
 					view.getManageTaskPanel().setTask(task);
+					view.getManageTaskPanel().setTitleLabel(task.getName());
+					view.getManageTaskPanel().updateList();
+					view.getManageTaskPanel().updateAssistenceList();
 				} else {
 					break;
 				}
 				
-				view.remove(view.getProjectPanel());
-				view.add(view.getManageProjectPanel());
+				view.remove(view.getManageProjectPanel());
+				view.add(view.getManageTaskPanel());
 				view.reset();
 				break;
 				
