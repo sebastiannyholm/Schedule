@@ -483,6 +483,9 @@ public class Employee {
 	}
 
 	public boolean workedToMuchOnATask(Task task) {
+		boolean tooMuch = false;
+		for (Timer timer : tasksAndTime.get(task))
+			if (timer.getTimeForATask() > timer
 		return this.getTimeForATask(task) > task.getBudgetedTime();
 	}
 	
