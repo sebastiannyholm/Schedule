@@ -19,6 +19,7 @@ import controller.WorkingController;
 import model.Employee;
 import model.Schedule;
 import model.Task;
+import model.Timer;
 
 public class WorkingPanel extends JPanel {
 
@@ -28,8 +29,9 @@ public class WorkingPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Schedule schedule;
 	private Task task;
+	private Timer timer;
 	
-	private JLabel titleLabel, timeSpentLabel, timeSpentTitleLabel, changeTimeSpentLabel, errorLabel, freeEmployeesLabel, findEmployeesLabel, startDateLabel, hourInDayLabel, timeLabel;
+	private JLabel titleLabel, timeSpentLabel, timeSpentTitleLabel, changeTimeSpentLabel, errorLabel, freeEmployeesLabel, findEmployeesLabel, startDateLabel, hourInDayLabel, timeLabel, workedToMuch;
 	private JButton back, startWork, stopWork, changeTimeSpent, addAssistence, findEmployeesButton;
 	private JTextField changeTimeSpentTextField, hourInDayText, timeText;
 	
@@ -62,6 +64,7 @@ public class WorkingPanel extends JPanel {
 		this.timeLabel = new JLabel("Time for subtask");
 		this.timeText = new JTextField();
 		this.startDateLabel = new JLabel("Startdate");
+		this.workedToMuch = new JLabel("");
 		
 		this.freeEmployeesLabel = new JLabel("Free employees");
 		this.findEmployeesList = new JList(findEmployees);
@@ -77,6 +80,7 @@ public class WorkingPanel extends JPanel {
 		titleLabel.setBounds(20, 20, 460, 40);
 		timeSpentTitleLabel.setBounds(20,80,200,40);
 		timeSpentLabel.setBounds(20,120,200,40);
+		workedToMuch.setBounds(20,160,200,40);
 		changeTimeSpentLabel.setBounds(20, 200, 200, 40);
 		changeTimeSpentTextField.setBounds(20, 240, 200, 40);
 		changeTimeSpent.setBounds(20, 280, 120, 40);
@@ -98,6 +102,7 @@ public class WorkingPanel extends JPanel {
 		findEmployeesButton.setBounds(250, 300, 120, 40);
 		
 		errorLabel.setForeground(Color.RED);
+		workedToMuch.setForeground(Color.RED);
 		
 		this.setLayout(null);
 		
@@ -111,6 +116,7 @@ public class WorkingPanel extends JPanel {
 		this.add(changeTimeSpent);
 		this.add(errorLabel);
 		this.add(back);
+		this.add(workedToMuch);
 		
 		
 		stopWork.setEnabled(false);
@@ -163,6 +169,14 @@ public class WorkingPanel extends JPanel {
 		return task;
 	}
 
+	public void setTimer(Timer timer) {
+		this.timer = timer;
+	}
+	
+	public Timer getTimer() {
+		return timer;
+	}
+	
 	public void setStartWork(boolean b) {
 		startWork.setEnabled(b);
 	}
@@ -204,6 +218,10 @@ public class WorkingPanel extends JPanel {
 	
 	public Date getStartDate() {
 		return (Date) findEmployeesDatePicker.getModel().getValue();
+	}
+	
+	public void setWorkedToMuch(String message) {
+		workedToMuch.setText(message);
 	}
 	
 	

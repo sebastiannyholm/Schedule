@@ -242,8 +242,6 @@ public class Employee {
 		employee.tasks.remove(task);
 		employee.tasksAndTime.remove(task);
 		task.removeEmployee(employee);
-		System.out.println(task);
-		System.out.println(tasksAndTime.size());
 	}
 	
 	public boolean match(String critiria) {
@@ -326,32 +324,36 @@ public class Employee {
 	}
 
 	
-	public void startWorkingOnTask(Task task) {
+	public void startWorkingOnTask(Timer timer) {
 		taskIn = schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);	// get the current time in minutes
 
 	}
 	
-	public void stopWorkingOnTask(Task task) {
+	public void stopWorkingOnTask(Timer timer) {
 		taskOut = schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);	// get the current time in minutes
 		
-		int timeWorkedOnTask = taskOut - taskIn;
+		int timeWorkedOnTimer = taskOut - taskIn;
 		
-		if (taskLog.containsKey(task))
-			taskLog.put(task, taskLog.get(task) + timeWorkedOnTask);
-		else 
-			taskLog.put(task, timeWorkedOnTask);
+		timer.addTimeSpent(timeWorkedOnTimer);
 		
-		task.setTaskLog(this, timeWorkedOnTask);
+//		if (taskLog.containsKey(task))
+//			taskLog.put(task, taskLog.get(task) + timeWorkedOnTask);
+//		else 
+//			taskLog.put(task, timeWorkedOnTask);
+//		
+//		task.setTaskLog(this, timeWorkedOnTask);
 		
 	}
 	
 
-	public void changeTimeWorkedOnTask(Task task, int time) { 
-		taskLog.put(task, time);
+	public void changeTimeWorkedOnTask(Timer timer, int time) {
+		timer.setTimeSpent(time);
+//		taskLog.put(task, time);
 	}
 
-	public int getTaskLogValue(Task task) {
-		return taskLog.get(task);
+	public int getTaskLogValue(Timer timer) {
+		return timer.getTimeSpent();
+//		return taskLog.get(task);
 	}
 	
 	public Map<Task, Integer> getTaskLog() {
@@ -482,8 +484,8 @@ public class Employee {
 		schedule.removeEmployee(employee);
 	}
 
-	public boolean workedToMuchOnATask(Task task) {
-		return this.getTimeForATask(task) > task.getBudgetedTime();
+	public boolean workedToMuchOnAnAssignment(Timer timer) {
+		return timer.limitExceeded();
 	}
 	
 }
