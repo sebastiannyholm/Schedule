@@ -239,4 +239,31 @@ public class TestProject {
 		assertEquals(1,employee.getProjects().size());
 		assertEquals(employee, project.getProjectLeader());
 	}
+	
+	/*
+	 * Create a project with an endDate before the startDate
+	 */
+	@Test
+	public void createProjectEndsBeforeBegins() throws Exception {
+			
+		// the project starts after it has ended
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 30), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);						//projectName, projectNumber, totalTime (in weeks)
+	
+		assertEquals(0,user.getProjects().size());
+		
+		try{
+			user.createProject(project);
+			fail("Expected OperationNotAllowedException from above statement");
+		} catch(OperationNotAllowedException e){
+			assertEquals("Bad project bounds - Project ends before it begins", e.getMessage());
+			assertEquals("Create project", e.getOperation());
+		}
+		
+		assertEquals(0,schedule.getAllProjects().size());
+		assertEquals(0,user.getProjects().size());
+			
+		
+	}
+	
+	
 }

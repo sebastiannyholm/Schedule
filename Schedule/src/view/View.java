@@ -40,7 +40,7 @@ public class View extends JFrame {
 //	private VacationPanel vacationPanel;
 //	
 	public View(Schedule schedule) {
-		super("Softwarehuset");
+		super("Softwarehuset A/S");
 		this.schedule = schedule;
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -120,6 +120,19 @@ public class View extends JFrame {
 
 	public ManageEmployeesPanel getManageEmployeesPanel() {
 		return manageEmployeesPanel;
+	}
+
+	public void resetErrorLabels() {
+		logInPanel.setErrorLabel("");
+		absencePanel.setErrorLabel("");
+		agendaPanel.setErrorLabel("");
+		controlPanel.setErrorLabel("");
+		createProjectPanel.setErrorLabel("");
+		createTaskPanel.setErrorLabel("");
+		manageEmployeesPanel.setErrorLabel("");
+		manageTaskPanel.setErrorLabel("");
+		projectPanel.setErrorLabel("");
+		workingPanel.setErrorLabel("");
 	}
 	
 }

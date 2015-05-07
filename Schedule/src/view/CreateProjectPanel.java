@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -34,11 +35,11 @@ public class CreateProjectPanel extends JPanel {
 		this.schedule = schedule;
 		this.titleLabel = new JLabel("Create project");
 		this.back = new JButton("Back");
-		this.projectName = new JTextField("Project name");
-		this.projectLeader = new JTextField("Project leader");
+		this.projectName = new JTextField("Name");
+		this.projectLeader = new JTextField("Initials");
 		this.createProject = new JButton("Create project");
 		this.errorLabel = new JLabel("");
-		this.projectLeaderLabel = new JLabel("Project leader");
+		this.projectLeaderLabel = new JLabel("Project leader (initials)");
 		this.projectNameLabel = new JLabel("Project name");
 		this.startDateLabel = new JLabel("Project start date");
 		this.endDateLabel = new JLabel("Project end date");
@@ -68,6 +69,8 @@ public class CreateProjectPanel extends JPanel {
 		
 		createProject.setBounds(20, 420, 150, 40);
 		back.setBounds(380, 420, 100, 40);
+		
+		errorLabel.setForeground(Color.RED);
 		
 		this.setLayout(null);
 		

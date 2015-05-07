@@ -46,23 +46,22 @@ public class ManageTaskController implements ActionListener {
 				
 				try {
 					hourInDay = Integer.parseInt(hourInDayString);
+					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
-					System.err.println(error);
-					view.getManageTaskPanel().setErrorLabel("Correct your hour in day");
+					view.getManageTaskPanel().setErrorLabel("Correct your hour of day");
 					break;
 				}
 				
 				try {  
 					time = Integer.parseInt(timeString);
+					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
-					System.err.println(error);
 					view.getManageTaskPanel().setErrorLabel("Correct your time");
 					break;
 				}
 				
 				if (startDate == null) {
-					System.out.println("Set start date!");
-					view.getManageTaskPanel().setErrorLabel("Set a start date");
+					view.getManageTaskPanel().setErrorLabel("Please set a start date");
 					break;
 				}
 				
@@ -85,23 +84,22 @@ public class ManageTaskController implements ActionListener {
 				
 				try {
 					hourInDay = Integer.parseInt(hourInDayString);
+					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
-					System.err.println(error);
-					view.getManageTaskPanel().setErrorLabel("Correct your hour in day");
+					view.getManageTaskPanel().setErrorLabel("Correct your hour of day");
 					break;
 				}
 				
 				try {  
 					time = Integer.parseInt(timeString);
+					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
-					System.err.println(error);
 					view.getManageTaskPanel().setErrorLabel("Correct your time");
 					break;
 				}
 				
 				if (startDate == null) {
-					System.out.println("Set start date!");
-					view.getManageTaskPanel().setErrorLabel("Set a start date");
+					view.getManageTaskPanel().setErrorLabel("Please set a start date");
 					break;
 				}
 				
@@ -114,8 +112,9 @@ public class ManageTaskController implements ActionListener {
 					task = view.getManageTaskPanel().getTask();
 					try {
 						schedule.getUser().addEmployeeToTask(employee, task, startDate, time*60);
+						view.resetErrorLabels();
 					} catch (Exception error) {
-						System.err.println(error);
+						view.getManageTaskPanel().setErrorLabel(error.getMessage());
 					}
 					view.getManageTaskPanel().updateList();
 					view.getManageTaskPanel().updateFindEmployeesList(schedule.getUser().getFreeEmployeesInPeriod(startDate, time));
@@ -123,10 +122,10 @@ public class ManageTaskController implements ActionListener {
 					view.getManageTaskPanel().setErrorLabel("Choose an employee");
 				}
 				
-				
 				break;
 				
 			case "Back":
+				view.resetErrorLabels();
 				view.getManageTaskPanel().updateFindEmployeesList(new LinkedList<Employee>());
 				view.remove(view.getManageTaskPanel());
 				view.add(view.getManageProjectPanel());

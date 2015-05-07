@@ -28,6 +28,7 @@ public class LogInController implements ActionListener {
 			
 				try {
 					schedule.login(view.getLogInPanel().getInitials());
+					view.resetErrorLabels();
 				} catch (Exception error) {
 					view.getLogInPanel().setErrorLabel(error.getMessage());
 				}

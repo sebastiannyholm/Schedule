@@ -55,7 +55,7 @@ public class ControlController implements ActionListener {
 				try {
 					schedule.logOut();
 				} catch (OperationNotAllowedException error) {
-					System.err.println(error.getMessage());
+					view.getControlPanel().setErrorLabel(error.getMessage());
 				}
 				view.remove(view.getControlPanel());
 				view.add(view.getLogInPanel());

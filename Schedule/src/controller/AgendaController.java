@@ -39,14 +39,18 @@ public class AgendaController implements ActionListener {
 					
 					if (task.getEmployees().contains(schedule.getUser()))
 						view.getWorkingPanel().setAddAssistence();
-					
+
+					view.resetErrorLabels();
 					view.remove(view.getAgendaPanel());
 					view.add(view.getWorkingPanel());
 					view.reset();
 				}
+				else
+					view.getAgendaPanel().setErrorLabel("Please select a task");
 				break;
 				
 			case "Back":
+				view.resetErrorLabels();
 				view.remove(view.getAgendaPanel());
 				view.add(view.getControlPanel());
 				view.reset();

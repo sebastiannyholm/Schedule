@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.util.Date;
 import java.util.List;
 
@@ -90,6 +91,7 @@ public class ManageTaskPanel extends JPanel {
 		timeText.setBounds(250, 250, 120, 40);
 		findEmployeesButton.setBounds(250, 300, 120, 40);
 		errorLabel.setBounds(250, 340, 200, 30);
+		errorLabel.setForeground(Color.RED);
 		
 		this.setLayout(null);
 		

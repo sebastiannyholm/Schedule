@@ -46,8 +46,9 @@ public class AbsenceController implements ActionListener {
 				absenceEmployee = absenceEmployees.get(0);
 				try {
 					schedule.getUser().reportAbsence(absenceEmployee, Status.SICK, schedule.getDate(), 8*60);
+					view.resetErrorLabels();
 				} catch (Exception error) {
-					System.err.println(error);
+					view.getAbsencePanel().setErrorLabel(error.getMessage());
 				}
 				view.getAbsencePanel().updateList();
 				
@@ -82,13 +83,16 @@ public class AbsenceController implements ActionListener {
 				absenceEmployee = absenceEmployees.get(0);
 				try {
 					schedule.getUser().reportAbsence(absenceEmployee, Status.VACATION, startDate, time);
+					view.resetErrorLabels();
+					
 				} catch (Exception error) {
-					System.err.println(error);
+					view.getAbsencePanel().setErrorLabel(error.getMessage());
 				}
 				view.getAbsencePanel().updateList();
 				break;
 				
 			case "Back":
+				view.resetErrorLabels();
 				view.remove(view.getAbsencePanel());
 				view.add(view.getControlPanel());
 				view.reset();

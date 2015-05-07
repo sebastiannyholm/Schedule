@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -19,7 +20,7 @@ public class CreateTaskPanel extends JPanel {
 	private Schedule schedule;
 	private Project project;
 	
-	private JLabel titleLabel, errorLabel, taskLeaderLabel, taskNameLabel, startDateLabel, endDateLabel, budgetTimeLabel;
+	private JLabel titleLabel, errorLabel, taskNameLabel, startDateLabel, endDateLabel, budgetTimeLabel;
 	private JButton createTask, back;
 	private JTextField taskName, budgetTime;
 	
@@ -29,15 +30,14 @@ public class CreateTaskPanel extends JPanel {
 	
 	public CreateTaskPanel(Schedule schedule) {
 		this.schedule = schedule;
-		this.titleLabel = new JLabel("Create project");
+		this.titleLabel = new JLabel("Create task");
 		this.back = new JButton("Back");
-		this.taskName = new JTextField("Project name");
-		this.createTask = new JButton("Create project");
+		this.taskName = new JTextField("Task name");
+		this.createTask = new JButton("Create task");
 		this.errorLabel = new JLabel("");
-		this.taskLeaderLabel = new JLabel("Project leader");
-		this.taskNameLabel = new JLabel("Project name");
-		this.startDateLabel = new JLabel("Project start date");
-		this.endDateLabel = new JLabel("Project end date");
+		this.taskNameLabel = new JLabel("Task name");
+		this.startDateLabel = new JLabel("Task start date");
+		this.endDateLabel = new JLabel("Task end date");
 		this.budgetTimeLabel = new JLabel("Budget time");
 		this.budgetTime = new JTextField();
 		
@@ -63,6 +63,7 @@ public class CreateTaskPanel extends JPanel {
 		endDatePicker.setBounds(240,200,200,40);
 		
 		errorLabel.setBounds(20, 260, 400, 40);
+		errorLabel.setForeground(Color.RED);
 		
 		createTask.setBounds(20, 420, 150, 40);
 		back.setBounds(380, 420, 100, 40);

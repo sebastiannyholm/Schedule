@@ -47,6 +47,8 @@ public class Employee {
 			throw new OperationNotAllowedException("You need to be logged in to create a project", "Create project");
 		else if (!this.equals(schedule.getUser()))
 			throw new OperationNotAllowedException("You need to be the one logged in to create a project", "Add task");
+		else if (newProject.getStartDate().after(newProject.getEndDate()))
+			throw new OperationNotAllowedException("Bad project bounds - Project ends before it begins", "Create project");
 		
 		for (Project project : schedule.getAllProjects())
 			if (project.projectExist(newProject)) 
@@ -125,7 +127,7 @@ public class Employee {
 		else if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
 			throw new OperationNotAllowedException("The employee " + employee + " is already working on the maximum amount of tasks!", "Add employee to task");
 		else if (time + task.getTimeSpent() > task.getBudgetedTime()*60)
-			throw new OperationNotAllowedException("You have exceeded the time limit fot the task", "Add employee to task");
+			throw new OperationNotAllowedException("You have exceeded the time limit for the task", "Add employee to task");
 		else if (employee.checkAgenda(startDate, time))
 			throw new OperationNotAllowedException("The employee does not have time in this period", "Add employee to task");
 		

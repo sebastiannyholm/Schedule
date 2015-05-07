@@ -61,23 +61,22 @@ public class WorkingController implements ActionListener {
 				
 				try {
 					hourInDay = Integer.parseInt(hourInDayString);
+					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
-					System.err.println(error);
 					view.getWorkingPanel().setErrorLabel("Correct your hour in day");
 					break;
 				}
 				
 				try {  
 					time = Integer.parseInt(timeString);
+					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
-					System.err.println(error);
 					view.getWorkingPanel().setErrorLabel("Correct your time");
 					break;
 				}
 				
 				if (startDate == null) {
-					System.out.println("Set start date!");
-					view.getWorkingPanel().setErrorLabel("Set a start date");
+					view.getWorkingPanel().setErrorLabel("Please set a start date");
 					break;
 				}
 				
@@ -100,23 +99,22 @@ public class WorkingController implements ActionListener {
 				
 				try {
 					hourInDay = Integer.parseInt(hourInDayString);
+					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
-					System.err.println(error);
 					view.getWorkingPanel().setErrorLabel("Correct your hour in day");
 					break;
 				}
 				
 				try {  
 					time = Integer.parseInt(timeString);
+					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
-					System.err.println(error);
 					view.getWorkingPanel().setErrorLabel("Correct your time");
 					break;
 				}
 				
 				if (startDate == null) {
-					System.out.println("Set start date!");
-					view.getWorkingPanel().setErrorLabel("Set a start date");
+					view.getWorkingPanel().setErrorLabel("Please set a start date");
 					break;
 				}
 				
@@ -129,8 +127,9 @@ public class WorkingController implements ActionListener {
 					task = view.getWorkingPanel().getTask();
 					try {
 						schedule.getUser().requireAssistance(employee, task, startDate, time*60);
+						view.resetErrorLabels();
 					} catch (Exception error) {
-						System.err.println(error);
+						view.getWorkingPanel().setErrorLabel(error.getMessage());
 					}
 					
 					view.getWorkingPanel().updateFindEmployeesList(schedule.getUser().getFreeEmployeesInPeriod(startDate, time));
@@ -147,8 +146,8 @@ public class WorkingController implements ActionListener {
 				
 				try {  
 					time = Integer.parseInt(timeSpent);
+					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
-					System.err.println(error);
 					view.getWorkingPanel().setErrorLabel("Correct your time");
 					break;
 				}
@@ -161,6 +160,7 @@ public class WorkingController implements ActionListener {
 				break;
 				
 			case "Back":
+				view.resetErrorLabels();
 				view.remove(view.getWorkingPanel());
 				view.add(view.getAgendaPanel());
 				view.reset();

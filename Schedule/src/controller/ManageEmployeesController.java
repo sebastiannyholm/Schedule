@@ -51,33 +51,35 @@ public class ManageEmployeesController implements ActionListener {
 				
 				try {  
 					age = Integer.parseInt(ageString);
+					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
-					view.getManageEmployeesPanel().setErrorLabel("Set an age");
+					view.getManageEmployeesPanel().setErrorLabel("Please set an age");
 					break;
 				}
 				
 				if (street.equals("")) {
-					view.getManageEmployeesPanel().setErrorLabel("Set a street");
+					view.getManageEmployeesPanel().setErrorLabel("Please set a street");
 					break;
 				}
 				
 				try {  
 					streetNumber = Integer.parseInt(streetNumberString);
+					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
-					System.err.println(error);
-					view.getManageEmployeesPanel().setErrorLabel("Set a street number");
+					view.getManageEmployeesPanel().setErrorLabel("Please set a street number");
 					break;
 				}
 				
 				try {  
 					zipCode = Integer.parseInt(zipCodeString);
+					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
-					view.getManageEmployeesPanel().setErrorLabel("Set a zip code");
+					view.getManageEmployeesPanel().setErrorLabel("Please set a zip code");
 					break;
 				}
 				
 				if (city.equals("")) {
-					view.getCreateProjectPanel().setErrorLabel("Set a city");
+					view.getCreateProjectPanel().setErrorLabel("Please set a city");
 					break;
 				}
 				
@@ -85,9 +87,12 @@ public class ManageEmployeesController implements ActionListener {
 				Employee employee = new Employee(name, initials, age, address, schedule);
 				try {
 					schedule.getUser().addEmployee(employee);
+					view.resetErrorLabels();					
 				} catch (Exception error) {
-					System.err.println(error);
+					view.getManageEmployeesPanel().setErrorLabel(error.getMessage());
+					break;
 				}
+
 				view.getManageEmployeesPanel().updateList();
 				break;
 				
@@ -95,7 +100,7 @@ public class ManageEmployeesController implements ActionListener {
 				if ( view.getManageEmployeesPanel().getSelectedIndex() > -1 ) {
 					try {
 						schedule.getUser().removeEmployee(view.getManageEmployeesPanel().getSelected());
-						view.getManageEmployeesPanel().setErrorLabel("");
+						view.resetErrorLabels();
 					} catch (Exception error) {
 						view.getManageEmployeesPanel().setErrorLabel(error.getMessage());
 					}
@@ -108,6 +113,7 @@ public class ManageEmployeesController implements ActionListener {
 				break;
 				
 			case "Back":
+				view.resetErrorLabels();
 				view.remove(view.getManageEmployeesPanel());
 				view.add(view.getControlPanel());
 				view.reset();

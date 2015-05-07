@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.util.Date;
 import java.util.List;
 
@@ -95,6 +96,8 @@ public class WorkingPanel extends JPanel {
 		timeLabel.setBounds(250, 220, 120, 30);
 		timeText.setBounds(250, 250, 120, 40);
 		findEmployeesButton.setBounds(250, 300, 120, 40);
+		
+		errorLabel.setForeground(Color.RED);
 		
 		this.setLayout(null);
 		
@@ -202,5 +205,6 @@ public class WorkingPanel extends JPanel {
 	public Date getStartDate() {
 		return (Date) findEmployeesDatePicker.getModel().getValue();
 	}
+	
 	
 }
