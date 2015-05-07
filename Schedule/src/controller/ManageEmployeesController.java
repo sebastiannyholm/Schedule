@@ -40,25 +40,24 @@ public class ManageEmployeesController implements ActionListener {
 				String city = view.getManageEmployeesPanel().getCityLabel();
 				
 				if (name.equals("")) {
-					view.getCreateProjectPanel().setErrorLabel("Give the employee a name");
+					view.getManageEmployeesPanel().setErrorLabel("Give the employee a name");
 					break;
 				}
 				
-				if (initials.equals("")) {
-					view.getCreateProjectPanel().setErrorLabel("Plz set the initials right");
+				else if (initials.equals("")) {
+					view.getManageEmployeesPanel().setErrorLabel("Enter the initials right");
 					break;
 				}
 				
 				try {  
 					age = Integer.parseInt(ageString);
 				} catch(NumberFormatException error) {
-					System.err.println(error);
-					view.getCreateTaskPanel().setErrorLabel("Set an age");
+					view.getManageEmployeesPanel().setErrorLabel("Set an age");
 					break;
 				}
 				
 				if (street.equals("")) {
-					view.getCreateProjectPanel().setErrorLabel("Set a street");
+					view.getManageEmployeesPanel().setErrorLabel("Set a street");
 					break;
 				}
 				
@@ -66,15 +65,14 @@ public class ManageEmployeesController implements ActionListener {
 					streetNumber = Integer.parseInt(streetNumberString);
 				} catch(NumberFormatException error) {
 					System.err.println(error);
-					view.getCreateTaskPanel().setErrorLabel("set a street number");
+					view.getManageEmployeesPanel().setErrorLabel("Set a street number");
 					break;
 				}
 				
 				try {  
 					zipCode = Integer.parseInt(zipCodeString);
 				} catch(NumberFormatException error) {
-					System.err.println(error);
-					view.getCreateTaskPanel().setErrorLabel("Set a zip code");
+					view.getManageEmployeesPanel().setErrorLabel("Set a zip code");
 					break;
 				}
 				
@@ -97,12 +95,16 @@ public class ManageEmployeesController implements ActionListener {
 				if ( view.getManageEmployeesPanel().getSelectedIndex() > -1 ) {
 					try {
 						schedule.getUser().removeEmployee(view.getManageEmployeesPanel().getSelected());
+						view.getManageEmployeesPanel().setErrorLabel("");
 					} catch (Exception error) {
-						System.err.println(error);
+						view.getManageEmployeesPanel().setErrorLabel(error.getMessage());
 					}
 					
 					view.getManageEmployeesPanel().updateList();
 				}
+				else 
+					view.getManageEmployeesPanel().setErrorLabel("No employee has been selected");
+				
 				break;
 				
 			case "Back":

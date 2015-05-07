@@ -1,12 +1,14 @@
 package view;
 
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.LogInController;
 import model.Schedule;
+import controller.LogInController;
 
 public class LogInPanel extends JPanel {
 
@@ -31,6 +33,8 @@ public class LogInPanel extends JPanel {
 		this.shutDownButton = new JButton("Shut down");
 		
 		this.setLayout(null);
+		
+		errorLabel.setForeground(Color.RED);
 		
 		titleLabel.setBounds(20,20,200,40);
 		initialslabel.setBounds(25,80,200,40);

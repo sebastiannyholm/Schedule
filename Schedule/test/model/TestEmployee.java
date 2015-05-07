@@ -348,4 +348,54 @@ public class TestEmployee {
 		assertEquals(2,employees.size());
 		
 	}
+	
+	@Test
+	public void removeYourself() throws Exception{
+		Schedule schedule = new Schedule();
+		
+		Address address = new Address("Rolighedsvej", 3, 3000, "Helsingor");		
+		Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address, schedule);
+		
+		Address address2 = new Address("Skoleparken", 44, 3600, "Frederikssund");					
+		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);
+		
+		schedule.addEmployee(employee1);
+		schedule.addEmployee(employee2);
+		
+		// ------------
+		
+		employee1.setAdmin(true);
+		schedule.login("seny");
+		
+		assertEquals(2, schedule.getEmployees().size());
+		
+		// remove the non-admin employee
+		employee1.removeEmployee(employee2);
+		assertEquals(1, schedule.getEmployees().size());
+		
+		// the employee1 tries to remove himself --> not allowed
+		
+		try{
+			employee1.removeEmployee(employee1);
+		} catch (OperationNotAllowedException e){
+			assertEquals("You cannot remove yourself from the system!", e.getMessage());
+			assertEquals("Remove employee", e.getOperation());
+		}
+		
+		assertEquals(1,schedule.getEmployees().size());
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
