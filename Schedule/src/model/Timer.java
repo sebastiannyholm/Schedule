@@ -9,7 +9,7 @@ public class Timer {
 
 	private Task task;
 	private Calendar startDate, endDate;
-	private int time, days, hours, minutes;
+	private int timeSpent, time;
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
 	
 	public Timer(Task task, Calendar startDate, Calendar endDate, int time) {
@@ -59,5 +59,13 @@ public class Timer {
 
 	public Task getTask() {
 		return task;
+	}
+	
+	public int getTimeSpent(){
+		return timeSpent;
+	}
+	
+	public void setTimeSpent(int timeSpent){
+		timeSpent = timeSpent;
 	}
 }

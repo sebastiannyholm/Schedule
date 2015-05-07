@@ -34,7 +34,7 @@ public class TestProject {
 		user.createProject(project);
 		assertEquals(1,schedule.getAllProjects().size());
 		assertEquals(1,user.getProjects().size());
-		
+		assertEquals(20150000,project.getProjectNumber());
 	}
 	
 	@Test

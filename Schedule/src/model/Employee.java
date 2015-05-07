@@ -481,5 +481,9 @@ public class Employee {
 			throw new OperationNotAllowedException("You cannot remove yourself from the system!", "Remove employee");
 		schedule.removeEmployee(employee);
 	}
+
+	public boolean workedToMuchOnATask(Task task) {
+		return this.getTimeForATask(task) > task.getBudgetedTime();
+	}
 	
 }
