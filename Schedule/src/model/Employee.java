@@ -447,7 +447,7 @@ public class Employee {
 		else if ((employee.getTasks().size() >= 10 && !employee.isSuperWorker()) || employee.getTasks().size() == 20 )
 			throw new OperationNotAllowedException("The employee " + employee + " is already working on the maximum amount of tasks!", "Add employee to task");
 		else if (time + task.getTimeSpent() > task.getBudgetedTime()*60)
-			throw new OperationNotAllowedException("You have exceeded the time limit fot the task", "Add employee to task");
+			throw new OperationNotAllowedException("You have exceeded the time limit for the task", "Add employee to task");
 		else if (employee.checkAgenda(startDate, time))
 			throw new OperationNotAllowedException("The employee does not have time in this period", "Add employee to task");
 		
