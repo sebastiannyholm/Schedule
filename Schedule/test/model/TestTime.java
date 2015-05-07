@@ -215,6 +215,52 @@ public class TestTime {
 	}
 	
 	@Test
+	public void testRegisteredTimeForTask() throws Exception{
+		
+		Project project = schedule.getAllProjects().get(0);
+		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 1000);
+		
+		user.createTask(task, project);
+		
+		user.addEmployeeToTask(schedule.getEmployees().get(0), task, schedule.getDate(), 10);
+		user.addEmployeeToTask(schedule.getEmployees().get(1), task, schedule.getDate(), 10);
+		
+		user.startWorkingOnTask(task);
+		
+		// work on the task for 270 minutes then stop
+		Calendar newCal = new GregorianCalendar();
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 270);
+		when(dateServer.getDate()).thenReturn(newCal);
+		
+		user.stopWorkingOnTask(task);
+		
+		assertEquals(270, user.getTaskLogValue(task));
+		
+		schedule.logOut();
+		schedule.login("luvi");
+		user = schedule.getUser();
+		
+		// begin working on the task again
+		user.startWorkingOnTask(task);
+		
+		// work on the task for 40 minutes then stop
+		newCal = new GregorianCalendar();
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 270 + 40);
+		when(dateServer.getDate()).thenReturn(newCal);
+		
+		user.stopWorkingOnTask(task);
+		
+		assertEquals(40, user.getTaskLogValue(task));
+		int totalTime = 0;
+		for (Employee employee : task.getEmployees())
+			totalTime += employee.getTaskLogValue(task);
+		
+		assertEquals(310, totalTime);	
+	}
+	
+	@Test
 	public void changeTimeWorkedOnATask() throws Exception{
 		
 		Project project = schedule.getAllProjects().get(0);

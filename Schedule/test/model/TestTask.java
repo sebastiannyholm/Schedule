@@ -348,7 +348,7 @@ public class TestTask {
 			user.addEmployeeToTask(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 38*60);
 			fail("OperationNotAlloedException should have been thrown from the above statement");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("You have exceeded the time limit fot the task", e.getMessage());
+			assertEquals("You have exceeded the time limit for the task", e.getMessage());
 			assertEquals("Add employee to task", e.getOperation());
 		}
 		
@@ -372,7 +372,7 @@ public class TestTask {
 			user.addEmployeeToTask(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 5, 10, 0), 4*60); // will excite the limit by one hour
 			fail("OperationNotAllowedException should have been thrown from the above statement");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("You have exceeded the time limit fot the task", e.getMessage());
+			assertEquals("You have exceeded the time limit for the task", e.getMessage());
 			assertEquals("Add employee to task", e.getOperation());
 		}
 		
