@@ -23,8 +23,8 @@ public class ControlController implements ActionListener {
 		
 		switch(e.getActionCommand()) {
 		
-			case "Absence":
-				view.getAbsencePanel().updateList();
+			case "Check absence":
+				view.getAbsencePanel().updateListSick();
 				view.remove(view.getControlPanel());
 				view.add(view.getAbsencePanel());
 				view.reset();

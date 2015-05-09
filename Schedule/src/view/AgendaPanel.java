@@ -1,25 +1,22 @@
 package view;
 
-import java.awt.Color;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import controller.AbsenceController;
+import jcomponents.ErrorLabel;
+import jcomponents.Label;
+import jcomponents.SubTitleLabel;
+import jcomponents.TitleLabel;
 import controller.AgendaController;
-import model.Employee;
 import model.Schedule;
-import model.Task;
-import model.Timer;
+import model.Assignment;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -32,15 +29,16 @@ public class AgendaPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	private Schedule schedule;
-	private List<Timer> todaysTimers;
-	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
+	private List<Assignment> todaysTimers;
 	
-	private JLabel titleLabel, dailyListLabel, errorLabel;
+	private SubTitleLabel dailyListLabel;
+	private TitleLabel titleLabel;
+	private ErrorLabel errorLabel;
 	private JButton checkTask, back;
 	
 	private JList timerList;
 	private JScrollPane scrollPane;
-	private DefaultListModel<Timer> timers = new DefaultListModel<Timer>();
+	private DefaultListModel<Assignment> assignments = new DefaultListModel<Assignment>();
 	
 	private UtilDateModel dateModel;
 	private JDatePanelImpl datePanel;
@@ -50,29 +48,26 @@ public class AgendaPanel extends JPanel {
 		this.schedule = schedule;
 		this.setLayout(null);
 		
-		this.titleLabel = new JLabel("Agenda");
+		this.titleLabel = new TitleLabel("Agenda");
 		this.checkTask = new JButton("Check task");
-		this.dailyListLabel = new JLabel("Todays agenda");
+		this.dailyListLabel = new SubTitleLabel("Todays agenda");
 		this.back = new JButton("Back");
-		this.timerList = new JList(timers);
+		this.timerList = new JList(assignments);
 		this.scrollPane = new JScrollPane();
 		this.scrollPane.setViewportView(timerList);
-		this.errorLabel = new JLabel("");
+		this.errorLabel = new ErrorLabel("");
 		this.dateModel = new UtilDateModel();
 	    this.datePanel = new JDatePanelImpl(dateModel);
 	    this.datePicker = new JDatePickerImpl(datePanel);
 	    
-	    updateList();
-	    
-		titleLabel.setBounds(20, 20, 460, 40);
-		checkTask.setBounds(250, 120, 120, 40);
-		dailyListLabel.setBounds(20, 80, 200, 40);
-		scrollPane.setBounds(20, 120, 200, 300);
-		back.setBounds(250, 360, 120, 40);
+	    titleLabel.setLocation(20, 20);
+		dailyListLabel.setBounds(20, 80, 200, 20);
+		scrollPane.setBounds(20, 120, 500, 300);
+		checkTask.setBounds(20, 440, 120, 40);
+		back.setBounds(820,520,120,40);
 		datePicker.setBounds(250,240,200,40);
 		
-		errorLabel.setBounds(20, 430, 300, 40);
-		errorLabel.setForeground(Color.RED);
+		errorLabel.setBounds(160, 440, 300, 40);
 		
 		this.setLayout(null);
 		this.add(titleLabel);
@@ -93,20 +88,20 @@ public class AgendaPanel extends JPanel {
 		return timerList.getSelectedIndex();
 	}
 	
-	public Timer getSelected() {
+	public Assignment getSelected() {
 		int index = timerList.getSelectedIndex();
 		
-		return timers.get(index);
+		return assignments.get(index);
 	}
 	
 	public void updateList() {
 
 		todaysTimers = schedule.getUser().getTodaysAgenda();
 		
-		timers.clear();
+		assignments.clear();
 	
-		for (Timer timer : todaysTimers)
-	    	timers.addElement(timer);
+		for (Assignment assignment : todaysTimers)
+	    	assignments.addElement(assignment);
 		
 	}
 	

@@ -52,6 +52,13 @@ public class ProjectController implements ActionListener {
 					project = view.getProjectPanel().getSelected();
 					view.getManageProjectPanel().setProject(project);
 					view.getManageProjectPanel().updateList(project);
+					view.getManageProjectPanel().setTitleLabel(project.getName());
+					view.getManageProjectPanel().setProjectLeaderLabel(project.getProjectLeader().getName());
+					view.getManageProjectPanel().setProjectLeaderText(project.getProjectLeader().getInitials());
+					view.getManageProjectPanel().setDescriptionLabel(project.getDescription());
+					view.getManageProjectPanel().setDescriptionText(project.getDescription());
+					view.getManageProjectPanel().setStartDate(project.getStartDate());
+					view.getManageProjectPanel().setEndDate(project.getEndDate());
 				} else {
 					view.getProjectPanel().setErrorLabel("Please select a project");
 					break;

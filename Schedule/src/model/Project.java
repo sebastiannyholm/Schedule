@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Project {
 
-	private String projectName, projectNumber;
+	private String projectName, projectNumber, description;
 	private Calendar startDate, endDate;
 	private Employee projectLeader;
 	
@@ -75,7 +75,7 @@ public class Project {
 	}	
 	
 	public String toString(){
-		return projectNumber + " - " + projectName;
+		return projectNumber + " - " + projectName + " from " + df.format(startDate.getTime()) + " to " + df.format(endDate.getTime());
 	}
 
 	public int getProjectNumber() {
@@ -125,6 +125,14 @@ public class Project {
 
 	public boolean hasTask(Task task) {
 		return tasks.contains(task);
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getDescription() {
+		return description;
 	}
 
 }

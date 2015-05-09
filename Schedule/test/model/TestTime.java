@@ -163,23 +163,19 @@ public class TestTime {
 		
 		user.createTask(task, project);
 		user.addEmployeeToTask(user, task, schedule.getDate(), 10*60);
-		// Get the timers that has just been created, when the employees was added for the task
-		Timer timer = user.getTasksAndTime().get(task).get(0);
+		// Get the assignment that has just been created, when the employees was added for the task
+		Assignment assignment = user.getTasksAndTime().get(task).get(0);
 		
 		assertFalse(user.getTaskLog().containsKey(task));
 		
-		user.startWorkingOnTask(timer);
+		user.startWorkingOnAssignment(assignment);
+		user.stopWorkingOnAssignment(assignment);
 		
-		// work on the task for 270 minutes then stop
-		Calendar newCal = new GregorianCalendar();
-		newCal.setTime(cal.getTime());
-		newCal.add(Calendar.MINUTE, 270);
-		when(dateServer.getDate()).thenReturn(newCal);
+		// The user spends 20 minutes working on the assignment, then stops
+		for (int i = 0; i < 20*60; i++)
+			assignment.actionPerformed(null);
 		
-		user.stopWorkingOnTask(timer);
-		
-		assertEquals(270, timer.getTimeSpent());
-		
+		assertEquals(20*60, assignment.getTimeSpent());		
 	}
 	
 	// add working time to an already active task (the employee has already worked on it before)
@@ -192,33 +188,27 @@ public class TestTime {
 		user.createTask(task, project);
 	
 		user.addEmployeeToTask(user, task, schedule.getDate(), 10*60);
-		// Get the timers that has just been created, when the employees was added for the task
-		Timer timer = user.getTasksAndTime().get(task).get(0);
+		// Get the assignment that has just been created, when the employees was added for the task
+		Assignment assignment = user.getTasksAndTime().get(task).get(0);
 		
-		user.startWorkingOnTask(timer);
+		user.startWorkingOnAssignment(assignment);
+		user.stopWorkingOnAssignment(assignment);
 		
-		// work on the task for 270 minutes then stop
-		Calendar newCal = new GregorianCalendar();
-		newCal.setTime(cal.getTime());
-		newCal.add(Calendar.MINUTE, 270);
-		when(dateServer.getDate()).thenReturn(newCal);
+		// The user spends 20 minutes working on the assignment, then stops
+		for (int i = 0; i < 20*60; i++)
+			assignment.actionPerformed(null);
 		
-		user.stopWorkingOnTask(timer);
-		
-		assertEquals(270, timer.getTimeSpent());
+		assertEquals(20*60, assignment.getTimeSpent());
 		
 		// begin working on the task again
-		user.startWorkingOnTask(timer);
+		user.startWorkingOnAssignment(assignment);
+		user.stopWorkingOnAssignment(assignment);
 		
-		// work on the task for 40 minutes then stop
-		newCal = new GregorianCalendar();
-		newCal.setTime(cal.getTime());
-		newCal.add(Calendar.MINUTE, 270 + 40);
-		when(dateServer.getDate()).thenReturn(newCal);
+		// The user spends 10 minutes working on the assignment, then stops
+		for (int i = 0; i < 10*60; i++)
+			assignment.actionPerformed(null);
 		
-		user.stopWorkingOnTask(timer);
-		
-		assertEquals(270+40, timer.getTimeSpent());
+		assertEquals(30*60, assignment.getTimeSpent());
 		
 	}
 	
@@ -237,43 +227,40 @@ public class TestTime {
 		user.addEmployeeToTask(employee2, task, schedule.getDate(), 10*60);
 		
 		// Get the timers that has just been created, when the employees was added for the task
-		Timer timer1 = employee1.getTasksAndTime().get(task).get(0);
-		Timer timer2 = employee2.getTasksAndTime().get(task).get(0);
+		Assignment assignment1 = employee1.getTasksAndTime().get(task).get(0);
+		Assignment assignment2 = employee2.getTasksAndTime().get(task).get(0);
 		
-		user.startWorkingOnTask(timer1);
+		user.startWorkingOnAssignment(assignment1);
 		
-		// work on the task for 270 minutes then stop
-		Calendar newCal = new GregorianCalendar();
-		newCal.setTime(cal.getTime());
-		newCal.add(Calendar.MINUTE, 270);
-		when(dateServer.getDate()).thenReturn(newCal);
+		// The user spends 20 minutes working on the assignment, then stops
+		for (int i = 0; i < 20*60; i++)
+			assignment1.actionPerformed(null);
 		
-		user.stopWorkingOnTask(timer1);
+		user.stopWorkingOnAssignment(assignment1);
 		
-		assertEquals(270, timer1.getTimeSpent());
+		assertEquals(20*60, assignment1.getTimeSpent());
 		
 		schedule.logOut();
 		schedule.login("luvi");
 		user = schedule.getUser();
 		
 		// begin working on the task again
-		user.startWorkingOnTask(timer2);
+		user.startWorkingOnAssignment(assignment2);
+		user.stopWorkingOnAssignment(assignment2);
 		
-		// work on the task for 40 minutes then stop
-		newCal = new GregorianCalendar();
-		newCal.setTime(cal.getTime());
-		newCal.add(Calendar.MINUTE, 270 + 40);
-		when(dateServer.getDate()).thenReturn(newCal);
+		// The user spends 10 minutes working on the assignment, then stops
+		for (int i = 0; i < 10*60; i++)
+			assignment2.actionPerformed(null);
 		
-		user.stopWorkingOnTask(timer2);
-		
-		assertEquals(40, timer2.getTimeSpent());
+		assertEquals(10*60, assignment2.getTimeSpent());
+
 		int totalTime = 0;
-		for (Employee employee : task.getEmployees())
-			for (Timer timer : employee.getTasksAndTime().get(task))
-				totalTime += timer.getTimeSpent();
 		
-		assertEquals(310, totalTime);	
+		for (Employee employee : task.getEmployees())
+			for (Assignment assignment : employee.getTasksAndTime().get(task))
+				totalTime += assignment.getTimeSpent();
+		
+		assertEquals(30*60, totalTime);	
 	}
 	
 	@Test
@@ -285,21 +272,19 @@ public class TestTime {
 		user.createTask(task, project);
 		user.addEmployeeToTask(user, task, schedule.getDate(), 10*60);
 		// Get the timers that has just been created, when the employees was added for the task
-		Timer timer = user.getTasksAndTime().get(task).get(0);
+		Assignment assignment = user.getTasksAndTime().get(task).get(0);
 		
-		user.startWorkingOnTask(timer);
+		user.startWorkingOnAssignment(assignment);
+		user.stopWorkingOnAssignment(assignment);
 		
-		// work on the task for 270 minutes then stops
-		Calendar newCal = new GregorianCalendar();
-		newCal.setTime(cal.getTime());
-		newCal.add(Calendar.MINUTE, 270);
-		when(dateServer.getDate()).thenReturn(newCal);
+		// The user spends 6 minutes working on the assignment, then stops
+		for (int i = 0; i < 6*60; i++)
+			assignment.actionPerformed(null);
 		
-		user.stopWorkingOnTask(timer);
+		// THen he change it to 10 minutes
+		user.changeTimeWorkedOnTask(assignment, 10*60);
 		
-		user.changeTimeWorkedOnTask(timer, 200);
-		
-		assertEquals(200, timer.getTimeSpent());
+		assertEquals(10*60, assignment.getTimeSpent());
 		
 	}
 	
@@ -314,29 +299,85 @@ public class TestTime {
 		
 		user.createTask(task, project);
 		
+		// the user is only supposed to work on the assignment for 5 minutes (the entire assignment period)
+		user.addEmployeeToTask(user, task, schedule.getDate(), 5);
+		// Get the assignment that has just been created, when the employees was added for the assignment
+		Assignment assignment = user.getTasksAndTime().get(task).get(0);
+		
+		user.startWorkingOnAssignment(assignment);
+		user.stopWorkingOnAssignment(assignment);
+	
+		// mock for time going, since it's a timer object
+		// The user spends 6 minutes working on the assignment, then stops
+		for (int i = 0; i < 3*60; i++)
+			assignment.actionPerformed(null);
+		
+		assertEquals(3*60, assignment.getTimeSpent());
+		assertFalse(user.workedToMuchOnAnAssignment(assignment));
+		
+		user.startWorkingOnAssignment(assignment);
+		user.stopWorkingOnAssignment(assignment);
+	
+		// mock for time going, since it's a timer object		
+		// The user spends 6 minutes working on the assignment, then stops
+		for (int i = 0; i < 3*60; i++)
+			assignment.actionPerformed(null);
+		
+		// record the employees time spend working on the task (even though it is greater than the budget)
+		assertEquals(6*60, assignment.getTimeSpent());
+		
+		// the employee is notified of his excess use of resources
+		assertTrue(user.workedToMuchOnAnAssignment(assignment));
+					
+	}
+	
+	@Test
+	public void checkSecondsMinutesHours() throws Exception {
+		Project project = schedule.getAllProjects().get(0);
+		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 5);
+		
+		user.createTask(task, project);
+		
 		// the user is only supposed to work on the task for 3 hours (the entire task period)
 		user.addEmployeeToTask(user, task, schedule.getDate(), 3*60);
 		// Get the timers that has just been created, when the employees was added for the task
-		Timer timer = user.getTasksAndTime().get(task).get(0);
+		Assignment assignment = user.getTasksAndTime().get(task).get(0);
 		
-		user.startWorkingOnTask(timer);
+		user.startWorkingOnAssignment(assignment);
+		// Check if the timer actually is running
+		assertTrue(assignment.getTimer().isRunning());
+		user.stopWorkingOnAssignment(assignment);
 		
-		// The user spends 4 hours working on the task, then stops
-		Calendar newCal = new GregorianCalendar();
-		newCal.setTime(cal.getTime());
-		newCal.add(Calendar.HOUR_OF_DAY, 4);
-		when(dateServer.getDate()).thenReturn(newCal);
-		
-		user.stopWorkingOnTask(timer);
+		// The user spends 1 hour 2 minutes and 3 seconds working on the assignment, then stops
+		for (int i = 0; i < 3600 + 120 + 3; i++)
+			assignment.actionPerformed(null);
 		
 		// record the employees time spend working on the task (even though it is greater than the budget)
-		assertEquals(4*60, timer.getTimeSpent());
+		assertEquals(1, assignment.getHourSpent());
+		assertEquals(2, assignment.getMinutesSpent());
+		assertEquals(3, assignment.getSecondsSpent());
+	
+		user.changeTimeWorkedOnTask(assignment, 3599);
+		assignment.actionPerformed(null);
+		assertEquals(1, assignment.getHourSpent());
 		
-		// the employee is notified of his excess use of resources
-		assertTrue(user.workedToMuchOnAnAssignment(timer));
-		
-		
+		// Check if it's the same time, whether you check one way or another.
+		user.changeTimeWorkedOnTask(assignment, 3600*10);
+		assertEquals(assignment.getTimeSpentString(), assignment.getHoursSpentString() + ":" + assignment.getMinutesSpentString() + ":" + assignment.getSecondsSpentString());
 	}
 	
+	@Test
+	public void checkToStringAssignment() throws Exception {
+		Project project = schedule.getAllProjects().get(0);
+		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 5);
+		
+		user.createTask(task, project);
+		System.out.println("DET ER ");
+		// the user is only supposed to work on the task for 3 hours (the entire task period)
+		user.addEmployeeToTask(user, task, schedule.getDate(), 3*60);
+		// Get the timers that has just been created, when the employees was added for the task
+		Assignment assignment = user.getTasksAndTime().get(task).get(0);
+		assertEquals("name from 10/04/2015 - 08:00:00 to 10/04/2015 - 11:00:00", assignment.toString());
+	}
 	
 }

@@ -1,5 +1,7 @@
 package model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,11 +12,11 @@ public class Task {
 
 	private List<Employee> employees;
 	private List<Employee> employeesAsAssistance;
-	private String name, taskNumber;
+	private String name, taskNumber, description;
 	private Calendar startDate, endDate;
 	private int budgetedTime;
 	private Map<Employee, Integer> log = new HashMap<Employee, Integer>();
-
+	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 //	private Project project;		// the project connected to this task
 
 	
@@ -60,7 +62,7 @@ public class Task {
 	}
 	
 	public String toString(){
-		return taskNumber + " - " + name;
+		return taskNumber + " - " + name + " from " + df.format(startDate.getTime()) + " to " + df.format(endDate.getTime());
 	}
 
 	// this.startWeek > 45 to make up for tasks overlapping new years eve
@@ -136,6 +138,14 @@ public class Task {
 
 	public String getName(){
 		return name;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getDescription() {
+		return description;
 	}
 	
 }

@@ -6,18 +6,20 @@ import java.awt.event.ActionListener;
 import view.View;
 import model.Schedule;
 import model.Task;
-import model.Timer;
+import model.Assignment;
 
 public class AgendaController implements ActionListener {
 
 	private Schedule schedule;
 	private View view;
 	private Task task;
-	private Timer timer;
+	private Assignment assignment;
+	private TickTimeController tickTimeController;
 	
-	public AgendaController(Schedule schedule, View view) {
+	public AgendaController(Schedule schedule, View view, TickTimeController tickTimeController) {
 		this.schedule = schedule;
 		this.view = view;
+		this.tickTimeController = tickTimeController;
 		
 		view.getAgendaPanel().registerListener(this);
 	}
@@ -28,26 +30,21 @@ public class AgendaController implements ActionListener {
 		switch (e.getActionCommand()) {
 			case "Check task":
 				if ( view.getAgendaPanel().getSelectedIndex() > -1 ) {
-					timer = view.getAgendaPanel().getSelected();
-					task = timer.getTask();
-					view.getWorkingPanel().setTimer(timer);
+					assignment = view.getAgendaPanel().getSelected();
+					task = assignment.getTask();
+					view.getWorkingPanel().setAssignment(assignment);
 					view.getWorkingPanel().setTask(task);
 					view.getWorkingPanel().setTitleLabel(task.getName());
+					view.resetErrorLabels();
 					
-					if (schedule.getUser().getTaskLog().containsKey(task)) {
-						String timeSpent = Integer.toString(schedule.getUser().getTaskLogValue(timer));
-						view.getWorkingPanel().setTimeSpentLabel(timeSpent);
-					} else {
-						view.getWorkingPanel().setTimeSpentLabel("0");
-					}
+					if (!assignment.getTimer().isRunning())
+						view.getWorkingPanel().setTimeSpent();
 					
 					if (task.getEmployees().contains(schedule.getUser()))
 						view.getWorkingPanel().setAddAssistence();
-
-					if (timer.limitExceeded())
-						view.getWorkingPanel().setWorkedToMuch("You have exceeded your time limit!");
 					
-					view.resetErrorLabels();
+					view.getWorkingPanel().checkTimeLimit();
+					view.getWorkingPanel().setDescriptionTask(task.getDescription());
 					view.remove(view.getAgendaPanel());
 					view.add(view.getWorkingPanel());
 					view.reset();

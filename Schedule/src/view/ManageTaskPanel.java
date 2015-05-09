@@ -2,16 +2,20 @@ package view;
 
 import java.awt.Color;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import jcomponents.ErrorLabel;
+import jcomponents.Label;
+import jcomponents.SubTitleLabel;
+import jcomponents.TitleLabel;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -19,23 +23,27 @@ import controller.ManageTaskController;
 import model.Employee;
 import model.Schedule;
 import model.Task;
-import model.Timer;
+import model.Assignment;
 
 public class ManageTaskPanel extends JPanel {
 
 	private Schedule schedule;
 	private Task task;
 	
-	private JLabel titleLabel, employeeListTitleLabel, employeeAssistenceListTitleLabel, freeEmployeesLabel, findEmployeesLabel, startDateLabel, hourInDayLabel, timeLabel, errorLabel;
-	private JButton createSubTask, findEmployeesButton, back;
+	private TitleLabel titleLabel;
+	private SubTitleLabel findEmployeesLabel, employeeListTitleLabel, employeeAssistenceListTitleLabel, AssignmentListTitleLabel;
+	private Label startDateLabel, hourInDayLabel, timeLabel, freeEmployeesLabel;
+	private ErrorLabel errorLabel;
+	private JButton createAsisgnment, findFreeEmployees, back;
 	private JTextField hourInDayText, timeText;
 	
-	private JList employeeList, employeeAssistenceList, findEmployeesList;
-	private JScrollPane scrollPane, scrollPaneAssistence, scrollPaneFindEmployees;
+	private JList employeeList, employeeAssistenceList, findEmployeesList, assignmentsList;
+	private JScrollPane scrollPane, scrollPaneAssistence, scrollPaneFindEmployees, scrollPaneAssignments;
 	
 	private DefaultListModel<Employee> employees = new DefaultListModel<Employee>();
 	private DefaultListModel<Employee> employeesAssistence = new DefaultListModel<Employee>();
 	private DefaultListModel<Employee> findEmployees = new DefaultListModel<Employee>();
+	private DefaultListModel<Assignment> assignments = new DefaultListModel<Assignment>();
 	
 	private UtilDateModel findEmployeesDateModel;
 	private JDatePanelImpl findEmployeesDatePanel;
@@ -43,55 +51,73 @@ public class ManageTaskPanel extends JPanel {
 	
 	public ManageTaskPanel(Schedule schedule) {
 		this.schedule = schedule;
-		this.titleLabel = new JLabel("Manage task");
+		this.titleLabel = new TitleLabel("Manage task");
 		this.back = new JButton("Back");
-		this.employeeListTitleLabel = new JLabel("All employees on task");
+		this.employeeListTitleLabel = new SubTitleLabel("All employees on task");
 		this.employeeList = new JList(employees);
 		this.scrollPane = new JScrollPane();
 		this.scrollPane.setViewportView(employeeList);
-		this.createSubTask = new JButton("Create sub task");
-		this.findEmployeesLabel = new JLabel("Find employees for a task");
-		this.findEmployeesButton = new JButton("Find employees");
-		this.hourInDayLabel = new JLabel("At what time");
+		this.createAsisgnment = new JButton("Create Assignment");
+		this.findEmployeesLabel = new SubTitleLabel("Find employees for the assignment");
+		this.findFreeEmployees = new JButton("Find employees");
+		this.hourInDayLabel = new Label("At what time");
 		this.hourInDayText = new JTextField();
-		this.timeLabel = new JLabel("Time for subtask");
+		this.timeLabel = new Label("Time for assignment");
 		this.timeText = new JTextField();
-		this.startDateLabel = new JLabel("Startdate");
-		this.errorLabel = new JLabel("");
+		this.startDateLabel = new Label("Startdate");
+		this.errorLabel = new ErrorLabel("");
 		
-		this.employeeAssistenceListTitleLabel = new JLabel("All assistance on task");
+		this.employeeAssistenceListTitleLabel = new SubTitleLabel("All assistance on task");
 		this.employeeAssistenceList = new JList(employeesAssistence);
 		this.scrollPaneAssistence = new JScrollPane();
 		this.scrollPaneAssistence.setViewportView(employeeAssistenceList);
 		
-		this.freeEmployeesLabel = new JLabel("Free employees");
+		this.freeEmployeesLabel = new Label("Free employees");
 		this.findEmployeesList = new JList(findEmployees);
 		this.scrollPaneFindEmployees = new JScrollPane();
 		this.scrollPaneFindEmployees.setViewportView(findEmployeesList);
 		
+		this.AssignmentListTitleLabel = new SubTitleLabel("Assignments in this task");
+		this.assignmentsList = new JList(assignments);
+		this.scrollPaneAssignments = new JScrollPane();
+		this.scrollPaneAssignments.setViewportView(assignmentsList);
+		
 		this.findEmployeesDateModel = new UtilDateModel();
 	    this.findEmployeesDatePanel = new JDatePanelImpl(findEmployeesDateModel);
 	    this.findEmployeesDatePicker = new JDatePickerImpl(findEmployeesDatePanel);
+	    
+	    titleLabel.setLocation(20, 20);
 		
-		titleLabel.setBounds(20, 20, 460, 40);
-		employeeListTitleLabel.setBounds(20, 80, 200, 40);
-		scrollPane.setBounds(20, 120, 200, 200);
-		employeeAssistenceListTitleLabel.setBounds(20, 320, 200, 40);
-		scrollPaneAssistence.setBounds(20, 360, 200, 100);
-		back.setBounds(370, 430, 120, 40);
-		createSubTask.setBounds(370, 380, 120, 40);
-		findEmployeesLabel.setBounds(250, 40, 200, 40);
-		startDateLabel.setBounds(250, 80, 200, 30);
-		findEmployeesDatePicker.setBounds(250,110,200,40);
-		freeEmployeesLabel.setBounds(380, 150, 100, 30);
-		scrollPaneFindEmployees.setBounds(380, 180, 100, 100);
-		hourInDayLabel.setBounds(250, 150, 120, 30);
-		hourInDayText.setBounds(250,180, 120, 40);
-		timeLabel.setBounds(250, 220, 120, 30);
-		timeText.setBounds(250, 250, 120, 40);
-		findEmployeesButton.setBounds(250, 300, 120, 40);
-		errorLabel.setBounds(250, 340, 200, 30);
-		errorLabel.setForeground(Color.RED);
+	    AssignmentListTitleLabel.setBounds(20, 80, 200, 20);
+		scrollPaneAssignments.setBounds(20, 120, 200, 440);
+	    
+	    employeeListTitleLabel.setBounds(240, 80, 200, 20);
+		scrollPane.setBounds(240, 120, 200, 250);
+		
+		employeeAssistenceListTitleLabel.setBounds(240, 380, 200, 20);
+		scrollPaneAssistence.setBounds(240, 410, 200, 150);
+		
+		findEmployeesLabel.setBounds(470, 80, 450, 20);
+		
+		startDateLabel.setBounds(470, 110, 200, 20);
+		findEmployeesDatePicker.setBounds(470,130,200,40);
+		
+		hourInDayLabel.setBounds(470, 190, 200, 20);
+		hourInDayText.setBounds(470,210, 200, 40);
+		
+		timeLabel.setBounds(470, 270, 200, 20);
+		timeText.setBounds(470, 290, 200, 40);
+		
+		errorLabel.setBounds(470,350,200,20);
+		
+		findFreeEmployees.setBounds(470, 390, 120, 40);
+		
+		freeEmployeesLabel.setBounds(690, 110, 200, 20);
+		scrollPaneFindEmployees.setBounds(690, 130, 200, 240);
+		
+		createAsisgnment.setBounds(690, 390, 150, 40);
+		
+		back.setBounds(820,520,120,40);
 		
 		this.setLayout(null);
 		
@@ -101,7 +127,9 @@ public class ManageTaskPanel extends JPanel {
 		this.add(scrollPane);
 		this.add(employeeAssistenceListTitleLabel);
 		this.add(scrollPaneAssistence);
-		this.add(createSubTask);
+		this.add(scrollPaneAssignments);
+		this.add(AssignmentListTitleLabel);
+		this.add(createAsisgnment);
 		this.add(findEmployeesLabel);
 		this.add(startDateLabel);
 		this.add(findEmployeesDatePicker);
@@ -111,15 +139,25 @@ public class ManageTaskPanel extends JPanel {
 		this.add(hourInDayText);
 		this.add(timeLabel);
 		this.add(timeText);
-		this.add(findEmployeesButton);
+		this.add(findFreeEmployees);
 		this.add(errorLabel);
 		this.add(back);
 	}
 
+	public void removeAssistenceList() {
+		this.remove(employeeAssistenceListTitleLabel);
+		this.remove(scrollPaneAssistence);
+	}
+	
+	public void addAssistenceList() {
+		this.add(employeeAssistenceListTitleLabel);
+		this.add(scrollPaneAssistence);
+	}
+	
 	public void registerListener(ManageTaskController controller) {
 		back.addActionListener(controller);
-		createSubTask.addActionListener(controller);
-		findEmployeesButton.addActionListener(controller);
+		createAsisgnment.addActionListener(controller);
+		findFreeEmployees.addActionListener(controller);
 	}
 
 	public String getTimeText() {
@@ -173,6 +211,23 @@ public class ManageTaskPanel extends JPanel {
 		
 	}
 
+	public void updateAssignmentsList() {
+		
+		assignments.clear();
+		
+		List<Employee> list = new LinkedList<Employee>();
+		for (Employee employee : task.getEmployees())
+			list.add(employee);
+		for (Employee employee : task.getEmployeesAsAssistance())
+			if (!list.contains(employee))
+				list.add(employee);
+		
+		for (Employee employee : list)
+			for (Assignment assignment : employee.getTasksAndTime().get(task))
+				assignments.addElement(assignment);
+		
+	}
+	
 	public void setErrorLabel(String error) {
 		errorLabel.setText(error);
 	}
