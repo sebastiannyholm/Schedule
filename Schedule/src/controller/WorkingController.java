@@ -42,6 +42,11 @@ public class WorkingController implements ActionListener {
 		
 		switch (e.getActionCommand()) {
 			case "Start timer":
+				if (tickTimeController.getTimer().isRunning()) {
+					view.getWorkingPanel().setErrorLabel("Another task is running");
+					break;
+				}
+					
 				view.getWorkingPanel().setStartWork(false);
 				view.getWorkingPanel().setChangeTimeSpent(false);
 				view.getWorkingPanel().setStopWork(true);
