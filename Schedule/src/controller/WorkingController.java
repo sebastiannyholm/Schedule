@@ -19,7 +19,7 @@ public class WorkingController implements ActionListener {
 	private Assignment assignment;
 	
 	private String timeString = "", hourInDayString = "";
-	private int time, hourInDay;
+	private int hourInDay;
 	private Calendar startDate;
 	private Employee employee;
 	private TickTimeController tickTimeController;
@@ -35,7 +35,6 @@ public class WorkingController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		String timeSpent = "";
 		int time = 0;
 		task = view.getWorkingPanel().getTask();
 		assignment = view.getWorkingPanel().getAssignment();
@@ -154,7 +153,6 @@ public class WorkingController implements ActionListener {
 					view.getWorkingPanel().setErrorLabel("Choose an employee");
 				}
 				
-				
 				break;
 				
 			case "Change time":
@@ -174,7 +172,6 @@ public class WorkingController implements ActionListener {
 					break;
 				}
 					
-				
 				int hours = 0, minutes = 0, seconds = 0;
 				
 				try {
@@ -187,7 +184,7 @@ public class WorkingController implements ActionListener {
 					break;
 				}
 				
-				schedule.getUser().changeTimeWorkedOnTask(assignment, hours * 60 * 60 + minutes * 60 + seconds);
+				schedule.getUser().changeTimeWorkedOnAnAssignment(assignment, hours * 60 * 60 + minutes * 60 + seconds);
 				
 				view.getWorkingPanel().setTimeSpent();
 				view.getWorkingPanel().removeChangeTime();

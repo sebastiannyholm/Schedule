@@ -17,7 +17,6 @@ public class Schedule {
 
 		this.employees = new LinkedList<Employee>();
 		this.allProjects = new LinkedList<Project>();
-//		this.allTasks = new LinkedList<Task>();
 
 	}
 	
@@ -74,9 +73,7 @@ public class Schedule {
 		user = null;
 		
 	}
-
 	
-
 	public void addProject(Project project) {
 		allProjects.add(project);
 		
@@ -95,10 +92,6 @@ public class Schedule {
 		
 		return allTasks;
 	}
-
-//	public void addTask(Task task) {
-//		allTasks.add(task);
-//	}
 		
 	public List<Employee> searchEmployee(String criteria) {
 		List<Employee> foundEmployees = new LinkedList<Employee>();

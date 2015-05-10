@@ -184,7 +184,7 @@ public class TestTime {
 	}
 	
 	@Test
-	public void registerTaskTime() throws Exception{
+	public void registerTimeForAnAssignment() throws Exception{
 		
 		Project project = schedule.getAllProjects().get(0);
 	
@@ -194,8 +194,6 @@ public class TestTime {
 		user.addEmployeeToTask(user, task, schedule.getDate(), 10*60);
 		// Get the assignment that has just been created, when the employees was added for the task
 		Assignment assignment = user.getTasksAndTime().get(task).get(0);
-		
-		assertFalse(user.getTaskLog().containsKey(task));
 		
 		user.startWorkingOnAssignment(assignment);
 		user.stopWorkingOnAssignment(assignment);
@@ -205,12 +203,12 @@ public class TestTime {
 		for (int i = 0; i < 20*60; i++)
 			assignment.actionPerformed(null);
 		
-		assertEquals(20*60, assignment.getTimeSpent());		
+		assertEquals(20*60, assignment.getRegisteredTime());		
 	}
 	
 	// add working time to an already active task (the employee has already worked on it before)
 	@Test
-	public void registerTaskTimeMulitple() throws Exception{
+	public void registerTimeForAnAssignmentMulitple() throws Exception{
 		
 		Project project = schedule.getAllProjects().get(0);
 		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 1000);
@@ -228,7 +226,7 @@ public class TestTime {
 		for (int i = 0; i < 20*60; i++)
 			assignment.actionPerformed(null);
 		
-		assertEquals(20*60, assignment.getTimeSpent());
+		assertEquals(20*60, assignment.getRegisteredTime());
 		
 		// begin working on the task again
 		user.startWorkingOnAssignment(assignment);
@@ -238,10 +236,13 @@ public class TestTime {
 		for (int i = 0; i < 10*60; i++)
 			assignment.actionPerformed(null);
 		
-		assertEquals(30*60, assignment.getTimeSpent());
+		assertEquals(30*60, assignment.getRegisteredTime());
 		
 	}
 	
+	/*
+	 * Test the total time spent in a task, across all its assignments
+	 */
 	@Test
 	public void testRegisteredTimeForTask() throws Exception{
 		
@@ -261,14 +262,13 @@ public class TestTime {
 		Assignment assignment2 = employee2.getTasksAndTime().get(task).get(0);
 		
 		user.startWorkingOnAssignment(assignment1);
+		user.stopWorkingOnAssignment(assignment1);
 		
 		// The user spends 20 minutes working on the assignment, then stops
 		for (int i = 0; i < 20*60; i++)
 			assignment1.actionPerformed(null);
 		
-		user.stopWorkingOnAssignment(assignment1);
-		
-		assertEquals(20*60, assignment1.getTimeSpent());
+		assertEquals(20*60, assignment1.getRegisteredTime());
 		
 		schedule.logOut();
 		schedule.login("luvi");
@@ -282,19 +282,13 @@ public class TestTime {
 		for (int i = 0; i < 10*60; i++)
 			assignment2.actionPerformed(null);
 		
-		assertEquals(10*60, assignment2.getTimeSpent());
-
-		int totalTime = 0;
-		
-		for (Employee employee : task.getEmployees())
-			for (Assignment assignment : employee.getTasksAndTime().get(task))
-				totalTime += assignment.getTimeSpent();
-		
-		assertEquals(30*60, totalTime);	
+		assertEquals(10*60, assignment2.getRegisteredTime());
+		System.out.println(123);
+		assertEquals(30*60, task.getRegisteredTime());
 	}
 	
 	@Test
-	public void changeTimeWorkedOnTask() throws Exception{
+	public void changeTimeWorkedOnAnAssignment() throws Exception{
 		
 		Project project = schedule.getAllProjects().get(0);
 		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 1000);
@@ -312,9 +306,9 @@ public class TestTime {
 			assignment.actionPerformed(null);
 		
 		// THen he change it to 10 minutes
-		user.changeTimeWorkedOnTask(assignment, 10*60);
+		user.changeTimeWorkedOnAnAssignment(assignment, 10*60);
 		
-		assertEquals(10*60, assignment.getTimeSpent());
+		assertEquals(10*60, assignment.getRegisteredTime());
 		
 	}
 	
@@ -342,7 +336,7 @@ public class TestTime {
 		for (int i = 0; i < 3*60; i++)
 			assignment.actionPerformed(null);
 		
-		assertEquals(3*60, assignment.getTimeSpent());
+		assertEquals(3*60, assignment.getRegisteredTime());
 		assertFalse(user.workedToMuchOnAnAssignment(assignment));
 		
 		user.startWorkingOnAssignment(assignment);
@@ -354,7 +348,7 @@ public class TestTime {
 			assignment.actionPerformed(null);
 		
 		// record the employees time spend working on the task (even though it is greater than the budget)
-		assertEquals(6*60, assignment.getTimeSpent());
+		assertEquals(6*60, assignment.getRegisteredTime());
 		
 		// the employee is notified of his excess use of resources
 		assertTrue(user.workedToMuchOnAnAssignment(assignment));
@@ -383,17 +377,17 @@ public class TestTime {
 			assignment.actionPerformed(null);
 		
 		// record the employees time spend working on the task (even though it is greater than the budget)
-		assertEquals(1, assignment.getHourSpent());
-		assertEquals(2, assignment.getMinutesSpent());
-		assertEquals(3, assignment.getSecondsSpent());
+		assertEquals(1, assignment.getRegisteredHour());
+		assertEquals(2, assignment.getRegisteredMinutes());
+		assertEquals(3, assignment.getRegisteredSeconds());
 	
-		user.changeTimeWorkedOnTask(assignment, 3599);
+		user.changeTimeWorkedOnAnAssignment(assignment, 3599);
 		assignment.actionPerformed(null);
-		assertEquals(1, assignment.getHourSpent());
+		assertEquals(1, assignment.getRegisteredHour());
 		
 		// Check if it's the same time, whether you check one way or another.
-		user.changeTimeWorkedOnTask(assignment, 3600*10);
-		assertEquals(assignment.getTimeSpentString(), assignment.getHoursSpentString() + ":" + assignment.getMinutesSpentString() + ":" + assignment.getSecondsSpentString());
+		user.changeTimeWorkedOnAnAssignment(assignment, 3600*10);
+		assertEquals(assignment.getRegisteredTimeString(), assignment.getRegisteredHoursString() + ":" + assignment.getRegisteredMinutesString() + ":" + assignment.getRegisteredSecondsString());
 	}
 	
 	@Test

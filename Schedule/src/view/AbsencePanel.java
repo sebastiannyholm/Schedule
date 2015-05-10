@@ -1,8 +1,6 @@
 package view;
 
 import java.util.Date;
-import java.util.List;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -34,12 +32,11 @@ public class AbsencePanel extends JPanel {
 	private Label employeeForTodayLabel, employeeFutureLabel, timeLabel, datePickerLabel;
 	private JButton employeeForToday, employeeFuture, back;
 	private JTextField employeeForTodayText, employeeFutureText, time;
-	private JList sickList, vacationList;
-	private JScrollPane scrollPaneSick, scrollPaneVacation;
+	private JList sickList;
+	private JScrollPane scrollPaneSick;
 	private ErrorLabel errorLabel;
 	
 	private DefaultListModel<Employee> sickEmployees = new DefaultListModel<Employee>();
-	private DefaultListModel<Employee> vacationEmployees = new DefaultListModel<Employee>();
 
 	private UtilDateModel dateModel;
 	private JDatePanelImpl datePanel;
@@ -71,22 +68,13 @@ public class AbsencePanel extends JPanel {
 		this.time = new JTextField();
 		this.employeeFuture = new JButton("Add employee");
 				
-		this.errorLabel = new ErrorLabel("");
-		
-//		this.vacationEmployeeListTitleLabel = new SubTitleLabel("Employees planned vacation");
-//		this.vacationList = new JList(vacationEmployees);
-//		this.scrollPaneVacation = new JScrollPane();
-//		this.scrollPaneVacation.setViewportView(vacationList);
-		
+		this.errorLabel = new ErrorLabel("");		
 	    this.back = new JButton("Back");
 	    
 	    titleLabel.setLocation(20, 20);
 		
 		sickEmployeeListTitleLabel.setBounds(20, 80, 250, 20);
 		scrollPaneSick.setBounds(20, 120, 250, 440);
-		
-//		vacationEmployeeListTitleLabel.setBounds(500, 80, 200, 40);
-//		scrollPaneVacation.setBounds(500, 120, 200, 440);
 		
 		employeeForTodayTitle.setBounds(310, 80, 250, 20);
 		employeeForTodayLabel.setBounds(310, 120, 250, 20);
@@ -138,8 +126,6 @@ public class AbsencePanel extends JPanel {
 		this.add(titleLabel);
 		this.add(sickEmployeeListTitleLabel);
 		this.add(scrollPaneSick);
-//		this.add(vacationEmployeeListTitleLabel);
-//		this.add(scrollPaneVacation);
 		this.add(back);
 	}
 
@@ -176,19 +162,8 @@ public class AbsencePanel extends JPanel {
 		for (Employee employee : schedule.getEmployees())
 			if (employee.isAbsent())
 				sickEmployees.addElement(employee);
-		
 	}
-	
-	public void updateListVacation() {
-		
-		vacationEmployees.clear();
-		
-		for (Employee employee : schedule.getEmployees())
-			if (employee.isAbsent())
-				vacationEmployees.addElement(employee);
-		
-	}
-	
+
 	public DefaultListModel<Employee> getSickEmployees(){
 		return sickEmployees;
 	}

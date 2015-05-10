@@ -27,10 +27,8 @@ public class ManageEmployeesPanel extends JPanel {
 	private ErrorLabel errorLabel;
 	private JButton addEmployee, removeEmployee, back;
 	private JTextField nameText, initialText, ageText, streetText, streetNumberText, zipCodeText, cityText;
-	
 	private JList employeeList;
 	private JScrollPane scrollPane;
-	
 	private DefaultListModel<Employee> employees = new DefaultListModel<Employee>();
 
 	
@@ -94,7 +92,6 @@ public class ManageEmployeesPanel extends JPanel {
 		addEmployee.setBounds(310, 380, 140, 40);
 		
 		back.setBounds(820,520,120,40);
-		
 		errorLabel.setBounds(310, 440, 300, 20);
 		
 		this.setLayout(null);

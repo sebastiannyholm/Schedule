@@ -1,6 +1,9 @@
 package model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +41,7 @@ public class TestTask {
 	@Test
 	public void createTask() throws Exception {
 		
-		Project project = schedule.getAllProjects().get(0);		// list of 1
+		Project project = schedule.getAllProjects().get(0);			// list of 1
 		
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), 37*(2-1));	// name, number, startWeek, endWeek, budgetedHours
 		
@@ -52,7 +55,7 @@ public class TestTask {
 	@Test
 	public void createTaskWhenNotLoggedIn() throws Exception {
 		
-		Project project = schedule.getAllProjects().get(0);		// list of 1
+		Project project = schedule.getAllProjects().get(0);
 		
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), 37*(2-1));	// name, number, startWeek, endWeek, budgetedHours
 		schedule.logOut();
@@ -73,7 +76,7 @@ public class TestTask {
 	@Test
 	public void createTaskFailed() throws Exception {
 		
-		Project project = schedule.getAllProjects().get(0);		// list of 1
+		Project project = schedule.getAllProjects().get(0);
 		
 		schedule.logOut();
 		schedule.login("seny");
@@ -94,7 +97,7 @@ public class TestTask {
 	}
 	
 	/* 
-	 * Task exeeding project limits/bounds
+	 * Task exceeding project limits/bounds
 	 * A task with a startWeek after the project has expired or
 	 * a task with an endWeek before the project has begun or
 	 * a task with an endWeek after the project has expired or
@@ -103,7 +106,7 @@ public class TestTask {
 	 */
 	@Test
 	public void createTaskOutOfBounds() throws Exception{
-		Project project = schedule.getAllProjects().get(0);				// list of 1
+		Project project = schedule.getAllProjects().get(0);
 		
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 29), new GregorianCalendar(2015, Calendar.FEBRUARY, 16), 37*(8-5));		// name, number, startWeek, endWeek, budgetedHours - OUT OF BOUNDS
 		
@@ -119,17 +122,13 @@ public class TestTask {
 		assertEquals(0,project.getTasks().size());
 	}
 	
-	// cannot have a task where it ends before it begins!
+	// cannot have a task which ends before it begins!
 	@Test
 	public void createTaskEndBeforeStart() throws Exception{
-		Project project = schedule.getAllProjects().get(0);				// list of 1
+		Project project = schedule.getAllProjects().get(0);	
 		
-		Task fineTask =  new Task("Fine task", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), 37*(4-3));
-		Task badTask = new Task("Bad task", new GregorianCalendar(2015, Calendar.JANUARY, 17), new GregorianCalendar(2015, Calendar.JANUARY, 15), 37*(1-4));		// name, number, startWeek, endWeek, budgetedHours - 
+		Task badTask = new Task("Bad task", new GregorianCalendar(2015, Calendar.JANUARY, 17), new GregorianCalendar(2015, Calendar.JANUARY, 15), 37);		// name, number, startWeek, endWeek, budgetedHours - 
 																	// begins before it begins with negative budget time..
-		user.createTask(fineTask, project);
-		assertEquals(1,project.getTasks().size());
-		
 		try {
 			user.createTask(badTask, project);
 			fail("OperationNotAllowedException should have been thrown");
@@ -138,7 +137,7 @@ public class TestTask {
 			assertEquals("Add task", e.getOperation());
 		}
 		
-		assertEquals(1,project.getTasks().size());
+		assertEquals(0,project.getTasks().size());
 	}
 	
 	@Test
@@ -213,7 +212,6 @@ public class TestTask {
 	
 	// add more than 10 tasks to an employee who isn't allowed to work on 20
 	// default max task = 10
-	
 	@Test
 	public void tenTaskEmployee() throws Exception {
 		Project project = schedule.getAllProjects().get(0);		
@@ -323,33 +321,6 @@ public class TestTask {
 		assertEquals("Thu Jan 22 00:00:00 CET 2015", task.getEndDate().getTime().toString());	// end only
 		
 	}
-	
-//	// remove a tasks which the employee is not working on
-//	@Test
-//	public void removeTaskNonExist() throws Exception {
-//		Project project = schedule.getAllProjects().get(0);				
-//		
-//		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 8), 37*(2-1));	// name, number, startWeek, endWeek, budgetedHours
-//		Task task2 = new Task("taskName2", new GregorianCalendar(2015, Calendar.JANUARY, 8), new GregorianCalendar(2015, Calendar.JANUARY, 15), 37*(3-2));	// name, number, startWeek, endWeek, budgetedHours
-//		
-//		user.createTask(task, project);
-//		user.addEmployeeToTask(user, task, 200);
-//		
-//		assertEquals(1, user.getTasks().size());
-//		assertEquals(1, task.getEmployees().size());
-//		
-//		try{
-//			user.removeTask(task2);
-//			fail("OperationNotAllowedException should have been thrown from the above statement");
-//		} catch (OperationNotAllowedException e) {
-//			assertEquals("You can't remove a task that doesn't exist", e.getMessage());
-//			assertEquals("Remove task", e.getOperation());
-//		}
-//
-//		assertEquals(1, user.getTasks().size());
-//		assertEquals(1, task.getEmployees().size());
-//		
-//	}	
 	
 	@Test
 	public void removeProjectWithTasks() throws Exception {
@@ -509,7 +480,7 @@ public class TestTask {
 	
 	@Test
 	public void requireAssistance() throws Exception{
-		Project project = schedule.getAllProjects().get(0);		// list of 1
+		Project project = schedule.getAllProjects().get(0);
 		
 		Employee employee1 = schedule.getEmployees().get(0);
 		Employee employee2 = schedule.getEmployees().get(1);
@@ -688,62 +659,47 @@ public class TestTask {
 	}
 	
 	// for the user to see which tasks he/she is working on today
-		@Test
-		public void getTodaysAgendaWithMultipleTasks() throws Exception{
-			
-			// setup mock
-			//--------
-			DateServer dateServer = mock(DateServer.class);
-			
-			//make this the "today" date and time the user checks his/her agenda
-			Calendar cal = new GregorianCalendar(2015,Calendar.JANUARY,15,8,0);
-			
-			schedule.setDateServer(dateServer);
-			when(dateServer.getDate()).thenReturn(cal);
-			
-			//---------
-			
-			Project project = schedule.getAllProjects().get(0);
-			Employee employee = schedule.getEmployees().get(0);
-			
+	@Test
+	public void getTodaysAgendaWithMultipleTasks() throws Exception{
+		
+		// setup mock
+		//--------
+		DateServer dateServer = mock(DateServer.class);
+		
+		//make this the "today" date and time the user checks his/her agenda
+		Calendar cal = new GregorianCalendar(2015,Calendar.JANUARY,15,8,0);
+		
+		schedule.setDateServer(dateServer);
+		when(dateServer.getDate()).thenReturn(cal);
+		
+		//---------
+		
+		Project project = schedule.getAllProjects().get(0);
+		Employee employee = schedule.getEmployees().get(0);
+		
 
-			// employee = seny
-			// user = luvi
-			
-			// create a couple of tasks, one for today ending at noon 
-			// and another one starting right after, thus giving the employee 2 tasks on his agenda "today"
-			Task task = new Task("taskName1", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 16), 80);	// name, number, startWeek, endWeek, budgetedHours
-			Task task2 = new Task("taskName2", new GregorianCalendar(2015, Calendar.JANUARY, 10), new GregorianCalendar(2015, Calendar.JANUARY, 18), 40);	// name, number, startWeek, endWeek, budgetedHours
-			
-			user.createTask(task, project);
-			user.createTask(task2, project);
-			
-			assertEquals(0, user.getTodaysAgenda().size());
-			// add the employee to both tasks of today
-			// hence checking todays agenda should yield both of the tasks
+		// employee = seny
+		// user = luvi
+		
+		// create a couple of tasks, one for today ending at noon 
+		// and another one starting right after, thus giving the employee 2 tasks on his agenda "today"
+		Task task = new Task("taskName1", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 16), 80);	// name, number, startWeek, endWeek, budgetedHours
+		Task task2 = new Task("taskName2", new GregorianCalendar(2015, Calendar.JANUARY, 10), new GregorianCalendar(2015, Calendar.JANUARY, 18), 40);	// name, number, startWeek, endWeek, budgetedHours
+		
+		user.createTask(task, project);
+		user.createTask(task2, project);
+		
+		assertEquals(0, user.getTodaysAgenda().size());
+		// add the employee to both tasks of today
+		// hence checking todays agenda should yield both of the tasks
 
-			user.addEmployeeToTask(employee, task, new GregorianCalendar(2015, Calendar.JANUARY, 11, 8, 0), 28*60); // ends on the 15th at 12:00
-			user.addEmployeeToTask(employee, task2, new GregorianCalendar(2015, Calendar.JANUARY, 15, 13, 0), 8*60);	// begins on the 15th at 13:00
-			
-			// expecting both tasks, as both are in the period 13th, January, 08:00 - 16:00
-			assertEquals(2, employee.getTodaysAgenda().size());
-			
-			assertEquals(employee.getTodaysAgenda().get(0).getTask(), task);
-			assertEquals(employee.getTodaysAgenda().get(1).getTask(), task2);
-		}
+		user.addEmployeeToTask(employee, task, new GregorianCalendar(2015, Calendar.JANUARY, 11, 8, 0), 28*60); // ends on the 15th at 12:00
+		user.addEmployeeToTask(employee, task2, new GregorianCalendar(2015, Calendar.JANUARY, 15, 13, 0), 8*60);	// begins on the 15th at 13:00
+		
+		// expecting both tasks, as both are in the period 13th, January, 08:00 - 16:00
+		assertEquals(2, employee.getTodaysAgenda().size());
+		
+		assertEquals(employee.getTodaysAgenda().get(0).getTask(), task);
+		assertEquals(employee.getTodaysAgenda().get(1).getTask(), task2);
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

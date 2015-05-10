@@ -17,16 +17,14 @@ public class Employee {
 	private int age;
 	private Address address;
 	private boolean admin = false;
-//	private Agenda agenda;
 	
 	private LinkedList<Project> projects;
 	private LinkedList<Task> tasks;
 	private Map<Task,LinkedList<Assignment>> tasksAndTime;
 	private boolean superWorker;
 	private int punchIn, punchOut;
-	private long taskIn, taskOut;
 	private Map<String, Integer> workLog = new HashMap<String, Integer>();
-	private Map<Task, Integer> taskLog = new HashMap<Task, Integer>();
+
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public Employee(String name, String initials, int age, Address address, Schedule schedule) {
@@ -36,8 +34,6 @@ public class Employee {
 		this.address = address;
 		this.schedule = schedule;
 		this.superWorker = false;
-		
-//		this.agenda = new Agenda();
 		this.projects = new LinkedList<Project>();
 		this.tasks = new LinkedList<Task>();
 		this.tasksAndTime = new HashMap<Task, LinkedList<Assignment>>();
@@ -68,7 +64,10 @@ public class Employee {
 		else if (!this.equals(project.getProjectLeader())) 
 			throw new OperationNotAllowedException("Cannot remove a project if not its leader", "Delete project");
 		
-		// remove reference to the object entirely --> removed by garbage collector.
+		/*
+		 *  remove reference to the object entirely --> removed by garbage collector.
+		 *  Clean up all the tasks connected to a project being removed
+		 */
 		project.removeTasks();
 		projects.remove(project);
 		schedule.removeProject(project);
@@ -102,9 +101,7 @@ public class Employee {
 			throw new OperationNotAllowedException("Task span does not comply with project bounds!", "Add task");
 		
 		project.addTask(task);
-//		schedule.addTask(task);
 		task.setTaskNumber(schedule.getAllTasks().size() - 1, schedule.getDate().get(GregorianCalendar.YEAR));
-//		task.belongsTo(project);
 	}
 	
 	public void deleteTask(Task task, Project project) throws Exception {
@@ -113,9 +110,7 @@ public class Employee {
 	}
 
 	public void addEmployeeToTask(Employee employee, Task task, Calendar startDate, int time) throws Exception { // time is measured in minutes
-//		// regular employees can't work on more than 10 tasks at once
-//		if (employee.getTasks().contains(task)) 
-//			throw new OperationNotAllowedException("The employee " + employee + " is already working on this task!", "Add employee to task");
+//		regular employees can't work on more than 10 tasks at once
 		
 		if (!isProjectLeader(task)) 
 			throw new OperationNotAllowedException("Only the project leader may add an employee to the task", "Add employee to task");
@@ -128,7 +123,6 @@ public class Employee {
 		
 		employee.addTask(task, startDate, time);
 		task.addEmployee(employee);
-//		task.getProject().addEmployee(employee);
 		
 	}
 	
@@ -142,7 +136,6 @@ public class Employee {
 	public void addEmployeeToAbsence(Employee employee, Task task, Calendar startDate, int time) throws Exception { // time is measured in minutes
 		employee.addTask(task, startDate, time);
 		task.addEmployee(employee);
-//		task.getProject().addEmployee(employee);
 		
 	}
 	
@@ -294,14 +287,12 @@ public class Employee {
 	public void punchIn() {		
 		// get hour of day
 		punchIn = schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);		// get the current time in minutes
-		//punchIn = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
 		
 	}
 	
 	public void punchOut() {
 		// get the new time 
 		punchOut = schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);		// get the current time in minutes
-		//punchOut = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
 		
 		int workMinutes = punchOut-punchIn;
 		
@@ -325,45 +316,22 @@ public class Employee {
 	
 	public void startWorkingOnAssignment(Assignment assignment) {
 		assignment.startTimer();
-//		taskIn = schedule.getDate().getTimeInMillis();
-				
-				//schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);	// get the current time in minutes
 
 	}
 	
 	public void stopWorkingOnAssignment(Assignment assignment) {
-		assignment.stopTimer();
-//		taskOut = schedule.getDate().getTimeInMillis();
-		
-		//schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);	// get the current time in minutes
-		
-//		long timeWorkedOnTimer = taskOut - taskIn;
-//		System.out.println(timeWorkedOnTimer);
-//		
-//		assignment.addTimeSpent(timeWorkedOnTimer);
-		
-//		if (taskLog.containsKey(task))
-//			taskLog.put(task, taskLog.get(task) + timeWorkedOnTask);
-//		else 
-//			taskLog.put(task, timeWorkedOnTask);
-//		
-//		task.setTaskLog(this, timeWorkedOnTask);
-		
+		assignment.stopTimer();		
 	}
 	
 
-	public void changeTimeWorkedOnTask(Assignment assignment, int time) {
-		assignment.setTimeSpent(time);
-//		taskLog.put(task, time);
+	public void changeTimeWorkedOnAnAssignment(Assignment assignment, int time) {
+		assignment.setRegisteredTime(time);
 	}
 
-//	public int getAssignmentTimeSpentInMinutes(Assignment assignment) {
-//		return (int) (assignment.getTimeSpent() / (1000*60));
-////		return taskLog.get(task);
-//	}
-	
-	public Map<Task, Integer> getTaskLog() {
-		return taskLog;
+
+	public int getAssignmentTimeSpentInMinutes(Assignment assignment) {
+		return (int) (assignment.getRegisteredTime() / (1000*60));
+
 	}
 
 	public void reportAbsence(Employee employee, Enum<Status> reason, Calendar startDate, int time) throws Exception {
@@ -406,10 +374,17 @@ public class Employee {
 	public int getTimeForATask(Task task) {
 		int time = 0;
 		for (Assignment assignment : tasksAndTime.get(task))
-			time += assignment.getTimeForATask();
+			time += assignment.getTime();
 		return time; 
 	}
 
+	public int getRegisteredTimeForATask(Task task) {
+		int time = 0;
+		for (Assignment assignment : tasksAndTime.get(task))
+			time += assignment.getRegisteredTime();
+		return time; 
+	}
+	
 	public Map<Task, LinkedList<Assignment>> getTasksAndTime() {
 		return tasksAndTime;
 	}

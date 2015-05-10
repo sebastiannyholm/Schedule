@@ -9,15 +9,13 @@ import java.util.GregorianCalendar;
 
 import javax.swing.Timer;
 
-import view.View;
-
 public class Assignment implements ActionListener {
 
 	private Task task;
 	private Calendar startDate, endDate;
-	private int time, timeSpent, hours, minutes, seconds;
+	private int time, registeredTime, hours, minutes, seconds;
 	private Timer timer;
-	private String timeSpentString = "00:00:00", hoursString = "00", minutesString = "00", secondsString = "00"; 
+	private String registeredTimeString = "00:00:00", hoursString = "00", minutesString = "00", secondsString = "00"; 
 	
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
 	
@@ -33,13 +31,6 @@ public class Assignment implements ActionListener {
 		
 		this.timer = new Timer(1000, this);
 		
-		agenda();
-	}
-	
-	private void agenda() {
-//		System.out.println(df.format(startDate.getTime()));
-//		System.out.println(df.format(endDate.getTime()));
-//		System.out.println();
 	}
 	
 	public Calendar getStartDate() {
@@ -50,7 +41,7 @@ public class Assignment implements ActionListener {
 		return endDate;
 	}
 	
-	public int getTimeForATask() {
+	public int getTime() {
 		return time;
 	}
 
@@ -72,41 +63,41 @@ public class Assignment implements ActionListener {
 		return task;
 	}
 	
-	public int getTimeSpent(){
-		return timeSpent;
+	public int getRegisteredTime(){
+		return registeredTime;
 	}
 	
-	public void setTimeSpent(int timeSpent){
-		this.timeSpent = timeSpent;
+	public void setRegisteredTime(int timeSpent){
+		this.registeredTime = timeSpent;
 		setCorrectFormat();
 	}
 
 	public boolean limitExceeded() {
-		return timeSpent > time*60;
+		return registeredTime > time*60;
 	}
 
-	public int getHourSpent() {
-		return (timeSpent / (60*60));
+	public int getRegisteredHour() {
+		return (registeredTime / (60*60));
 	}
 
-	public int getMinutesSpent() {
-		return (timeSpent / 60) % 60;
+	public int getRegisteredMinutes() {
+		return (registeredTime / 60) % 60;
 	}
 
-	public int getSecondsSpent() {
-		return timeSpent % 60;
+	public int getRegisteredSeconds() {
+		return registeredTime % 60;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		timeSpent++;
+		registeredTime++;
 		setCorrectFormat();
 	}
 	
 	private void setCorrectFormat() {
-		hours = getHourSpent();
-		minutes = getMinutesSpent();
-		seconds = getSecondsSpent();
+		hours = getRegisteredHour();
+		minutes = getRegisteredMinutes();
+		seconds = getRegisteredSeconds();
 		
 		if (hours < 10)
 			hoursString = "0" + hours;
@@ -123,7 +114,7 @@ public class Assignment implements ActionListener {
 		else 
 			secondsString = Integer.toString(seconds);
 		
-		timeSpentString = hoursString + ":" + minutesString + ":" + secondsString;
+		registeredTimeString = hoursString + ":" + minutesString + ":" + secondsString;
 	}
 	
 	public void startTimer() {
@@ -138,19 +129,19 @@ public class Assignment implements ActionListener {
 		return timer;
 	}
 	
-	public String getHoursSpentString() {
+	public String getRegisteredHoursString() {
 		return hoursString;
 	}
 	
-	public String getMinutesSpentString() {
+	public String getRegisteredMinutesString() {
 		return minutesString;
 	}
 	
-	public String getSecondsSpentString() {
+	public String getRegisteredSecondsString() {
 		return secondsString;
 	}
 	
-	public String getTimeSpentString() {
-		return timeSpentString;
+	public String getRegisteredTimeString() {
+		return registeredTimeString;
 	}
 }

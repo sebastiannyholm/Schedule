@@ -28,16 +28,8 @@ public class View extends JFrame {
 	private ManageTaskPanel manageTaskPanel;
 	private WorkingPanel workingPanel;
 	private ManageEmployeesPanel manageEmployeesPanel;
-//	private ProjectPanel gamePanel;
-//	private ManageProjectPanel manageProjectPanel;
-//	private CreateProjectPanel createProjectPanel;
-//	private CreateTaskPanel createTaskPanel;
-//	private ManageTaskPanel manageTaskPanel;
-//	
-//	private AbsencePanel absencePanel;
-//	private SickPanel sickPanel;
-//	private VacationPanel vacationPanel;
-//	
+
+	
 	public View(Schedule schedule) {
 		super("Softwarehuset A/S");
 		this.schedule = schedule;
@@ -102,7 +94,6 @@ public class View extends JFrame {
 	}
 
 	public ManageProjectPanel getManageProjectPanel() {
-		// TODO Auto-generated method stub
 		return manageProjectPanel;
 	}
 

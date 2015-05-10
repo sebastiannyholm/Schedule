@@ -101,8 +101,7 @@ public class AgendaPanel extends JPanel {
 		assignments.clear();
 	
 		for (Assignment assignment : todaysTimers)
-	    	assignments.addElement(assignment);
-		
+	    	assignments.addElement(assignment);	
 	}
 	
 	public void setErrorLabel(String error){
