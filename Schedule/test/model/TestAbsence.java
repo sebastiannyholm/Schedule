@@ -93,8 +93,8 @@ public class TestAbsence {
 		 *  Meaning, the vacation starts on the 26th of January 08:00 and lasts for 5 days of 8 working hours = 40 hours
 		 */
 		
-		projectLeader.reportAbsence(employee, Status.VACATION, new GregorianCalendar(2015, Calendar.JANUARY, 26, 8, 0), 40*60);
-
+		projectLeader.reportAbsence(employee, Status.VACATION, new GregorianCalendar(2015, Calendar.JANUARY, 26, 8, 0), 40*60);	
+		
 		assertFalse(employee.isAbsent());
 		
 		// skip to the middle of the employee's vacation where he/she should be absent

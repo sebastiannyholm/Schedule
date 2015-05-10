@@ -668,7 +668,6 @@ public class TestTask {
 			Project project = schedule.getAllProjects().get(0);
 			Employee employee = schedule.getEmployees().get(0);
 			
-
 			// employee = seny
 			// user = luvi
 			

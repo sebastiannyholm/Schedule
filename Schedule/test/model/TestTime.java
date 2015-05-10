@@ -155,7 +155,7 @@ public class TestTime {
 	}
 	
 	@Test
-	public void registerTimeForAnAssignment() throws Exception{
+	public void registerTimeForAnAssignment() throws Exception {
 		
 		Project project = schedule.getAllProjects().get(0);
 	
