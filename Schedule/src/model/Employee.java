@@ -358,7 +358,7 @@ public class Employee {
 	}
 	
 
-	public void changeTimeWorkedOnTask(Assignment assignment, int time) {
+	public void changeTimeWorkedOnAnAssignment(Assignment assignment, int time) {
 		assignment.setTimeSpent(time);
 //		taskLog.put(task, time);
 	}

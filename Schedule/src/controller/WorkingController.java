@@ -187,7 +187,7 @@ public class WorkingController implements ActionListener {
 					break;
 				}
 				
-				schedule.getUser().changeTimeWorkedOnTask(assignment, hours * 60 * 60 + minutes * 60 + seconds);
+				schedule.getUser().changeTimeWorkedOnAnAssignment(assignment, hours * 60 * 60 + minutes * 60 + seconds);
 				
 				view.getWorkingPanel().setTimeSpent();
 				view.getWorkingPanel().removeChangeTime();

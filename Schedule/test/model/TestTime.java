@@ -155,7 +155,7 @@ public class TestTime {
 	}
 	
 	@Test
-	public void registerTaskTime() throws Exception{
+	public void registerTimeForAnAssignment() throws Exception{
 		
 		Project project = schedule.getAllProjects().get(0);
 	
@@ -181,7 +181,7 @@ public class TestTime {
 	
 	// add working time to an already active task (the employee has already worked on it before)
 	@Test
-	public void registerTaskTimeMulitple() throws Exception{
+	public void registerTimeForAnAssignmentMulitple() throws Exception{
 		
 		Project project = schedule.getAllProjects().get(0);
 		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 1000);
@@ -261,7 +261,7 @@ public class TestTime {
 	}
 	
 	@Test
-	public void changeTimeWorkedOnTask() throws Exception{
+	public void changeTimeWorkedOnAnAssignment() throws Exception{
 		
 		Project project = schedule.getAllProjects().get(0);
 		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 1000);
@@ -279,7 +279,7 @@ public class TestTime {
 			assignment.actionPerformed(null);
 		
 		// THen he change it to 10 minutes
-		user.changeTimeWorkedOnTask(assignment, 10*60);
+		user.changeTimeWorkedOnAnAssignment(assignment, 10*60);
 		
 		assertEquals(10*60, assignment.getRegisteredTime());
 		
@@ -354,12 +354,12 @@ public class TestTime {
 		assertEquals(2, assignment.getMinutesSpent());
 		assertEquals(3, assignment.getSecondsSpent());
 	
-		user.changeTimeWorkedOnTask(assignment, 3599);
+		user.changeTimeWorkedOnAnAssignment(assignment, 3599);
 		assignment.actionPerformed(null);
 		assertEquals(1, assignment.getHourSpent());
 		
 		// Check if it's the same time, whether you check one way or another.
-		user.changeTimeWorkedOnTask(assignment, 3600*10);
+		user.changeTimeWorkedOnAnAssignment(assignment, 3600*10);
 		assertEquals(assignment.getTimeSpentString(), assignment.getHoursSpentString() + ":" + assignment.getMinutesSpentString() + ":" + assignment.getSecondsSpentString());
 	}
 	
