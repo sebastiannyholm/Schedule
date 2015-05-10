@@ -9,12 +9,14 @@ import view.View;
 import model.Employee;
 import model.Schedule;
 import model.Task;
+import model.Timer;
 
 public class WorkingController implements ActionListener {
 
 	private Schedule schedule;
 	private View view;
 	private Task task;
+	private Timer timer;
 	
 	private String timeString = "", hourInDayString = "";
 	private int time, hourInDay;
@@ -34,19 +36,20 @@ public class WorkingController implements ActionListener {
 		String timeSpent = "";
 		int time = 0;
 		task = view.getWorkingPanel().getTask();
+		timer = view.getWorkingPanel().getTimer();
 		
 		switch (e.getActionCommand()) {
 			case "Start timer":
 				view.getWorkingPanel().setStartWork(false);
 				view.getWorkingPanel().setStopWork(true);
-				schedule.getUser().startWorkingOnTask(task);
+				schedule.getUser().startWorkingOnTask(timer);
 				break;
 				
 			case "Stop timer":
-				schedule.getUser().stopWorkingOnTask(task);
+				schedule.getUser().stopWorkingOnTask(timer);
 				view.getWorkingPanel().setStartWork(true);
 				view.getWorkingPanel().setStopWork(false);
-				timeSpent = Integer.toString(schedule.getUser().getTaskLogValue(task));
+				timeSpent = Integer.toString(schedule.getUser().getTaskLogValue(timer));
 				view.getWorkingPanel().setTimeSpentLabel(timeSpent);
 				break;
 			
@@ -152,10 +155,12 @@ public class WorkingController implements ActionListener {
 					break;
 				}
 				
-				schedule.getUser().changeTimeWorkedOnTask(task, time);
-				timeSpent = Integer.toString(schedule.getUser().getTaskLogValue(task));
+				schedule.getUser().changeTimeWorkedOnTask(timer, time);
+				timeSpent = Integer.toString(schedule.getUser().getTaskLogValue(timer));
 				
 				view.getWorkingPanel().setTimeSpentLabel(timeSpent);
+				if (timer.limitExceeded())
+					view.getWorkingPanel().setWorkedToMuch("You have exceeded your time limit!");
 				
 				break;
 				

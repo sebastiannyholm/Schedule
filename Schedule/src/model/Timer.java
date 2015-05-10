@@ -66,6 +66,14 @@ public class Timer {
 	}
 	
 	public void setTimeSpent(int timeSpent){
-		timeSpent = timeSpent;
+		this.timeSpent = timeSpent;
+	}
+
+	public void addTimeSpent(int timeSpent) {
+		this.timeSpent += timeSpent;
+	}
+
+	public boolean limitExceeded() {
+		return timeSpent > time;
 	}
 }
