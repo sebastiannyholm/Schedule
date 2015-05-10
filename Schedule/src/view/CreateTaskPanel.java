@@ -83,8 +83,6 @@ public class CreateTaskPanel extends JPanel {
 		
 		back.setBounds(820,520,120,40);
 		
-		
-		
 		this.setLayout(null);
 		
 		this.add(taskNameLabel);

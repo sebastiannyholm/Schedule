@@ -74,6 +74,35 @@ public class TestTime {
 		assertEquals(5*60, user.getWorkLogValue(schedule.getDate().getTime()));
 	}
 	
+
+	@Test
+	public void registerTimePastMidnight() throws Exception{
+		
+		Calendar newCal = new GregorianCalendar();
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 8*60);
+		when(dateServer.getDate()).thenReturn(newCal);
+		
+		
+		// the employee automatically punches out as he logs out
+		schedule.logOut(); 			// punches out
+		assertEquals(8*60, user.getWorkLogValue(schedule.getDate().getTime()));
+		
+		// log in another employee
+		schedule.login("luvi");
+		user = schedule.getUser();
+		
+		// He works for 17 hours and logs out (17*60 min)  - past midnight
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 17*60 + 8*60);
+		when(dateServer.getDate()).thenReturn(newCal);
+	
+		schedule.logOut();
+		
+		assertEquals(17*60, user.getWorkLogValue(schedule.getDate().getTime()));
+	}
+	
+	
 	@Test
 	public void registerTimeMultipleTimesADay() throws Exception {
 		
@@ -225,8 +254,11 @@ public class TestTime {
 		
 		user.createTask(task, project);
 		
+		// Add normal employee to task
 		user.addEmployeeToTask(employee1, task, schedule.getDate(), 10*60);
-		user.addEmployeeToTask(employee2, task, schedule.getDate(), 10*60);
+		
+		// Require help to an task
+		user.requireAssistance(employee2, task, schedule.getDate(), 10*60);
 		
 		// Get the timers that has just been created, when the employees was added for the task
 		Assignment assignment1 = employee1.getTasksAndTime().get(task).get(0);
@@ -254,7 +286,6 @@ public class TestTime {
 			assignment2.actionPerformed(null);
 		
 		assertEquals(10*60, assignment2.getRegisteredTime());
-		System.out.println(123);
 		assertEquals(30*60, task.getRegisteredTime());
 	}
 	

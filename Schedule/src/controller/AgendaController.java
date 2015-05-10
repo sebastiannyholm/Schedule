@@ -14,12 +14,10 @@ public class AgendaController implements ActionListener {
 	private View view;
 	private Task task;
 	private Assignment assignment;
-	private TickTimeController tickTimeController;
 	
-	public AgendaController(Schedule schedule, View view, TickTimeController tickTimeController) {
+	public AgendaController(Schedule schedule, View view) {
 		this.schedule = schedule;
 		this.view = view;
-		this.tickTimeController = tickTimeController;
 		
 		view.getAgendaPanel().registerListener(this);
 	}

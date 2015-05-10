@@ -32,7 +32,6 @@ public class ProjectPanel extends JPanel {
 	private JButton createProject, deleteProject, manageProject, back;
 	private JList projectList;
 	private JScrollPane scrollPane;
-	
 	private DefaultListModel<Project> projects = new DefaultListModel<Project>();
 	
 	public ProjectPanel(Schedule schedule) {

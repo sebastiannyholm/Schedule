@@ -16,8 +16,6 @@ public class CreateTaskController implements ActionListener {
 
 	private Schedule schedule;
 	private View view;
-	
-	private String taskName;
 	private Project project;
 	private Calendar startDate = null, endDate = null;
 	

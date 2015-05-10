@@ -34,7 +34,6 @@ public class ManageProjectPanel extends JPanel {
 	private Project project;
 	
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-	
 	private TitleLabel titleLabel;
 	private SubTitleLabel taskListTitleLabel, taskInformation;
 	private Label projectLeaderLabel, projectLeaderLabelLabel, descriptionLabel, descriptionLabelLabel, startDateLabel, startDateLabelLabel, endDateLabel, endDateLabelLabel;
@@ -44,8 +43,8 @@ public class ManageProjectPanel extends JPanel {
 	private JButton createTask, deleteTask, manageTask, changeProjectLeader, saveProjectLeader, back, changeDescription, saveDescription;
 	private JList taskList;
 	private JScrollPane scrollPane, descriptionTextScrollPane;
-	
 	private DefaultListModel<Task> tasks = new DefaultListModel<Task>();
+	
 	
 	public ManageProjectPanel(Schedule schedule) {
 		this.schedule = schedule;

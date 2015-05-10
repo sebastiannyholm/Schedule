@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.util.Date;
 import java.util.List;
 
@@ -59,7 +58,6 @@ public class WorkingPanel extends JPanel {
 		this.timeSpentTitleLabel = new SubTitleLabel("Time spent on this assignment");
 		this.startWork = new JButton("Start timer");
 		this.stopWork = new JButton("Stop timer");
-//		this.changeTimeSpentLabel = new Label("Change time worked on this task");
 		this.changeTimeSpent = new JButton("Change time");
 		this.saveTimeSpent = new JButton("Save time");
 		this.changeHoursSpentTextField = new JTextField();
@@ -97,9 +95,7 @@ public class WorkingPanel extends JPanel {
 		titleLabel.setBounds(20, 20, 460, 40);
 		timeSpentTitleLabel.setBounds(20,80,200,40);
 		timeSpentLabel.setBounds(20,120,200,40);
-//		workedToMuch.setBounds(20,160,200,40);
 		changeTimeSpentLabel.setBounds(20, 200, 200, 40);
-//		changeTimeSpentTextField.setBounds(20, 240, 200, 40);
 		changeTimeSpent.setBounds(20, 280, 120, 40);
 		startWork.setBounds(20, 360, 120, 40);
 		stopWork.setBounds(20, 420, 120, 40);
@@ -116,13 +112,8 @@ public class WorkingPanel extends JPanel {
 		hourInDayText.setBounds(250,180, 120, 40);
 		timeLabel.setBounds(250, 220, 120, 30);
 		timeText.setBounds(250, 250, 120, 40);
-//		findEmployeesButton.setBounds(250, 300, 120, 40);
 		
-		errorLabel.setForeground(Color.RED);
-//		workedToMuch.setForeground(Color.RED);
 		titleLabel.setLocation(20, 20);
-	
-//		changeTimeSpentLabel.setBounds(20, 200, 200, 40);
 		
 		descriptionTaskTitle.setBounds(20, 80, 400, 20);
 		descriptionTask.setBounds(20, 100, 400, 60);
@@ -180,7 +171,6 @@ public class WorkingPanel extends JPanel {
 		this.add(timeSpentLabel);
 		this.add(startWork);
 		this.add(stopWork);
-//		this.add(changeTimeSpentLabel);
 		this.add(changeTimeSpent);
 		this.add(errorLabel);
 		this.add(errorLabelTime);
@@ -342,52 +332,6 @@ public class WorkingPanel extends JPanel {
 	public Date getStartDate() {
 		return (Date) findEmployeesDatePicker.getModel().getValue();
 	}
-
-//	public void setTimeInCorrectFormat() {
-//		
-//		String hoursString = "";
-//		String minutesString = "";
-//		String secondsString = "";
-//		
-//		int hours = assignment.getHourSpent(), minutes = assignment.getMinutesSpent(), seconds = assignment.getSecondsSpent();
-//		
-//		try {
-//			hours = Integer.parseInt(hoursString);
-//			minutes = Integer.parseInt(minutesString);
-//			seconds = Integer.parseInt(secondsString);
-//		} catch(NumberFormatException error) {
-//			
-//		}
-//		
-//		if (seconds == 60) {
-//			seconds = 0;
-//			minutes++;
-//			if (minutes == 60) {
-//				minutes = 0;
-//				hours++;
-//			}
-//		}
-//		
-//		if (hours < 10)
-//			hoursString = "0" + hours;
-//		else 
-//			hoursString = Integer.toString(hours);
-//		 
-//		if (minutes < 10)
-//			minutesString = "0" + minutes;
-//		else 
-//			minutesString = Integer.toString(minutes);
-//		
-//		if (seconds < 10)
-//			secondsString = "0" + seconds;
-//		else 
-//			secondsString = Integer.toString(seconds);
-//		
-//		setChangeHoursSpentText(hoursString);
-//		setChangeMinutesSpentText(minutesString);
-//		setChangeSecondsSpentText(secondsString);
-//		timeSpentLabel.setText(hoursString + ":" + minutesString + ":" + secondsString);
-//	}
 	
 	public String getChangeHoursSpentText() {
 		return changeHoursSpentTextField.getText();

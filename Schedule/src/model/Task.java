@@ -17,7 +17,6 @@ public class Task {
 	private int budgetedTime;
 	private Map<Employee, Integer> log = new HashMap<Employee, Integer>();
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-//	private Project project;		// the project connected to this task
 
 	
 	public Task(String name, Calendar startDate, Calendar endDate, int budgetedTime){
@@ -47,8 +46,6 @@ public class Task {
 		 *  ex.  yyyy999999
 		 */
 		this.taskNumber = "" + year + String.format("%06d", (taskCount % 1000000));
-		
-		// total taskNumber:  2015000255   for the 256th task in 2015
 	}
 
 	public void removeEmployee(Employee employee) {
@@ -64,8 +61,11 @@ public class Task {
 	public String toString(){
 		return taskNumber + " - " + name + " from " + df.format(startDate.getTime()) + " to " + df.format(endDate.getTime());
 	}
-
-	// this.startWeek > 45 to make up for tasks overlapping new years eve
+	
+	/*
+	 * Make sure the specified start- and endDate of the task
+	 * is within the allowed bounds.
+	 */
 	public boolean isOutOfBounds(Calendar startDate, Calendar endDate) {
 		return (this.startDate.before(startDate) || this.endDate.after(endDate));
 	}
@@ -80,25 +80,6 @@ public class Task {
 				|| (this.endDate.after(startDate) && this.endDate.compareTo(endDate) <= 0)
 				|| (this.startDate.compareTo(startDate) <= 0 && this.endDate.compareTo(endDate) >= 0);
 	}
-
-	
-	public void setTaskLog(Employee employee, int timeWorkedOnTask) {
-		
-		if (log.containsKey(employee))
-			log.put(employee, log.get(employee) + timeWorkedOnTask);
-		else 
-			log.put(employee, timeWorkedOnTask);
-		
-	}
-
-//	public void belongsTo(Project project) {
-//		this.project = project;
-//		
-//	}
-//
-//	public Project getProject() {
-//		return project;
-//	}
 
 	public int getBudgetedTime() {
 		return budgetedTime;
@@ -142,10 +123,6 @@ public class Task {
 		return startDate;
 	}
 
-//	public void setStartDate(Calendar startDate) {
-//		this.startDate = startDate;
-//	}
-
 	public Calendar getEndDate() {
 		return endDate;
 	}
@@ -158,10 +135,6 @@ public class Task {
 		return employeesAsAssistance;
 	}
 
-//	public void setEndDate(Calendar endDate) {
-//		this.endDate = endDate;
-//	}
-
 	public String getName(){
 		return name;
 	}
@@ -173,5 +146,4 @@ public class Task {
 	public String getDescription() {
 		return description;
 	}
-	
 }

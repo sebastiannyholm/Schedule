@@ -51,7 +51,6 @@ public class AbsenceController implements ActionListener {
 				}
 				view.getAbsencePanel().updateListSick();
 				
-//					view.getAbsencePanel().setErrorLabel("That employee have no assignments today");
 				break;
 				
 			case "Add employee":

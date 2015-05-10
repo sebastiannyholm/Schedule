@@ -9,8 +9,6 @@ import java.util.GregorianCalendar;
 
 import javax.swing.Timer;
 
-import view.View;
-
 public class Assignment implements ActionListener {
 
 	private Task task;
@@ -33,14 +31,7 @@ public class Assignment implements ActionListener {
 		
 		this.timer = new Timer(1000, this);
 		
-//		agenda();
 	}
-	
-//	private void agenda() {
-//		System.out.println(df.format(startDate.getTime()));
-//		System.out.println(df.format(endDate.getTime()));
-//		System.out.println();
-//	}
 	
 	public Calendar getStartDate() {
 		return startDate;

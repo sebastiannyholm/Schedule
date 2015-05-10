@@ -17,7 +17,6 @@ public class Employee {
 	private int age;
 	private Address address;
 	private boolean admin = false;
-//	private Agenda agenda;
 	
 	private LinkedList<Project> projects;
 	private LinkedList<Task> tasks;
@@ -35,8 +34,6 @@ public class Employee {
 		this.address = address;
 		this.schedule = schedule;
 		this.superWorker = false;
-		
-//		this.agenda = new Agenda();
 		this.projects = new LinkedList<Project>();
 		this.tasks = new LinkedList<Task>();
 		this.tasksAndTime = new HashMap<Task, LinkedList<Assignment>>();
@@ -45,8 +42,6 @@ public class Employee {
 	public void createProject(Project newProject) throws Exception {
 		if (!schedule.isLoggedIn())
 			throw new OperationNotAllowedException("You need to be logged in to create a project", "Create project");
-		else if (!this.equals(schedule.getUser()))
-			throw new OperationNotAllowedException("You need to be the one logged in to create a project", "Add task");
 		else if (newProject.getStartDate().after(newProject.getEndDate()))
 			throw new OperationNotAllowedException("Bad project bounds - Project ends before it begins", "Create project");
 		
@@ -65,13 +60,14 @@ public class Employee {
 		
 	public void deleteProject(Project project) throws Exception {
 		if (!schedule.isLoggedIn())
-			throw new OperationNotAllowedException("You need to be logged in to delete a project", "Create project");
-		else if (!this.equals(schedule.getUser()))
-			throw new OperationNotAllowedException("You need to be the one logged in to delete a project", "Add task");
+			throw new OperationNotAllowedException("You need to be logged in to delete a project", "Delete project");
 		else if (!this.equals(project.getProjectLeader())) 
 			throw new OperationNotAllowedException("Cannot remove a project if not its leader", "Delete project");
 		
-		// remove reference to the object entirely --> removed by garbage collector.
+		/*
+		 *  remove reference to the object entirely --> removed by garbage collector.
+		 *  Clean up all the tasks connected to a project being removed
+		 */
 		project.removeTasks();
 		projects.remove(project);
 		schedule.removeProject(project);
@@ -97,8 +93,6 @@ public class Employee {
 	public void createTask(Task task, Project project) throws Exception {
 		if (!schedule.isLoggedIn())
 			throw new OperationNotAllowedException("You need to be logged in to add a task", "Add task");
-		else if (!this.equals(schedule.getUser()))
-			throw new OperationNotAllowedException("You need to be the one logged in to add a task", "Add task");
 		else if (!this.equals(project.getProjectLeader()))
 			throw new OperationNotAllowedException("Only the project leader may add a task to a project", "Add task");
 		else if (task.endsBeforeStart()) 
@@ -107,9 +101,7 @@ public class Employee {
 			throw new OperationNotAllowedException("Task span does not comply with project bounds!", "Add task");
 		
 		project.addTask(task);
-//		schedule.addTask(task);
 		task.setTaskNumber(schedule.getAllTasks().size() - 1, schedule.getDate().get(GregorianCalendar.YEAR));
-//		task.belongsTo(project);
 	}
 	
 	public void deleteTask(Task task, Project project) throws Exception {
@@ -118,9 +110,7 @@ public class Employee {
 	}
 
 	public void addEmployeeToTask(Employee employee, Task task, Calendar startDate, int time) throws Exception { // time is measured in minutes
-//		// regular employees can't work on more than 10 tasks at once
-//		if (employee.getTasks().contains(task)) 
-//			throw new OperationNotAllowedException("The employee " + employee + " is already working on this task!", "Add employee to task");
+//		regular employees can't work on more than 10 tasks at once
 		
 		if (!isProjectLeader(task)) 
 			throw new OperationNotAllowedException("Only the project leader may add an employee to the task", "Add employee to task");
@@ -133,7 +123,6 @@ public class Employee {
 		
 		employee.addTask(task, startDate, time);
 		task.addEmployee(employee);
-//		task.getProject().addEmployee(employee);
 		
 	}
 	
@@ -147,7 +136,6 @@ public class Employee {
 	public void addEmployeeToAbsence(Employee employee, Task task, Calendar startDate, int time) throws Exception { // time is measured in minutes
 		employee.addTask(task, startDate, time);
 		task.addEmployee(employee);
-//		task.getProject().addEmployee(employee);
 		
 	}
 	
@@ -299,18 +287,16 @@ public class Employee {
 	public void punchIn() {		
 		// get hour of day
 		punchIn = schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);		// get the current time in minutes
-		//punchIn = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
 		
 	}
 	
 	public void punchOut() {
 		// get the new time 
 		punchOut = schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);		// get the current time in minutes
-		//punchOut = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
 		
 		int workMinutes = punchOut-punchIn;
-		// to compensate for late shifts working past midnight
 		
+		// to compensate for late shifts working past midnight
 		 if (workMinutes < 0)
 			 workMinutes += 24*60;
 		 
@@ -330,9 +316,6 @@ public class Employee {
 	
 	public void startWorkingOnAssignment(Assignment assignment) {
 		assignment.startTimer();
-//		taskIn = schedule.getDate().getTimeInMillis();
-				
-				//schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);	// get the current time in minutes
 
 	}
 	
@@ -343,12 +326,6 @@ public class Employee {
 
 	public void changeTimeWorkedOnAnAssignment(Assignment assignment, int time) {
 		assignment.setRegisteredTime(time);
-//		taskLog.put(task, time);
-	}
-
-	public int getAssignmentTimeSpentInMinutes(Assignment assignment) {
-		return (int) (assignment.getRegisteredTime() / (1000*60));
-//		return taskLog.get(task);
 	}
 
 	public void reportAbsence(Employee employee, Enum<Status> reason, Calendar startDate, int time) throws Exception {
@@ -493,5 +470,6 @@ public class Employee {
 	public void setTaskDescription(String description, Task task) {
 		task.setDescription(description);
 	}
+
 
 }

@@ -11,10 +11,7 @@ public class Project {
 	private String projectName, projectNumber, description;
 	private Calendar startDate, endDate;
 	private Employee projectLeader;
-	
-//	private List<Employee> employees;
 	private List<Task> tasks;
-	private List<Employee> absentEmployees;
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public Project(String projectName, Calendar startDate, Calendar endDate, Employee projectLeader){
@@ -24,9 +21,7 @@ public class Project {
 		this.endDate = endDate;
 		this.projectLeader = projectLeader;
 		
-		this.absentEmployees = new LinkedList<Employee>();
 		this.tasks = new LinkedList<Task>();
-//		employees = new LinkedList<Employee>();
 	
 	}
 	
@@ -62,7 +57,7 @@ public class Project {
 		
 		this.projectNumber = "" + year + String.format("%04d", (projectCount % 10000));
 		
-		// Project number = 20150132    for the 133rd project created in 2015.
+		// ex. Project number = 20150132    for the 133rd project created in 2015.
 	}
 
 	public boolean match(String critiria) {
@@ -82,6 +77,11 @@ public class Project {
 		return Integer.parseInt(projectNumber);
 	}
 
+	/*
+	 * Checks whether the project is within a certain
+	 * span of time. All possible permutation of nessessary date
+	 * comparisons has been listed.
+	 */
 	public boolean isInPeriod(Calendar startDate, Calendar endDate) {
 		return (this.startDate.compareTo(startDate) >= 0  && this.startDate.compareTo(endDate) < 0)
 				|| (this.endDate.compareTo(startDate) > 0 && this.endDate.compareTo(endDate) <= 0)
@@ -104,25 +104,13 @@ public class Project {
 		return projectName;
 	}
 
-//	public void addEmployee(Employee employee) {
-//		this.employees.add(employee);
-//	}
-
 	public void removeTasks() throws Exception {
 		for (Task task : tasks)
 			task.removeEmployees();
 		tasks.clear();
 		
 	}
-
-	public List<Employee> getAbsentEmployees() {
-		return absentEmployees;
-	}
-
-	public void addAbsentEmployee(Employee employee) {
-		this.absentEmployees.add(employee);	
-	}
-
+	
 	public boolean hasTask(Task task) {
 		return tasks.contains(task);
 	}
@@ -134,5 +122,4 @@ public class Project {
 	public String getDescription() {
 		return description;
 	}
-
 }
