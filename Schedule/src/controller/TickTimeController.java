@@ -24,10 +24,10 @@ public class TickTimeController implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		view.getWorkingPanel().setChangeHoursSpentText(view.getWorkingPanel().getAssignment().getHoursSpentString());
-		view.getWorkingPanel().setChangeMinutesSpentText(view.getWorkingPanel().getAssignment().getMinutesSpentString());
-		view.getWorkingPanel().setChangeSecondsSpentText(view.getWorkingPanel().getAssignment().getSecondsSpentString());
-		view.getWorkingPanel().setTimeSpentLabelText(view.getWorkingPanel().getAssignment().getTimeSpentString());
+		view.getWorkingPanel().setChangeHoursSpentText(view.getWorkingPanel().getAssignment().getRegisteredHoursString());
+		view.getWorkingPanel().setChangeMinutesSpentText(view.getWorkingPanel().getAssignment().getRegisteredMinutesString());
+		view.getWorkingPanel().setChangeSecondsSpentText(view.getWorkingPanel().getAssignment().getRegisteredSecondsString());
+		view.getWorkingPanel().setTimeSpentLabelText(view.getWorkingPanel().getAssignment().getRegisteredTimeString());
 		view.getWorkingPanel().checkTimeLimit();
 	}
 

@@ -17,7 +17,7 @@ public class Assignment implements ActionListener {
 	private Calendar startDate, endDate;
 	private int time, registeredTime, hours, minutes, seconds;
 	private Timer timer;
-	private String timeSpentString = "00:00:00", hoursString = "00", minutesString = "00", secondsString = "00"; 
+	private String registeredTimeString = "00:00:00", hoursString = "00", minutesString = "00", secondsString = "00"; 
 	
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
 	
@@ -33,14 +33,14 @@ public class Assignment implements ActionListener {
 		
 		this.timer = new Timer(1000, this);
 		
-		agenda();
+//		agenda();
 	}
 	
-	private void agenda() {
+//	private void agenda() {
 //		System.out.println(df.format(startDate.getTime()));
 //		System.out.println(df.format(endDate.getTime()));
 //		System.out.println();
-	}
+//	}
 	
 	public Calendar getStartDate() {
 		return startDate;
@@ -76,7 +76,7 @@ public class Assignment implements ActionListener {
 		return registeredTime;
 	}
 	
-	public void setTimeSpent(int timeSpent){
+	public void setRegisteredTime(int timeSpent){
 		this.registeredTime = timeSpent;
 		setCorrectFormat();
 	}
@@ -85,15 +85,15 @@ public class Assignment implements ActionListener {
 		return registeredTime > time*60;
 	}
 
-	public int getHourSpent() {
+	public int getRegisteredHour() {
 		return (registeredTime / (60*60));
 	}
 
-	public int getMinutesSpent() {
+	public int getRegisteredMinutes() {
 		return (registeredTime / 60) % 60;
 	}
 
-	public int getSecondsSpent() {
+	public int getRegisteredSeconds() {
 		return registeredTime % 60;
 	}
 
@@ -104,9 +104,9 @@ public class Assignment implements ActionListener {
 	}
 	
 	private void setCorrectFormat() {
-		hours = getHourSpent();
-		minutes = getMinutesSpent();
-		seconds = getSecondsSpent();
+		hours = getRegisteredHour();
+		minutes = getRegisteredMinutes();
+		seconds = getRegisteredSeconds();
 		
 		if (hours < 10)
 			hoursString = "0" + hours;
@@ -123,7 +123,7 @@ public class Assignment implements ActionListener {
 		else 
 			secondsString = Integer.toString(seconds);
 		
-		timeSpentString = hoursString + ":" + minutesString + ":" + secondsString;
+		registeredTimeString = hoursString + ":" + minutesString + ":" + secondsString;
 	}
 	
 	public void startTimer() {
@@ -138,19 +138,19 @@ public class Assignment implements ActionListener {
 		return timer;
 	}
 	
-	public String getHoursSpentString() {
+	public String getRegisteredHoursString() {
 		return hoursString;
 	}
 	
-	public String getMinutesSpentString() {
+	public String getRegisteredMinutesString() {
 		return minutesString;
 	}
 	
-	public String getSecondsSpentString() {
+	public String getRegisteredSecondsString() {
 		return secondsString;
 	}
 	
-	public String getTimeSpentString() {
-		return timeSpentString;
+	public String getRegisteredTimeString() {
+		return registeredTimeString;
 	}
 }

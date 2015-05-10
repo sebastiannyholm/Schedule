@@ -350,17 +350,17 @@ public class TestTime {
 			assignment.actionPerformed(null);
 		
 		// record the employees time spend working on the task (even though it is greater than the budget)
-		assertEquals(1, assignment.getHourSpent());
-		assertEquals(2, assignment.getMinutesSpent());
-		assertEquals(3, assignment.getSecondsSpent());
+		assertEquals(1, assignment.getRegisteredHour());
+		assertEquals(2, assignment.getRegisteredMinutes());
+		assertEquals(3, assignment.getRegisteredSeconds());
 	
 		user.changeTimeWorkedOnAnAssignment(assignment, 3599);
 		assignment.actionPerformed(null);
-		assertEquals(1, assignment.getHourSpent());
+		assertEquals(1, assignment.getRegisteredHour());
 		
 		// Check if it's the same time, whether you check one way or another.
 		user.changeTimeWorkedOnAnAssignment(assignment, 3600*10);
-		assertEquals(assignment.getTimeSpentString(), assignment.getHoursSpentString() + ":" + assignment.getMinutesSpentString() + ":" + assignment.getSecondsSpentString());
+		assertEquals(assignment.getRegisteredTimeString(), assignment.getRegisteredHoursString() + ":" + assignment.getRegisteredMinutesString() + ":" + assignment.getRegisteredSecondsString());
 	}
 	
 	@Test

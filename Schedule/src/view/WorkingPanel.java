@@ -265,10 +265,10 @@ public class WorkingPanel extends JPanel {
 	}
 	
 	public void setTimeSpent() {
-		setTimeSpentLabelText(assignment.getTimeSpentString());
-		setChangeHoursSpentText(assignment.getHoursSpentString());
-		setChangeMinutesSpentText(assignment.getMinutesSpentString());
-		setChangeSecondsSpentText(assignment.getSecondsSpentString());
+		setTimeSpentLabelText(assignment.getRegisteredTimeString());
+		setChangeHoursSpentText(assignment.getRegisteredHoursString());
+		setChangeMinutesSpentText(assignment.getRegisteredMinutesString());
+		setChangeSecondsSpentText(assignment.getRegisteredSecondsString());
 	}
 	
 	public SubTitleLabel getTimeSpentLabel() {

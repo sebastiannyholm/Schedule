@@ -359,7 +359,7 @@ public class Employee {
 	
 
 	public void changeTimeWorkedOnAnAssignment(Assignment assignment, int time) {
-		assignment.setTimeSpent(time);
+		assignment.setRegisteredTime(time);
 //		taskLog.put(task, time);
 	}
 
