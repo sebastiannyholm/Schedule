@@ -58,7 +58,8 @@ public class CreateTaskController implements ActionListener {
 				try {  
 					time = Integer.parseInt(bugetTime);
 				} catch(NumberFormatException error) {
-					view.getCreateTaskPanel().setErrorLabel(error.getMessage());
+					System.err.println(error);
+					view.getCreateTaskPanel().setErrorLabel("Budget can only be numbers");
 					break;
 				}
 				
@@ -77,9 +78,12 @@ public class CreateTaskController implements ActionListener {
 					schedule.getUser().createTask(task, project);
 					view.resetErrorLabels();
 				} catch (Exception error) {
+					System.err.println(error);
 					view.getCreateTaskPanel().setErrorLabel(error.getMessage());
+					break;
 				}
 				
+				task.setDescription(view.getCreateProjectPanel().getProjectDescription());
 				view.getManageProjectPanel().updateList(project);
 				
 				view.remove(view.getCreateTaskPanel());

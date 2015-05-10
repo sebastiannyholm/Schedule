@@ -37,8 +37,7 @@ public class AbsenceController implements ActionListener {
 		switch (e.getActionCommand()) {
 			case "Is sick":
 				absenceEmployees = schedule.searchEmployee(view.getAbsencePanel().getSickEmployee());
-				
-				if (absenceEmployees.size() != 1) {
+				if (absenceEmployees.size() != 1 || view.getAbsencePanel().getSickEmployee().length() != 4) {
 					view.getAbsencePanel().setErrorLabel("Wrong initials");
 					break;
 				}
@@ -50,8 +49,9 @@ public class AbsenceController implements ActionListener {
 				} catch (Exception error) {
 					view.getAbsencePanel().setErrorLabel(error.getMessage());
 				}
-				view.getAbsencePanel().updateList();
+				view.getAbsencePanel().updateListSick();
 				
+//					view.getAbsencePanel().setErrorLabel("That employee have no assignments today");
 				break;
 				
 			case "Add employee":
@@ -62,8 +62,13 @@ public class AbsenceController implements ActionListener {
 					startDate.setTime(view.getAbsencePanel().getStartDate());
 				}				
 				
-				if (absenceEmployees.size() != 1) {
+				if (absenceEmployees.size() != 1 || view.getAbsencePanel().getEmployee().length() != 4) {
 					view.getAbsencePanel().setErrorLabel("Wrong initials");
+					break;
+				}
+				
+				if (startDate == null) {
+					view.getAbsencePanel().setErrorLabel("Set a date");
 					break;
 				}
 				
@@ -75,11 +80,6 @@ public class AbsenceController implements ActionListener {
 					break;
 				}
 				
-				if (startDate == null) {
-					view.getAbsencePanel().setErrorLabel("Set a date");
-					break;
-				}
-				
 				absenceEmployee = absenceEmployees.get(0);
 				try {
 					schedule.getUser().reportAbsence(absenceEmployee, Status.VACATION, startDate, time);
@@ -88,7 +88,7 @@ public class AbsenceController implements ActionListener {
 				} catch (Exception error) {
 					view.getAbsencePanel().setErrorLabel(error.getMessage());
 				}
-				view.getAbsencePanel().updateList();
+				view.getAbsencePanel().updateListSick();
 				break;
 				
 			case "Back":

@@ -44,11 +44,17 @@ public class ManageTaskController implements ActionListener {
 					startDate.setTime(view.getManageTaskPanel().getStartDate());
 				}
 				
+				if (startDate == null) {
+					view.getManageTaskPanel().setErrorLabel("Please set a start date");
+					break;
+				}
+				
 				try {
 					hourInDay = Integer.parseInt(hourInDayString);
 					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
 					view.getManageTaskPanel().setErrorLabel("Correct your hour of day");
+					System.err.println(error);
 					break;
 				}
 				
@@ -57,11 +63,6 @@ public class ManageTaskController implements ActionListener {
 					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
 					view.getManageTaskPanel().setErrorLabel("Correct your time");
-					break;
-				}
-				
-				if (startDate == null) {
-					view.getManageTaskPanel().setErrorLabel("Please set a start date");
 					break;
 				}
 				
@@ -73,13 +74,18 @@ public class ManageTaskController implements ActionListener {
 				
 				break;
 				
-			case "Create sub task":
+			case "Create Assignment":
 				timeString = view.getManageTaskPanel().getTimeText();
 				hourInDayString = view.getManageTaskPanel().getHourInDayText();
 				
 				if (view.getManageTaskPanel().getStartDate() != null) {
 					startDate = new GregorianCalendar();
 					startDate.setTime(view.getManageTaskPanel().getStartDate());
+				}
+				
+				if (startDate == null) {
+					view.getManageTaskPanel().setErrorLabel("Please set a start date");
+					break;
 				}
 				
 				try {
@@ -95,11 +101,6 @@ public class ManageTaskController implements ActionListener {
 					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
 					view.getManageTaskPanel().setErrorLabel("Correct your time");
-					break;
-				}
-				
-				if (startDate == null) {
-					view.getManageTaskPanel().setErrorLabel("Please set a start date");
 					break;
 				}
 				
@@ -117,6 +118,7 @@ public class ManageTaskController implements ActionListener {
 						view.getManageTaskPanel().setErrorLabel(error.getMessage());
 					}
 					view.getManageTaskPanel().updateList();
+					view.getManageTaskPanel().updateAssignmentsList();
 					view.getManageTaskPanel().updateFindEmployeesList(schedule.getUser().getFreeEmployeesInPeriod(startDate, time));
 				} else {
 					view.getManageTaskPanel().setErrorLabel("Choose an employee");

@@ -55,7 +55,7 @@ public class TestAbsence {
 		
 		/* 
 		 * Given the situation where an employee calls in sick, informing the project leader
-		 * the project leader then adds the employee to the "absence" project, specifically the "sick" task
+		 * the project leader (absence manager) then adds the employee to the "absence" project, specifically the "sick" task
 		 * The employee is assigned to at least one project and at least one task
 		 */
 		
@@ -123,7 +123,7 @@ public class TestAbsence {
 		 *  The vacation sought is from, say, the 10th of January to, and including, the 14th of January
 		 *  Meaning, the vacation starts on the 10th of January 08:00 and lasts for 5 days of 8 working hours = 40 hours
 		 *  BUT
-		 *  The employee is occupied with tasks during this timespan and is denied vacation at this time.
+		 *  The employee is occupied/busy with tasks during this timespan and is denied vacation at this time.
 		 */
 		
 		try{

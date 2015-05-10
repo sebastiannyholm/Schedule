@@ -25,7 +25,7 @@ public class Driver {
 		final Project ABSENCE = new Project("Absence", startupDate, terminationDate, ABSENCE_MANAGER);
 		final Task SICKNESS = new Task("Sickness", startupDate, terminationDate, 99999999);
 		final Task VACATION = new Task("Vacation", startupDate, terminationDate, 99999999);
-		final Task COURSE = new Task("Course", startupDate, terminationDate, 9999999);
+//		final Task COURSE = new Task("Course", startupDate, terminationDate, 9999999);
 		
 		final Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
 		final Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address1, schedule);
@@ -52,22 +52,29 @@ public class Driver {
 		ABSENCE_MANAGER.createProject(ABSENCE);
 		ABSENCE_MANAGER.createTask(SICKNESS, ABSENCE);
 		ABSENCE_MANAGER.createTask(VACATION, ABSENCE);
-		ABSENCE_MANAGER.createTask(COURSE, ABSENCE);
+//		ABSENCE_MANAGER.createTask(COURSE, ABSENCE);
 		schedule.logOut();
 		
 		schedule.login("seny");
 		employee1.createProject(project1);
 		employee1.createTask(task11, project1);
 		employee1.createTask(task12, project1);
+		employee1.setProjectDescription("Lorem ipsum dolor sit amet, magnis ultricies cursus lorem dolor. Diam aenean morbi, nibh praesent at. Ut amet ante, consectetuer in pellentesque non, optio etiam curabitur, arcu purus", project1);
+		employee1.setTaskDescription("Lorem ipsum dolor sit amet, magnis ultricies cursus lorem dolor. Diam aenean morbi, nibh praesent at. Ut amet ante, consectetuer in pellentesque non, optio etiam curabitur, arcu purus", task11);
+		employee1.setTaskDescription("Lorem ipsum dolor sit amet, magnis ultricies cursus lorem dolor. Diam aenean morbi, nibh praesent at. Ut amet ante, consectetuer in pellentesque non, optio etiam curabitur, arcu purus", task12);
 		
 		employee1.createProject(project2);
 		employee1.createTask(task21, project2);
 		employee1.createTask(task22, project2);
 		employee1.createTask(task23, project2);
+		employee1.setProjectDescription("Lorem ipsum dolor sit amet, magnis ultricies cursus lorem dolor. Diam aenean morbi, nibh praesent at. Ut amet ante, consectetuer in pellentesque non, optio etiam curabitur, arcu purus", project2);
+		employee1.setTaskDescription("Lorem ipsum dolor sit amet, magnis ultricies cursus lorem dolor. Diam aenean morbi, nibh praesent at. Ut amet ante, consectetuer in pellentesque non, optio etiam curabitur, arcu purus", task21);
+		employee1.setTaskDescription("Lorem ipsum dolor sit amet, magnis ultricies cursus lorem dolor. Diam aenean morbi, nibh praesent at. Ut amet ante, consectetuer in pellentesque non, optio etiam curabitur, arcu purus", task22);
+		employee1.setTaskDescription("Lorem ipsum dolor sit amet, magnis ultricies cursus lorem dolor. Diam aenean morbi, nibh praesent at. Ut amet ante, consectetuer in pellentesque non, optio etiam curabitur, arcu purus", task23);
 		
 		employee1.addEmployeeToTask(employee1, task11, new GregorianCalendar(2015, Calendar.MAY, 1, 8, 0), 18*60);
 		employee1.addEmployeeToTask(employee1, task21, new GregorianCalendar(2015, Calendar.MAY, 5, 10, 0), 4*60);
-		employee1.addEmployeeToTask(employee1, task22, new GregorianCalendar(2015, Calendar.MAY, 5, 14, 0), 25*60);
+		employee1.addEmployeeToTask(employee1, task22, new GregorianCalendar(2015, Calendar.MAY, 7, 14, 0), 25*60);
 		
 		schedule.logOut();
 		

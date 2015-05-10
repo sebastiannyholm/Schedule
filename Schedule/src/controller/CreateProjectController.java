@@ -53,7 +53,7 @@ public class CreateProjectController implements ActionListener {
 					break;
 				}
 				
-				if (projectLeaders.size() != 1) {
+				if (projectLeaders.size() != 1 || view.getCreateProjectPanel().getProjectLeader().length() != 4) {
 					view.getCreateProjectPanel().setErrorLabel("Wrong initials");
 					break;
 				}
@@ -77,10 +77,27 @@ public class CreateProjectController implements ActionListener {
 					view.getCreateProjectPanel().setErrorLabel(error.getMessage());
 					break;
 				}
-				view.getProjectPanel().updateList();
 				
+				project.setDescription(view.getCreateProjectPanel().getProjectDescription());
 				view.remove(view.getCreateProjectPanel());
-				view.add(view.getProjectPanel());
+				
+				if (schedule.getUser().equals(projectLeader)){
+					view.getManageProjectPanel().setProject(project);
+					view.getManageProjectPanel().updateList(project);
+					view.getManageProjectPanel().setTitleLabel(project.getName());
+					view.getManageProjectPanel().setProjectLeaderLabel(project.getProjectLeader().getName());
+					view.getManageProjectPanel().setProjectLeaderText(project.getProjectLeader().getInitials());
+					view.getManageProjectPanel().setDescriptionLabel(project.getDescription());
+					view.getManageProjectPanel().setDescriptionText(project.getDescription());
+					view.getManageProjectPanel().setStartDate(startDate);
+					view.getManageProjectPanel().setEndDate(endDate);
+	
+					view.getProjectPanel().updateList();
+					view.add(view.getManageProjectPanel());
+				}
+				else 
+					view.add(view.getProjectPanel());
+				
 				view.reset();
 				break;
 				

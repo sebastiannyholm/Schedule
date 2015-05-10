@@ -14,7 +14,6 @@ public class View extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public final int SIZE = 500;
 	
 	private Schedule schedule;
 	
@@ -46,7 +45,7 @@ public class View extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.logInPanel = new LogInPanel(schedule);
 		
-		this.setPreferredSize(new Dimension(SIZE, SIZE));
+		this.setPreferredSize(new Dimension(960, 600));
 		this.setResizable(false);
 		this.setLayout(new CardLayout());
 
@@ -58,9 +57,11 @@ public class View extends JFrame {
 
 		
 	}
-
+	
 	public void reset() {
-		this.pack();
+		revalidate();
+		repaint();
+		pack();
 	}
 	
 	public void setUpPanels() {
@@ -114,7 +115,6 @@ public class View extends JFrame {
 	}
 
 	public WorkingPanel getWorkingPanel() {
-		// TODO Auto-generated method stub
 		return workingPanel;
 	}
 
@@ -128,11 +128,13 @@ public class View extends JFrame {
 		agendaPanel.setErrorLabel("");
 		controlPanel.setErrorLabel("");
 		createProjectPanel.setErrorLabel("");
+		manageProjectPanel.setErrorLabel("");
 		createTaskPanel.setErrorLabel("");
 		manageEmployeesPanel.setErrorLabel("");
 		manageTaskPanel.setErrorLabel("");
 		projectPanel.setErrorLabel("");
 		workingPanel.setErrorLabel("");
+		workingPanel.setErrorLabelTime("");
 	}
 	
 }

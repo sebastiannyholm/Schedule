@@ -4,12 +4,15 @@ import java.awt.Color;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import jcomponents.ErrorLabel;
+import jcomponents.Label;
+import jcomponents.SubTitleLabel;
+import jcomponents.TitleLabel;
 import model.Employee;
 import model.Schedule;
 import controller.ManageEmployeesController;
@@ -18,7 +21,10 @@ public class ManageEmployeesPanel extends JPanel {
 
 	private Schedule schedule;
 	
-	private JLabel titleLabel, employeeListTitleLabel, addEmployeeLabel, nameLabel, initialLabel, ageLabel, addressLabel, streetLabel, streetNumberLabel, zipCodeLabel, cityLabel, errorLabel;
+	private TitleLabel titleLabel;
+	private SubTitleLabel employeeListTitleLabel, addEmployeeTitleLabel;
+	private Label addEmployeeLabel, nameLabel, initialLabel, ageLabel, addressLabel, streetLabel, streetNumberLabel, zipCodeLabel, cityLabel;
+	private ErrorLabel errorLabel;
 	private JButton addEmployee, removeEmployee, back;
 	private JTextField nameText, initialText, ageText, streetText, streetNumberText, zipCodeText, cityText;
 	
@@ -30,71 +36,72 @@ public class ManageEmployeesPanel extends JPanel {
 	
 	public ManageEmployeesPanel(Schedule schedule) {
 		this.schedule = schedule;
-		this.titleLabel = new JLabel("Manage employees");
-		this.employeeListTitleLabel = new JLabel("All employees");
+		this.titleLabel = new TitleLabel("Manage employees");
+		this.employeeListTitleLabel = new SubTitleLabel("All employees");
+		this.addEmployeeTitleLabel = new SubTitleLabel("Add employee");
 		this.addEmployee = new JButton("Add employee");
 		this.removeEmployee = new JButton("Remove employee");
 		this.back = new JButton("Back");
 		this.employeeList = new JList(employees);
 		this.scrollPane = new JScrollPane();
 		this.scrollPane.setViewportView(employeeList);
-		this.addEmployeeLabel = new JLabel("Add new employee");
-		this.nameLabel = new JLabel("Name");
-		this.errorLabel = new JLabel("");
+		this.addEmployeeLabel = new Label("Add new employee");
+		this.nameLabel = new Label("Name");
+		this.errorLabel = new ErrorLabel("");
 		this.nameText = new JTextField("");
-		this.initialLabel = new JLabel("Initials");
+		this.initialLabel = new Label("Initials");
 		this.initialText = new JTextField("");
-		this.ageLabel = new JLabel("Age");
+		this.ageLabel = new Label("Age");
 		this.ageText = new JTextField("");
-		this.addressLabel = new JLabel("Address");
-		this.streetLabel = new JLabel("Street");
+		this.addressLabel = new Label("Address");
+		this.streetLabel = new Label("Street");
 		this.streetText = new JTextField("");
-		this.streetNumberLabel = new JLabel("Street number");
+		this.streetNumberLabel = new Label("Street number");
 		this.streetNumberText = new JTextField("");
-		this.zipCodeLabel = new JLabel("Zip code");
+		this.zipCodeLabel = new Label("Zip code");
 		this.zipCodeText = new JTextField("");
-		this.cityLabel = new JLabel("City");
+		this.cityLabel = new Label("City");
 		this.cityText = new JTextField("");
 	
-		titleLabel.setBounds(20, 20, 460, 40);
-		employeeListTitleLabel.setBounds(20, 80, 200, 40);
-		scrollPane.setBounds(20, 120, 200, 300);
+		titleLabel.setLocation(20, 20);
+		employeeListTitleLabel.setBounds(20, 80, 200, 20);
+		scrollPane.setBounds(20, 120, 250, 380);
+		removeEmployee.setBounds(20, 520, 140, 40);
 		
-		nameLabel.setBounds(240, 80, 120, 30);
-		nameText.setBounds(240,110,120,40);
+		addEmployeeTitleLabel.setBounds(310, 80, 200, 20);
 		
-		initialLabel.setBounds(370, 80, 120, 30);
-		initialText.setBounds(370, 110, 120, 40);
+		nameLabel.setBounds(310, 120, 160, 20);
+		nameText.setBounds(310,140, 160,40);
 		
-		ageLabel.setBounds(240, 150, 120, 30);
-		ageText.setBounds(240, 180, 120, 40);
+		initialLabel.setBounds(500, 120, 160, 20);
+		initialText.setBounds(500, 140, 160, 40);
 		
-		streetLabel.setBounds(240, 220, 120, 30);
-		streetText.setBounds(240, 250, 120, 40);
+		ageLabel.setBounds(310, 180, 160, 20);
+		ageText.setBounds(310, 200, 160, 40);
 		
-		streetNumberLabel.setBounds(370, 220, 120, 30);
-		streetNumberText.setBounds(370, 250, 120, 40);
+		streetLabel.setBounds(310, 240, 160, 20);
+		streetText.setBounds(310, 260, 160, 40);
+		
+		streetNumberLabel.setBounds(500, 240, 160, 20);
+		streetNumberText.setBounds(500, 260, 160, 40);
 
-		zipCodeLabel.setBounds(240, 290, 120, 30);
-		zipCodeText.setBounds(240, 320, 120, 40);
+		zipCodeLabel.setBounds(310, 300, 160, 20);
+		zipCodeText.setBounds(310, 320, 160, 40);
 		
-		cityLabel.setBounds(370, 290, 120, 30);
-		cityText.setBounds(370, 320, 120, 40);
+		cityLabel.setBounds(500, 300, 160, 20);
+		cityText.setBounds(500, 320, 160, 40);
 		
-		addEmployee.setBounds(240, 380, 120, 40);
-		removeEmployee.setBounds(370, 380, 120, 40);
+		addEmployee.setBounds(310, 380, 140, 40);
 		
-		back.setBounds(370, 430, 120, 40);
+		back.setBounds(820,520,120,40);
 		
-		errorLabel.setBounds(20, 430, 300, 40);
-		errorLabel.setForeground(Color.RED);
-		
-		updateList();
+		errorLabel.setBounds(310, 440, 300, 20);
 		
 		this.setLayout(null);
 		
 		this.add(titleLabel);
 		this.add(employeeListTitleLabel);
+		this.add(addEmployeeTitleLabel);
 		this.add(scrollPane);
 		this.add(addEmployeeLabel);
 		this.add(nameLabel);

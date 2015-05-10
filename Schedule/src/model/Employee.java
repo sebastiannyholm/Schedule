@@ -21,9 +21,10 @@ public class Employee {
 	
 	private LinkedList<Project> projects;
 	private LinkedList<Task> tasks;
-	private Map<Task,LinkedList<Timer>> tasksAndTime;
+	private Map<Task,LinkedList<Assignment>> tasksAndTime;
 	private boolean superWorker;
-	private int punchIn, punchOut, taskIn, taskOut;
+	private int punchIn, punchOut;
+	private long taskIn, taskOut;
 	private Map<String, Integer> workLog = new HashMap<String, Integer>();
 	private Map<Task, Integer> taskLog = new HashMap<Task, Integer>();
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -39,7 +40,7 @@ public class Employee {
 //		this.agenda = new Agenda();
 		this.projects = new LinkedList<Project>();
 		this.tasks = new LinkedList<Task>();
-		this.tasksAndTime = new HashMap<Task, LinkedList<Timer>>();
+		this.tasksAndTime = new HashMap<Task, LinkedList<Assignment>>();
 	}
 	
 	public void createProject(Project newProject) throws Exception {
@@ -158,34 +159,38 @@ public class Employee {
 		setEndDate(endDate, time + startDate.get(Calendar.HOUR_OF_DAY)*60 + startDate.get(Calendar.MINUTE) - 8*60);
 		
 		for (Task task : tasksAndTime.keySet())
-			for (Timer timer : tasksAndTime.get(task)){
-				if (timer.isInPeriod(startDate, endDate))
+			for (Assignment assignment : tasksAndTime.get(task)){
+				if (assignment.isInPeriod(startDate, endDate))
 					return true;
 			}
 		return false;
 	}
 	
-	public List<Timer> getTodaysAgenda() {
-			PriorityQueue<Timer> priorityQueue = new PriorityQueue<Timer>();
-			Calendar date = schedule.getDate();
-			Calendar startDate = (GregorianCalendar) date.clone();
-			Calendar endDate = (GregorianCalendar) date.clone();
-			startDate.set(GregorianCalendar.HOUR_OF_DAY, 8);
-			endDate.add(GregorianCalendar.HOUR_OF_DAY, 16);
+	/*
+	 * Orders the assignments list numerically based on date.
+	 * To create a nicer looking overview and improve readability
+	 */
+	public List<Assignment> getTodaysAgenda() {
+		PriorityQueue<Assignment> priorityQueue = new PriorityQueue<Assignment>();
+		Calendar date = schedule.getDate();
+		Calendar startDate = (GregorianCalendar) date.clone();
+		Calendar endDate = (GregorianCalendar) date.clone();
+		startDate.set(GregorianCalendar.HOUR_OF_DAY, 8);
+		endDate.add(GregorianCalendar.HOUR_OF_DAY, 16);
+		
+		for (Task task : tasksAndTime.keySet())
+			for (Assignment assignment : tasksAndTime.get(task))
+				if (assignment.isInPeriod(startDate, endDate))
+					priorityQueue.insert(assignment, assignment.getStartDate());
+		
+		LinkedList<Assignment> assignments = new LinkedList<Assignment>();
+		
+		while (!priorityQueue.isEmpty())
+			assignments.add(priorityQueue.extractMin());
 			
-			for (Task task : tasksAndTime.keySet())
-				for (Timer timer : tasksAndTime.get(task))
-					if (timer.isInPeriod(startDate, endDate))
-						priorityQueue.insert(timer, timer.getStartDate());
-			
-			LinkedList<Timer> timers = new LinkedList<Timer>();
-			
-			while (!priorityQueue.isEmpty())
-				timers.add(priorityQueue.extractMin());
-				
-			
-			return timers;
-		}
+		
+		return assignments;
+	}
 	
 	public void addTask(Task task, Calendar startDate, int time) {
 		Calendar endDate = new GregorianCalendar();
@@ -195,9 +200,9 @@ public class Employee {
 		
 		if (!tasksAndTime.containsKey(task)){
 			tasks.add(task);
-			tasksAndTime.put(task, new LinkedList<Timer>());
+			tasksAndTime.put(task, new LinkedList<Assignment>());
 		}
-		tasksAndTime.get(task).add(new Timer(task, startDate, endDate, time));
+		tasksAndTime.get(task).add(new Assignment(task, startDate, endDate, time));
 	}
 	
 	private void setEndDate(Calendar endDate, int time) {
@@ -253,7 +258,7 @@ public class Employee {
 			throw new OperationNotAllowedException("You can't change the project leader, if you are not the current one", "Change project leader");
 		
 		project.changeProjectLeader(newProjectLeader);
-		newProjectLeader.projects.add(project);
+		newProjectLeader.addProject(project);
 		projects.remove(project);
 	}
 	
@@ -324,17 +329,24 @@ public class Employee {
 	}
 
 	
-	public void startWorkingOnTask(Timer timer) {
-		taskIn = schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);	// get the current time in minutes
+	public void startWorkingOnAssignment(Assignment assignment) {
+		assignment.startTimer();
+//		taskIn = schedule.getDate().getTimeInMillis();
+				
+				//schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);	// get the current time in minutes
 
 	}
 	
-	public void stopWorkingOnTask(Timer timer) {
-		taskOut = schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);	// get the current time in minutes
+	public void stopWorkingOnAssignment(Assignment assignment) {
+		assignment.stopTimer();
+//		taskOut = schedule.getDate().getTimeInMillis();
 		
-		int timeWorkedOnTimer = taskOut - taskIn;
+		//schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);	// get the current time in minutes
 		
-		timer.addTimeSpent(timeWorkedOnTimer);
+//		long timeWorkedOnTimer = taskOut - taskIn;
+//		System.out.println(timeWorkedOnTimer);
+//		
+//		assignment.addTimeSpent(timeWorkedOnTimer);
 		
 //		if (taskLog.containsKey(task))
 //			taskLog.put(task, taskLog.get(task) + timeWorkedOnTask);
@@ -346,13 +358,13 @@ public class Employee {
 	}
 	
 
-	public void changeTimeWorkedOnTask(Timer timer, int time) {
-		timer.setTimeSpent(time);
+	public void changeTimeWorkedOnTask(Assignment assignment, int time) {
+		assignment.setTimeSpent(time);
 //		taskLog.put(task, time);
 	}
 
-	public int getTaskLogValue(Timer timer) {
-		return timer.getTimeSpent();
+	public int getAssignmentTimeSpentInMinutes(Assignment assignment) {
+		return (int) (assignment.getTimeSpent() / (1000*60));
 //		return taskLog.get(task);
 	}
 	
@@ -386,8 +398,8 @@ public class Employee {
 		for (Task absent : schedule.getAllProjects().get(0).getTasks()) {
 			if (tasksAndTime.get(absent) == null)
 				continue;
-			for (Timer timer : tasksAndTime.get(absent))
-				if(timer.isToday(schedule.getDate()))
+			for (Assignment assignment : tasksAndTime.get(absent))
+				if(assignment.isToday(schedule.getDate()))
 					return true;
 		}
 		return false;
@@ -399,12 +411,12 @@ public class Employee {
 
 	public int getTimeForATask(Task task) {
 		int time = 0;
-		for (Timer timer : tasksAndTime.get(task))
-			time += timer.getTimeForATask();
+		for (Assignment assignment : tasksAndTime.get(task))
+			time += assignment.getTimeForATask();
 		return time; 
 	}
 
-	public Map<Task, LinkedList<Timer>> getTasksAndTime() {
+	public Map<Task, LinkedList<Assignment>> getTasksAndTime() {
 		return tasksAndTime;
 	}
 
@@ -436,8 +448,8 @@ public class Employee {
 		
 		for (Employee employee : schedule.getEmployees())
 			for (Task task : employee.tasksAndTime.keySet())
-				for (Timer timer : employee.tasksAndTime.get(task))
-					if (timer.isInPeriod(startDate, endDate)) 
+				for (Assignment assignment : employee.tasksAndTime.get(task))
+					if (assignment.isInPeriod(startDate, endDate)) 
 						freeEmployeesInPeriod.remove(employee);			
 		
 		return freeEmployeesInPeriod;
@@ -484,10 +496,16 @@ public class Employee {
 		schedule.removeEmployee(employee);
 	}
 
-	public boolean workedToMuchOnAnAssignment(Timer timer) {
-		return timer.limitExceeded();
+	public boolean workedToMuchOnAnAssignment(Assignment assignment) {
+		return assignment.limitExceeded();
 	}
-	
-	
-	
+
+	public void setProjectDescription(String description, Project project) {
+		project.setDescription(description);
+	}
+
+	public void setTaskDescription(String description, Task task) {
+		task.setDescription(description);
+	}
+
 }

@@ -337,7 +337,7 @@ public class TestTask {
 	}
 	
 	@Test
-	public void addToMuchTimeToAnEmployeeForAGivenTask() throws Exception {
+	public void addTooMuchTimeToAnEmployeeForAGivenTask() throws Exception {
 		Project project = schedule.getAllProjects().get(0);		// list of 1
 		
 		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), 37);	// name, number, startWeek, endWeek, budgetedHours

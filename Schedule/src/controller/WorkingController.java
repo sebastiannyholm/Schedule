@@ -9,23 +9,25 @@ import view.View;
 import model.Employee;
 import model.Schedule;
 import model.Task;
-import model.Timer;
+import model.Assignment;
 
 public class WorkingController implements ActionListener {
 
 	private Schedule schedule;
 	private View view;
 	private Task task;
-	private Timer timer;
+	private Assignment assignment;
 	
 	private String timeString = "", hourInDayString = "";
 	private int time, hourInDay;
 	private Calendar startDate;
 	private Employee employee;
+	private TickTimeController tickTimeController;
 	
-	public WorkingController(Schedule schedule, View view) {
+	public WorkingController(Schedule schedule, View view, TickTimeController tickTimeController) {
 		this.schedule = schedule;
 		this.view = view;
+		this.tickTimeController = tickTimeController;
 		
 		view.getWorkingPanel().registerListener(this);
 	}
@@ -36,23 +38,30 @@ public class WorkingController implements ActionListener {
 		String timeSpent = "";
 		int time = 0;
 		task = view.getWorkingPanel().getTask();
-		timer = view.getWorkingPanel().getTimer();
+		assignment = view.getWorkingPanel().getAssignment();
 		
 		switch (e.getActionCommand()) {
 			case "Start timer":
+				if (tickTimeController.getTimer().isRunning()) {
+					view.getWorkingPanel().setErrorLabel("Another task is running");
+					break;
+				}
+					
 				view.getWorkingPanel().setStartWork(false);
+				view.getWorkingPanel().setChangeTimeSpent(false);
 				view.getWorkingPanel().setStopWork(true);
-				schedule.getUser().startWorkingOnTask(timer);
+				schedule.getUser().startWorkingOnAssignment(assignment);
+				tickTimeController.startTickTimer();
 				break;
 				
 			case "Stop timer":
-				schedule.getUser().stopWorkingOnTask(timer);
+				schedule.getUser().stopWorkingOnAssignment(assignment);
+				tickTimeController.stopTickTimer();
 				view.getWorkingPanel().setStartWork(true);
 				view.getWorkingPanel().setStopWork(false);
-				timeSpent = Integer.toString(schedule.getUser().getTaskLogValue(timer));
-				view.getWorkingPanel().setTimeSpentLabel(timeSpent);
+				view.getWorkingPanel().setChangeTimeSpent(true);
 				break;
-			
+				
 			case "Find employees":
 				timeString = view.getWorkingPanel().getTimeText();
 				hourInDayString = view.getWorkingPanel().getHourInDayText();
@@ -60,6 +69,11 @@ public class WorkingController implements ActionListener {
 				if (view.getWorkingPanel().getStartDate() != null) {
 					startDate = new GregorianCalendar();
 					startDate.setTime(view.getWorkingPanel().getStartDate());
+				}
+
+				if (startDate == null) {
+					view.getWorkingPanel().setErrorLabel("Please set a start date");
+					break;
 				}
 				
 				try {
@@ -78,14 +92,14 @@ public class WorkingController implements ActionListener {
 					break;
 				}
 				
-				if (startDate == null) {
-					view.getWorkingPanel().setErrorLabel("Please set a start date");
-					break;
-				}
-				
 				startDate.set(Calendar.HOUR_OF_DAY, hourInDay);
 				startDate.set(Calendar.MINUTE,0);
 				startDate.set(Calendar.SECOND,0);
+				
+				if (schedule.getUser().getFreeEmployeesInPeriod(startDate, time).size() == 0) {
+					view.getWorkingPanel().setErrorLabel("No employees available");
+					break;
+				}
 				
 				view.getWorkingPanel().updateFindEmployeesList(schedule.getUser().getFreeEmployeesInPeriod(startDate, time));
 				
@@ -144,28 +158,54 @@ public class WorkingController implements ActionListener {
 				break;
 				
 			case "Change time":
+				view.getWorkingPanel().setStartWork(false);
+				view.getWorkingPanel().addChangeTime();
+				view.reset();
+				break;
 				
-				timeSpent = view.getWorkingPanel().getChangeTimeSpent();
+			case "Save time":
 				
-				try {  
-					time = Integer.parseInt(timeSpent);
+				String hoursString = view.getWorkingPanel().getChangeHoursSpentText();
+				String minutesString = view.getWorkingPanel().getChangeMinutesSpentText();
+				String secondsString = view.getWorkingPanel().getChangeSecondsSpentText();
+				
+				if (hoursString.equals("") || minutesString.equals("") || secondsString.equals("")) {
+					view.getWorkingPanel().setErrorLabelTime("Inset a correct time");
+					break;
+				}
+					
+				
+				int hours = 0, minutes = 0, seconds = 0;
+				
+				try {
+					hours = Integer.parseInt(hoursString);
+					minutes = Integer.parseInt(minutesString);
+					seconds = Integer.parseInt(secondsString);
 					view.resetErrorLabels();
 				} catch(NumberFormatException error) {
-					view.getWorkingPanel().setErrorLabel("Correct your time");
+					view.getWorkingPanel().setErrorLabelTime("Only numbers!");
 					break;
 				}
 				
-				schedule.getUser().changeTimeWorkedOnTask(timer, time);
-				timeSpent = Integer.toString(schedule.getUser().getTaskLogValue(timer));
+				schedule.getUser().changeTimeWorkedOnTask(assignment, hours * 60 * 60 + minutes * 60 + seconds);
 				
-				view.getWorkingPanel().setTimeSpentLabel(timeSpent);
-				if (timer.limitExceeded())
-					view.getWorkingPanel().setWorkedToMuch("You have exceeded your time limit!");
+				view.getWorkingPanel().setTimeSpent();
+				view.getWorkingPanel().removeChangeTime();
+				view.getWorkingPanel().setStartWork(true);
+				view.reset();
+				
+				if (assignment.limitExceeded())
+					view.getWorkingPanel().setErrorLabelTime("You have exceeded your time limit!");
+				else 
+					view.getWorkingPanel().setErrorLabelTime("");
 				
 				break;
 				
 			case "Back":
 				view.resetErrorLabels();
+				view.getWorkingPanel().removeChangeTime();
+				if (!tickTimeController.getTimer().isRunning())
+					view.getWorkingPanel().setStartWork(true);
 				view.remove(view.getWorkingPanel());
 				view.add(view.getAgendaPanel());
 				view.reset();

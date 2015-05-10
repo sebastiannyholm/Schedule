@@ -4,11 +4,14 @@ import java.awt.Color;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import jcomponents.ErrorLabel;
+import jcomponents.Label;
+import jcomponents.SubTitleLabel;
+import jcomponents.TitleLabel;
 import controller.ProjectController;
 import model.Employee;
 import model.Project;
@@ -23,7 +26,9 @@ public class ProjectPanel extends JPanel {
 
 	private Schedule schedule;
 	
-	private JLabel titleLabel, projectListTitleLabel, errorLabel;
+	private TitleLabel titleLabel;
+	private SubTitleLabel projectListTitleLabel;
+	private ErrorLabel errorLabel;
 	private JButton createProject, deleteProject, manageProject, back;
 	private JList projectList;
 	private JScrollPane scrollPane;
@@ -32,8 +37,8 @@ public class ProjectPanel extends JPanel {
 	
 	public ProjectPanel(Schedule schedule) {
 		this.schedule = schedule;
-		this.titleLabel = new JLabel("My projects");
-		this.projectListTitleLabel = new JLabel("All projects");
+		this.titleLabel = new TitleLabel("My projects");
+		this.projectListTitleLabel = new SubTitleLabel("All projects");
 		this.projectList = new JList(projects);
 		this.createProject = new JButton("Create project");
 		this.deleteProject = new JButton("Delete project");
@@ -41,20 +46,19 @@ public class ProjectPanel extends JPanel {
 		this.back = new JButton("Back");
 		this.scrollPane = new JScrollPane();
 		this.scrollPane.setViewportView(projectList);
-		this.errorLabel = new JLabel("");
+		this.errorLabel = new ErrorLabel("");
 		
 		this.setLayout(null);
 		
-		titleLabel.setBounds(20, 20, 460, 40);
-		projectListTitleLabel.setBounds(20, 80, 200, 40);
-		scrollPane.setBounds(20, 120, 200, 300);
+		titleLabel.setLocation(20, 20);
+		projectListTitleLabel.setBounds(20, 80, 200, 20);
+		scrollPane.setBounds(20, 120, 500, 300);
 		
-		createProject.setBounds(250, 120, 120, 40);
-		deleteProject.setBounds(250, 180, 120, 40);
-		manageProject.setBounds(250, 240, 120, 40);
-		back.setBounds(250, 300, 120, 40);
-		errorLabel.setBounds(20, 430, 300, 40);
-		errorLabel.setForeground(Color.RED);
+		createProject.setBounds(20, 440, 120, 40);
+		deleteProject.setBounds(160, 440, 120, 40);
+		manageProject.setBounds(300, 440, 120, 40);
+		errorLabel.setBounds(440, 440, 300, 40);
+		back.setBounds(820,520,120,40);
 		
 		this.add(titleLabel);
 		this.add(projectListTitleLabel);

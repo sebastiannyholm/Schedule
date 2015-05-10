@@ -4,10 +4,14 @@ import java.awt.Color;
 import java.util.Date;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import jcomponents.ErrorLabel;
+import jcomponents.Label;
+import jcomponents.TitleLabel;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -20,9 +24,13 @@ public class CreateTaskPanel extends JPanel {
 	private Schedule schedule;
 	private Project project;
 	
-	private JLabel titleLabel, errorLabel, taskNameLabel, startDateLabel, endDateLabel, budgetTimeLabel;
+	private TitleLabel titleLabel;
+	private Label taskNameLabel, startDateLabel, endDateLabel, budgetTimeLabel, taskDescriptionLabel;
+	private ErrorLabel errorLabel;
 	private JButton createTask, back;
 	private JTextField taskName, budgetTime;
+	private JTextArea taskDescription;
+	private JScrollPane descriptionScrollPane;
 	
 	private UtilDateModel startDateModel, endDateModel;
 	private JDatePanelImpl startDatePanel, endDatePanel;
@@ -30,15 +38,15 @@ public class CreateTaskPanel extends JPanel {
 	
 	public CreateTaskPanel(Schedule schedule) {
 		this.schedule = schedule;
-		this.titleLabel = new JLabel("Create task");
+		this.titleLabel = new TitleLabel("Create task");
 		this.back = new JButton("Back");
 		this.taskName = new JTextField("Task name");
 		this.createTask = new JButton("Create task");
-		this.errorLabel = new JLabel("");
-		this.taskNameLabel = new JLabel("Task name");
-		this.startDateLabel = new JLabel("Task start date");
-		this.endDateLabel = new JLabel("Task end date");
-		this.budgetTimeLabel = new JLabel("Budget time");
+		this.errorLabel = new ErrorLabel("");
+		this.taskNameLabel = new Label("Task name");
+		this.startDateLabel = new Label("Task start date");
+		this.endDateLabel = new Label("Task end date");
+		this.budgetTimeLabel = new Label("Budget time");
 		this.budgetTime = new JTextField();
 		
 		this.startDateModel = new UtilDateModel();
@@ -47,26 +55,35 @@ public class CreateTaskPanel extends JPanel {
 	    this.endDatePanel = new JDatePanelImpl(endDateModel);
 	    this.startDatePicker = new JDatePickerImpl(startDatePanel);
 	    this.endDatePicker = new JDatePickerImpl(endDatePanel);
+	    
+	    this.taskDescriptionLabel = new Label("Project description");
+	    this.taskDescription = new JTextArea();
+	    this.descriptionScrollPane = new JScrollPane(taskDescription);
+	    
+	    titleLabel.setLocation(20, 20);
 		
-		titleLabel.setBounds(20, 20, 460, 40);
+		taskNameLabel.setBounds(20, 80, 200, 20);
+		taskName.setBounds(20, 100, 200, 40);
 		
-		taskNameLabel.setBounds(20, 80, 200, 40);
-		taskName.setBounds(20, 120, 200, 40);
+		budgetTimeLabel.setBounds(240, 80, 200, 20);
+		budgetTime.setBounds(240, 100, 200, 40);
 		
-		budgetTimeLabel.setBounds(240, 80, 200, 40);
-		budgetTime.setBounds(240, 120, 200, 40);
+		startDateLabel.setBounds(20, 160, 200, 20);
+		startDatePicker.setBounds(20, 180, 200, 40);
 		
-		startDateLabel.setBounds(20, 160, 200, 40);
-		startDatePicker.setBounds(20, 200, 200, 40);
+		endDateLabel.setBounds(240, 160, 200, 20);
+		endDatePicker.setBounds(240,180,200,40);
 		
-		endDateLabel.setBounds(240, 160, 200, 40);
-		endDatePicker.setBounds(240,200,200,40);
+		taskDescriptionLabel.setBounds(20, 240, 200, 20);
+		descriptionScrollPane.setBounds(20, 260, 200, 200);
 		
-		errorLabel.setBounds(20, 260, 400, 40);
-		errorLabel.setForeground(Color.RED);
+		errorLabel.setBounds(20, 480, 400, 20);
 		
-		createTask.setBounds(20, 420, 150, 40);
-		back.setBounds(380, 420, 100, 40);
+		createTask.setBounds(20, 520, 120, 40);
+		
+		back.setBounds(820,520,120,40);
+		
+		
 		
 		this.setLayout(null);
 		
@@ -82,8 +99,14 @@ public class CreateTaskPanel extends JPanel {
 		this.add(endDatePicker);
 		this.add(taskName);
 		this.add(createTask);
+		this.add(taskDescriptionLabel);
+		this.add(descriptionScrollPane);
 	}
 
+	public String getTaskDescription() {
+		return taskDescription.getText();
+	}
+	
 	public void registerListener(CreateTaskController controller) {
 		back.addActionListener(controller);
 		createTask.addActionListener(controller);

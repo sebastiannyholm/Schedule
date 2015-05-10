@@ -1,22 +1,25 @@
 package view;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import jcomponents.ErrorLabel;
+import jcomponents.Label;
+import jcomponents.SubTitleLabel;
+import jcomponents.TitleLabel;
+import model.Employee;
+import model.Schedule;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
-
 import controller.AbsenceController;
-import model.Employee;
-import model.Schedule;
 
 public class AbsencePanel extends JPanel {
 
@@ -25,14 +28,18 @@ public class AbsencePanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private TitleLabel titleLabel;
 	private Schedule schedule;
-	private JLabel titleLabel, employeeListTitleLabel, errorLabel;
-	private JButton addEmployeeForToday, addEmployee, back;
-	private JTextField employeeForToday, employee, time;
-	private JList absenceList;
-	private JScrollPane scrollPane;
+	private SubTitleLabel sickEmployeeListTitleLabel, vacationEmployeeListTitleLabel, employeeForTodayTitle, employeeFutureTitle;
+	private Label employeeForTodayLabel, employeeFutureLabel, timeLabel, datePickerLabel;
+	private JButton employeeForToday, employeeFuture, back;
+	private JTextField employeeForTodayText, employeeFutureText, time;
+	private JList sickList, vacationList;
+	private JScrollPane scrollPaneSick, scrollPaneVacation;
+	private ErrorLabel errorLabel;
 	
-	private DefaultListModel<Employee> employees = new DefaultListModel<Employee>();
+	private DefaultListModel<Employee> sickEmployees = new DefaultListModel<Employee>();
+	private DefaultListModel<Employee> vacationEmployees = new DefaultListModel<Employee>();
 
 	private UtilDateModel dateModel;
 	private JDatePanelImpl datePanel;
@@ -41,59 +48,104 @@ public class AbsencePanel extends JPanel {
 	public AbsencePanel(Schedule schedule) {
 		this.schedule = schedule;
 		
-		this.titleLabel = new JLabel("Absence");
-		this.employeeListTitleLabel = new JLabel("Employees");
-		this.employeeForToday = new JTextField("Vælg employee");
-		this.addEmployeeForToday = new JButton("Is sick");
-		this.employee = new JTextField("Vælg employee");
-		this.time = new JTextField("Time");
-		this.addEmployee = new JButton("Add employee");
-		this.back = new JButton("Back");
-		this.absenceList = new JList(employees);
-		this.scrollPane = new JScrollPane();
-		this.scrollPane.setViewportView(absenceList);
-		this.errorLabel = new JLabel("");
+		this.titleLabel = new TitleLabel("Absence");
 		
+		this.sickEmployeeListTitleLabel = new SubTitleLabel("Todays missing employees");
+		this.sickList = new JList(sickEmployees);
+		this.scrollPaneSick = new JScrollPane();
+		this.scrollPaneSick.setViewportView(sickList);
+		
+		this.employeeForTodayTitle = new SubTitleLabel("Add employee as sick today");
+		this.employeeForTodayLabel = new Label("Employee (initials)");
+		this.employeeForTodayText = new JTextField("");
+		this.employeeForToday = new JButton("Is sick");
+		
+		this.employeeFutureTitle = new SubTitleLabel("Register vacation");
+		this.employeeFutureLabel = new Label("Employee (initials)");
+		this.employeeFutureText = new JTextField();
+		this.datePickerLabel = new Label("Start date of vacation");
 		this.dateModel = new UtilDateModel();
 	    this.datePanel = new JDatePanelImpl(dateModel);
 	    this.datePicker = new JDatePickerImpl(datePanel);
+	    this.timeLabel = new Label("Time in hours (8 hours per day)");
+		this.time = new JTextField();
+		this.employeeFuture = new JButton("Add employee");
+				
+		this.errorLabel = new ErrorLabel("");
 		
-		titleLabel.setBounds(20, 20, 460, 40);
-		employeeListTitleLabel.setBounds(20, 80, 200, 40);
-		scrollPane.setBounds(20, 120, 200, 300);
+//		this.vacationEmployeeListTitleLabel = new SubTitleLabel("Employees planned vacation");
+//		this.vacationList = new JList(vacationEmployees);
+//		this.scrollPaneVacation = new JScrollPane();
+//		this.scrollPaneVacation.setViewportView(vacationList);
 		
-		employeeForToday.setBounds(250, 120, 100, 40);
-		addEmployeeForToday.setBounds(370, 120, 100, 40);
-		employee.setBounds(250, 180, 100, 40);
-		time.setBounds(370, 180, 100, 40);
-		addEmployee.setBounds(250, 300, 120, 40);
-		back.setBounds(250, 360, 120, 40);
-		errorLabel.setBounds(250, 80, 200, 40);
+	    this.back = new JButton("Back");
+	    
+	    titleLabel.setLocation(20, 20);
 		
-		datePicker.setBounds(250,240,200,40);
+		sickEmployeeListTitleLabel.setBounds(20, 80, 250, 20);
+		scrollPaneSick.setBounds(20, 120, 250, 440);
+		
+//		vacationEmployeeListTitleLabel.setBounds(500, 80, 200, 40);
+//		scrollPaneVacation.setBounds(500, 120, 200, 440);
+		
+		employeeForTodayTitle.setBounds(310, 80, 250, 20);
+		employeeForTodayLabel.setBounds(310, 120, 250, 20);
+		employeeForTodayText.setBounds(310, 140, 250, 40);
+		employeeForToday.setBounds(310, 200, 140, 40);
+		
+		employeeFutureTitle.setBounds(600, 80, 250, 20);
+		employeeFutureLabel.setBounds(600, 120, 250, 20);
+		employeeFutureText.setBounds(600, 140, 250, 40);
+		
+		datePickerLabel.setBounds(600, 200, 250, 20);
+		datePicker.setBounds(600,220,250,40);
+		
+		timeLabel.setBounds(600, 280, 250, 20);
+		time.setBounds(600, 300, 250, 40);
+		
+		employeeFuture.setBounds(600, 360, 120, 40);
+		
+		errorLabel.setBounds(310, 420, 500, 20);
+		
+		back.setBounds(820,520,120,40);
 		
 		this.setLayout(null);
 		
+		/*
+		 * Only the Absence Manager is allowed to control the
+		 * employees absence, thus the only one who will
+		 * see the panels containing the elements required to
+		 * set an employee absent for the day, or register vacation
+		 */
 		if (schedule.getUser().getProjects().size() > 0)
 			if (schedule.getUser().getProjects().get(0).equals(schedule.getAllProjects().get(0))) {
-				this.add(datePicker);
+				
+				this.add(employeeForTodayTitle);
+				this.add(employeeForTodayLabel);
+				this.add(employeeForTodayText);
 				this.add(employeeForToday);
-				this.add(addEmployeeForToday);
-				this.add(employee);
+				this.add(employeeFutureTitle);
+				this.add(employeeFutureLabel);
+				this.add(employeeFutureText);
+				this.add(datePickerLabel);
+				this.add(datePicker);
+				this.add(timeLabel);
 				this.add(time);
-				this.add(addEmployee);
+				this.add(employeeFuture);
 				this.add(errorLabel);
 			}
 		
 		this.add(titleLabel);
-		this.add(employeeListTitleLabel);
-		this.add(scrollPane);
+		this.add(sickEmployeeListTitleLabel);
+		this.add(scrollPaneSick);
+//		this.add(vacationEmployeeListTitleLabel);
+//		this.add(scrollPaneVacation);
 		this.add(back);
 	}
 
 	public void registerListener(AbsenceController controller) {
-		addEmployeeForToday.addActionListener(controller);
-		addEmployee.addActionListener(controller);
+		employeeForToday.addActionListener(controller);
+		employeeFuture.addActionListener(controller);
 		back.addActionListener(controller);
 	}
 	
@@ -102,11 +154,11 @@ public class AbsencePanel extends JPanel {
 	}
 
 	public String getSickEmployee() {
-		return employeeForToday.getText();
+		return employeeForTodayText.getText();
 	}
 	
 	public String getEmployee() {
-		return employee.getText();
+		return employeeFutureText.getText();
 	}
 
 	public String getTime() {
@@ -117,14 +169,27 @@ public class AbsencePanel extends JPanel {
 		errorLabel.setText(error);
 	}
 	
-	public void updateList() {
+	public void updateListSick() {
 		
-		employees.clear();
+		sickEmployees.clear();
 		
 		for (Employee employee : schedule.getEmployees())
 			if (employee.isAbsent())
-				employees.addElement(employee);
+				sickEmployees.addElement(employee);
 		
 	}
 	
+	public void updateListVacation() {
+		
+		vacationEmployees.clear();
+		
+		for (Employee employee : schedule.getEmployees())
+			if (employee.isAbsent())
+				vacationEmployees.addElement(employee);
+		
+	}
+	
+	public DefaultListModel<Employee> getSickEmployees(){
+		return sickEmployees;
+	}
 }

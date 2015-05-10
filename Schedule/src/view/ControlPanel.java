@@ -2,10 +2,13 @@ package view;
 
 import java.awt.Color;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
+import jcomponents.ErrorLabel;
+import jcomponents.TitleLabel;
 import controller.ControlController;
 import model.Schedule;
 
@@ -18,31 +21,40 @@ public class ControlPanel extends JPanel {
 
 	private Schedule schedule;
 	
-	private JLabel titleLabel, errorLabel;
+	private TitleLabel titleLabel;
+	private ErrorLabel errorLabel;
 	private JButton absence, myAgenda, myProjects, logOut, manageEmployee;
 	
 	public ControlPanel(Schedule schedule) {
 		this.schedule = schedule;
-		this.titleLabel = new JLabel("Main menu");
-		this.absence = new JButton("Absence");
+		this.titleLabel = new TitleLabel("Main menu");
+		this.absence = new JButton("Check absence");
 		this.myAgenda = new JButton("My agenda");
 		this.myProjects = new JButton("My projects");
 		this.manageEmployee = new JButton("Manage employees");
 		this.logOut = new JButton("Log out");
-		this.errorLabel = new JLabel("");
+		this.errorLabel = new ErrorLabel("");
 		
 		this.setLayout(null);
 		
-		titleLabel.setBounds(20, 20, 460, 40);
-		absence.setBounds(20,80, 120, 40);
-		myAgenda.setBounds(20,140, 120, 40);
-		myProjects.setBounds(20,200, 120, 40);
-		manageEmployee.setBounds(250,80,140,40);
-		logOut.setBounds(20,260,120,40);
+		titleLabel.setLocation(20, 170);
+		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		titleLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
+		
+		myAgenda.setBounds(335,230,140,40);
+		absence.setBounds(335,290, 140, 40);
+		myProjects.setBounds(495,230,140,40);
 		
 		errorLabel.setBounds(20, 430, 300, 40);
-		errorLabel.setForeground(Color.RED);
 		
+		if (schedule.getUser().isAdmin()) {
+			manageEmployee.setBounds(495,290,140,40);
+			logOut.setBounds(495,350,140,40);
+			this.add(manageEmployee);
+		}
+		else {
+			logOut.setBounds(495,290,140,40);
+		}
 		
 		this.add(titleLabel);
 		this.add(absence);
@@ -50,9 +62,6 @@ public class ControlPanel extends JPanel {
 		this.add(myProjects);
 		this.add(logOut);
 		this.add(errorLabel);
-		
-		if (schedule.getUser().isAdmin())
-			this.add(manageEmployee);
 		
 	}
 	
