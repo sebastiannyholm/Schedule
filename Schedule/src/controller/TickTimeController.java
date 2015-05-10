@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import view.View;
 import model.Schedule;
+import view.View;
 
 public class TickTimeController implements ActionListener {
 

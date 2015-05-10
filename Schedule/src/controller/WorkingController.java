@@ -5,11 +5,11 @@ import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import view.View;
+import model.Assignment;
 import model.Employee;
 import model.Schedule;
 import model.Task;
-import model.Assignment;
+import view.View;
 
 public class WorkingController implements ActionListener {
 

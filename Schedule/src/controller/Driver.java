@@ -3,12 +3,12 @@ package controller;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import view.View;
 import model.Address;
 import model.Employee;
 import model.Project;
 import model.Schedule;
 import model.Task;
+import view.View;
 
 
 public class Driver {
@@ -25,7 +25,6 @@ public class Driver {
 		final Project ABSENCE = new Project("Absence", startupDate, terminationDate, ABSENCE_MANAGER);
 		final Task SICKNESS = new Task("Sickness", startupDate, terminationDate, 99999999);
 		final Task VACATION = new Task("Vacation", startupDate, terminationDate, 99999999);
-//		final Task COURSE = new Task("Course", startupDate, terminationDate, 9999999);
 		
 		final Address address1 = new Address("Rolighedsvej", 3, 3000, "Helsingor");		//street, streetNumber, zipCode, city
 		final Employee employee1 = new Employee("Sebastian Nyholm", "seny", 25, address1, schedule);
@@ -52,7 +51,6 @@ public class Driver {
 		ABSENCE_MANAGER.createProject(ABSENCE);
 		ABSENCE_MANAGER.createTask(SICKNESS, ABSENCE);
 		ABSENCE_MANAGER.createTask(VACATION, ABSENCE);
-//		ABSENCE_MANAGER.createTask(COURSE, ABSENCE);
 		schedule.logOut();
 		
 		schedule.login("seny");
@@ -85,14 +83,8 @@ public class Driver {
 		 * Let the user of the program interact
 		 */
 		
-//		View view = new View(model);
-//		new Controller(schedule, view);
-		
 		View view = new View(schedule);
-		
-		Controller controller = new Controller(schedule, view);
-		
-		new ScanController(schedule);
+		new Controller(schedule, view);
 		
 	}
 }

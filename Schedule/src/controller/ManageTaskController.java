@@ -2,16 +2,14 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
-import view.View;
 import model.Employee;
 import model.Schedule;
 import model.Task;
+import view.View;
 
 public class ManageTaskController implements ActionListener {
 

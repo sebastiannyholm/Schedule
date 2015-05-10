@@ -328,12 +328,6 @@ public class Employee {
 		assignment.setRegisteredTime(time);
 	}
 
-
-	public int getAssignmentTimeSpentInMinutes(Assignment assignment) {
-		return (int) (assignment.getRegisteredTime() / (1000*60));
-
-	}
-
 	public void reportAbsence(Employee employee, Enum<Status> reason, Calendar startDate, int time) throws Exception {
 		
 		/*

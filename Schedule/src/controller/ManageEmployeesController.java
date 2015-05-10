@@ -2,13 +2,11 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.GregorianCalendar;
 
-import view.View;
 import model.Address;
 import model.Employee;
-import model.Project;
 import model.Schedule;
+import view.View;
 
 public class ManageEmployeesController implements ActionListener {
 

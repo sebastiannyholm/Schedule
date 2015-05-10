@@ -1,6 +1,8 @@
 package model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -64,7 +66,7 @@ public class TestTime {
 		schedule.login("luvi");
 		user = schedule.getUser();
 		
-		// He works for 5 hours and logs out (5*60 min)
+		// He works for 5 hours and logs out (5*60 minutes)
 		newCal.setTime(cal.getTime());
 		newCal.add(Calendar.MINUTE, 5*60 + 8*60);
 		when(dateServer.getDate()).thenReturn(newCal);
@@ -92,7 +94,7 @@ public class TestTime {
 		schedule.login("luvi");
 		user = schedule.getUser();
 		
-		// He works for 17 hours and logs out (17*60 min)  - past midnight
+		// He works for 17 hours and logs out (17*60 minutes)  - past midnight
 		newCal.setTime(cal.getTime());
 		newCal.add(Calendar.MINUTE, 17*60 + 8*60);
 		when(dateServer.getDate()).thenReturn(newCal);
@@ -107,7 +109,7 @@ public class TestTime {
 	public void registerTimeMultipleTimesADay() throws Exception {
 		
 		// set the time of punchIn
-		// skip 5 hours ahead, set time -- hours += 5
+		// skip 5 hours ahead, set time --> hours += 5
 		Calendar newCal = new GregorianCalendar();
 		newCal.setTime(cal.getTime());
 		newCal.add(Calendar.MINUTE, 5*60);
@@ -283,7 +285,6 @@ public class TestTime {
 			assignment2.actionPerformed(null);
 		
 		assertEquals(10*60, assignment2.getRegisteredTime());
-		System.out.println(123);
 		assertEquals(30*60, task.getRegisteredTime());
 	}
 	
@@ -305,7 +306,7 @@ public class TestTime {
 		for (int i = 0; i < 6*60; i++)
 			assignment.actionPerformed(null);
 		
-		// THen he change it to 10 minutes
+		// Then he change it to 10 minutes
 		user.changeTimeWorkedOnAnAssignment(assignment, 10*60);
 		
 		assertEquals(10*60, assignment.getRegisteredTime());
