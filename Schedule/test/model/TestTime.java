@@ -166,8 +166,6 @@ public class TestTime {
 		// Get the assignment that has just been created, when the employees was added for the task
 		Assignment assignment = user.getTasksAndTime().get(task).get(0);
 		
-		assertFalse(user.getTaskLog().containsKey(task));
-		
 		user.startWorkingOnAssignment(assignment);
 		user.stopWorkingOnAssignment(assignment);
 		

@@ -24,9 +24,8 @@ public class Employee {
 	private Map<Task,LinkedList<Assignment>> tasksAndTime;
 	private boolean superWorker;
 	private int punchIn, punchOut;
-	private long taskIn, taskOut;
 	private Map<String, Integer> workLog = new HashMap<String, Integer>();
-	private Map<Task, Integer> taskLog = new HashMap<Task, Integer>();
+
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public Employee(String name, String initials, int age, Address address, Schedule schedule) {
@@ -338,23 +337,7 @@ public class Employee {
 	}
 	
 	public void stopWorkingOnAssignment(Assignment assignment) {
-		assignment.stopTimer();
-//		taskOut = schedule.getDate().getTimeInMillis();
-		
-		//schedule.getDate().get(Calendar.HOUR_OF_DAY)*60+schedule.getDate().get(Calendar.MINUTE);	// get the current time in minutes
-		
-//		long timeWorkedOnTimer = taskOut - taskIn;
-//		System.out.println(timeWorkedOnTimer);
-//		
-//		assignment.addTimeSpent(timeWorkedOnTimer);
-		
-//		if (taskLog.containsKey(task))
-//			taskLog.put(task, taskLog.get(task) + timeWorkedOnTask);
-//		else 
-//			taskLog.put(task, timeWorkedOnTask);
-//		
-//		task.setTaskLog(this, timeWorkedOnTask);
-		
+		assignment.stopTimer();		
 	}
 	
 
@@ -366,10 +349,6 @@ public class Employee {
 	public int getAssignmentTimeSpentInMinutes(Assignment assignment) {
 		return (int) (assignment.getRegisteredTime() / (1000*60));
 //		return taskLog.get(task);
-	}
-	
-	public Map<Task, Integer> getTaskLog() {
-		return taskLog;
 	}
 
 	public void reportAbsence(Employee employee, Enum<Status> reason, Calendar startDate, int time) throws Exception {
