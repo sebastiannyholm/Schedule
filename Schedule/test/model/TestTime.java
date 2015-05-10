@@ -186,7 +186,7 @@ public class TestTime {
 	}
 	
 	@Test
-	public void registerTimeForAnAssignment() throws Exception{
+	public void registerTimeForAnAssignment() throws Exception {
 		
 		Project project = schedule.getAllProjects().get(0);
 	
@@ -256,8 +256,11 @@ public class TestTime {
 		
 		user.createTask(task, project);
 		
+		// Add normal employee to task
 		user.addEmployeeToTask(employee1, task, schedule.getDate(), 10*60);
-		user.addEmployeeToTask(employee2, task, schedule.getDate(), 10*60);
+		
+		// Require help to an task
+		user.requireAssistance(employee2, task, schedule.getDate(), 10*60);
 		
 		// Get the timers that has just been created, when the employees was added for the task
 		Assignment assignment1 = employee1.getTasksAndTime().get(task).get(0);
