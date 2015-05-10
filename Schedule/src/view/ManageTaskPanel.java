@@ -32,7 +32,7 @@ public class ManageTaskPanel extends JPanel {
 	
 	private TitleLabel titleLabel;
 	private SubTitleLabel findEmployeesLabel, employeeListTitleLabel, employeeAssistenceListTitleLabel, AssignmentListTitleLabel;
-	private Label startDateLabel, hourInDayLabel, timeLabel, freeEmployeesLabel;
+	private Label startDateLabel, hourInDayLabel, timeLabel, freeEmployeesLabel, timeTaskLabel, spentTimeTaskLabel, registeredSpentTimeTaskLabel;
 	private ErrorLabel errorLabel;
 	private JButton createAsisgnment, findFreeEmployees, back;
 	private JTextField hourInDayText, timeText;
@@ -60,9 +60,9 @@ public class ManageTaskPanel extends JPanel {
 		this.createAsisgnment = new JButton("Create Assignment");
 		this.findEmployeesLabel = new SubTitleLabel("Find employees for the assignment");
 		this.findFreeEmployees = new JButton("Find employees");
-		this.hourInDayLabel = new Label("At what time");
+		this.hourInDayLabel = new Label("Hour of day");
 		this.hourInDayText = new JTextField();
-		this.timeLabel = new Label("Time for assignment");
+		this.timeLabel = new Label("Time for assignment (hours)");
 		this.timeText = new JTextField();
 		this.startDateLabel = new Label("Startdate");
 		this.errorLabel = new ErrorLabel("");
@@ -85,6 +85,10 @@ public class ManageTaskPanel extends JPanel {
 		this.findEmployeesDateModel = new UtilDateModel();
 	    this.findEmployeesDatePanel = new JDatePanelImpl(findEmployeesDateModel);
 	    this.findEmployeesDatePicker = new JDatePickerImpl(findEmployeesDatePanel);
+	    
+	    this.timeTaskLabel = new Label(""); 
+	    this.spentTimeTaskLabel = new Label("");
+	    this.registeredSpentTimeTaskLabel = new Label("");
 	    
 	    titleLabel.setLocation(20, 20);
 		
@@ -117,6 +121,10 @@ public class ManageTaskPanel extends JPanel {
 		
 		createAsisgnment.setBounds(690, 390, 150, 40);
 		
+		timeTaskLabel.setBounds(470, 450, 300, 20);
+		spentTimeTaskLabel.setBounds(470, 480, 300, 20);
+		registeredSpentTimeTaskLabel.setBounds(470, 510, 300, 20);
+		
 		back.setBounds(820,520,120,40);
 		
 		this.setLayout(null);
@@ -142,8 +150,30 @@ public class ManageTaskPanel extends JPanel {
 		this.add(findFreeEmployees);
 		this.add(errorLabel);
 		this.add(back);
+		this.add(timeTaskLabel);
+		this.add(spentTimeTaskLabel);
+		this.add(registeredSpentTimeTaskLabel);
 	}
 
+	public void setTimeTaskTLabel() {
+		String time = Integer.toString(task.getBudgetedTime());
+		timeTaskLabel.setText("The given time for the task: " + time + " hour(s)");
+	}
+	
+	public void setSpentTimeTaskTLabel() {
+		int hours = task.getTimeSpent() / 60;
+		int minutes = task.getTimeSpent() % 60;
+		String time = hours + " hour(s) " + minutes + " min";
+		spentTimeTaskLabel.setText("The total time on assignments: " + time);
+	}
+	
+	public void setRegisteredSpentTimeTaskTLabel() {
+		int hours = task.getRegisteredTime() / 60 / 60;
+		int minutes = (task.getRegisteredTime() / 60) % 60;
+		String time = hours + " hour(s) " + minutes + " min";
+		registeredSpentTimeTaskLabel.setText("Registered time: " + time);
+	}
+	
 	public void removeAssistenceList() {
 		this.remove(employeeAssistenceListTitleLabel);
 		this.remove(scrollPaneAssistence);

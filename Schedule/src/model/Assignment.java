@@ -15,7 +15,7 @@ public class Assignment implements ActionListener {
 
 	private Task task;
 	private Calendar startDate, endDate;
-	private int time, timeSpent, hours, minutes, seconds;
+	private int time, registeredTime, hours, minutes, seconds;
 	private Timer timer;
 	private String timeSpentString = "00:00:00", hoursString = "00", minutesString = "00", secondsString = "00"; 
 	
@@ -50,7 +50,7 @@ public class Assignment implements ActionListener {
 		return endDate;
 	}
 	
-	public int getTimeForATask() {
+	public int getTime() {
 		return time;
 	}
 
@@ -72,34 +72,34 @@ public class Assignment implements ActionListener {
 		return task;
 	}
 	
-	public int getTimeSpent(){
-		return timeSpent;
+	public int getRegisteredTime(){
+		return registeredTime;
 	}
 	
 	public void setTimeSpent(int timeSpent){
-		this.timeSpent = timeSpent;
+		this.registeredTime = timeSpent;
 		setCorrectFormat();
 	}
 
 	public boolean limitExceeded() {
-		return timeSpent > time*60;
+		return registeredTime > time*60;
 	}
 
 	public int getHourSpent() {
-		return (timeSpent / (60*60));
+		return (registeredTime / (60*60));
 	}
 
 	public int getMinutesSpent() {
-		return (timeSpent / 60) % 60;
+		return (registeredTime / 60) % 60;
 	}
 
 	public int getSecondsSpent() {
-		return timeSpent % 60;
+		return registeredTime % 60;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		timeSpent++;
+		registeredTime++;
 		setCorrectFormat();
 	}
 	

@@ -105,9 +105,35 @@ public class Task {
 	}
 
 	public int getTimeSpent() {
+		List<Employee> employeesList = new LinkedList<Employee>();
 		int time = 0;
-		for (Employee employee : employees) {
+		for (Employee employee : employees)
+			employeesList.add(employee);
+		
+		for (Employee employee : employeesAsAssistance)
+			if (!employeesList.contains(employee))
+				employeesList.add(employee);
+			
+		
+		for (Employee employee : employeesList) {
 			time += employee.getTimeForATask(this);
+		}
+		return time;
+	}
+	
+	public int getRegisteredTime() {
+		List<Employee> employeesList = new LinkedList<Employee>();
+		int time = 0;
+		for (Employee employee : employees)
+			employeesList.add(employee);
+		
+		for (Employee employee : employeesAsAssistance)
+			if (!employeesList.contains(employee))
+				employeesList.add(employee);
+			
+		
+		for (Employee employee : employeesList) {
+			time += employee.getRegisteredTimeForATask(this);
 		}
 		return time;
 	}

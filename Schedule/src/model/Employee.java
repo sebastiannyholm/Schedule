@@ -364,7 +364,7 @@ public class Employee {
 	}
 
 	public int getAssignmentTimeSpentInMinutes(Assignment assignment) {
-		return (int) (assignment.getTimeSpent() / (1000*60));
+		return (int) (assignment.getRegisteredTime() / (1000*60));
 //		return taskLog.get(task);
 	}
 	
@@ -412,10 +412,17 @@ public class Employee {
 	public int getTimeForATask(Task task) {
 		int time = 0;
 		for (Assignment assignment : tasksAndTime.get(task))
-			time += assignment.getTimeForATask();
+			time += assignment.getTime();
 		return time; 
 	}
 
+	public int getRegisteredTimeForATask(Task task) {
+		int time = 0;
+		for (Assignment assignment : tasksAndTime.get(task))
+			time += assignment.getRegisteredTime();
+		return time; 
+	}
+	
 	public Map<Task, LinkedList<Assignment>> getTasksAndTime() {
 		return tasksAndTime;
 	}

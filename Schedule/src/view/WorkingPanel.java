@@ -71,9 +71,9 @@ public class WorkingPanel extends JPanel {
 		this.addAssistence = new JButton("Add assistence");
 		this.findEmployeesLabel = new SubTitleLabel("Find an employee to help you");
 		this.findFreeEmployees = new JButton("Find employees");
-		this.hourInDayLabel = new Label("Hour in day");
+		this.hourInDayLabel = new Label("Hour of day");
 		this.hourInDayText = new JTextField();
-		this.timeLabel = new Label("Expected time for the assignment");
+		this.timeLabel = new Label("Time for assignment (hours)");
 		this.timeText = new JTextField();
 		this.startDateLabel = new Label("Startdate");
 		this.descriptionTaskTitle = new SubTitleLabel("Description for task:");

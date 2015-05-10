@@ -117,6 +117,7 @@ public class ManageTaskController implements ActionListener {
 					} catch (Exception error) {
 						view.getManageTaskPanel().setErrorLabel(error.getMessage());
 					}
+					view.getManageTaskPanel().setSpentTimeTaskTLabel();
 					view.getManageTaskPanel().updateList();
 					view.getManageTaskPanel().updateAssignmentsList();
 					view.getManageTaskPanel().updateFindEmployeesList(schedule.getUser().getFreeEmployeesInPeriod(startDate, time));
