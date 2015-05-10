@@ -49,6 +49,26 @@ public class TestTask {
 		
 	}
 	
+	@Test
+	public void createTaskWhenNotLoggedIn() throws Exception {
+		
+		Project project = schedule.getAllProjects().get(0);		// list of 1
+		
+		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), 37*(2-1));	// name, number, startWeek, endWeek, budgetedHours
+		schedule.logOut();
+		assertEquals(0,project.getTasks().size());
+		try{
+			user.createTask(task, project);
+		} catch(OperationNotAllowedException e){
+			assertEquals("You need to be logged in to add a task", e.getMessage());
+			assertEquals("Add task", e.getOperation());
+		}
+		assertEquals(0,project.getTasks().size());
+		
+		
+	}
+	
+	
 	// only the project leader can add tasks
 	@Test
 	public void createTaskFailed() throws Exception {
@@ -289,6 +309,21 @@ public class TestTask {
 		
 	}
 	
+	@Test
+	public void checkTaskDates() throws Exception{
+		Project project = schedule.getAllProjects().get(0);				
+		
+		Task task = new Task("taskName", new GregorianCalendar(2015, Calendar.JANUARY, 8), new GregorianCalendar(2015, Calendar.JANUARY, 22), 37*(4-2));	// name, number, startWeek, endWeek, budgetedHours
+		
+		user.createTask(task, project);
+		user.addEmployeeToTask(user, task, new GregorianCalendar(2015, Calendar.JANUARY, 8, 8, 0), 200);
+		
+		assertEquals("2015000000 - taskName from 08/01/2015 to 22/01/2015", task.toString()); 	// overview of both start and end date
+		assertEquals("Thu Jan 08 00:00:00 CET 2015", task.getStartDate().getTime().toString());	// start only
+		assertEquals("Thu Jan 22 00:00:00 CET 2015", task.getEndDate().getTime().toString());	// end only
+		
+	}
+	
 //	// remove a tasks which the employee is not working on
 //	@Test
 //	public void removeTaskNonExist() throws Exception {
@@ -466,6 +501,9 @@ public class TestTask {
 		user.addEmployeeToTask(employee2, task, new GregorianCalendar(2015, Calendar.JANUARY, 1, 8, 0), 16*60);
 		
 		assertEquals(user.getFreeEmployeesInPeriod(new GregorianCalendar(2015, Calendar.JANUARY, 5, 8, 0), 20).size(), 1);
+		
+		
+		assertFalse(task.isInPeriod(new GregorianCalendar(2016,Calendar.JANUARY,1), new GregorianCalendar(2016,Calendar.JANUARY,2)));
 		
 	}
 	

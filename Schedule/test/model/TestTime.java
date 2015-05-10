@@ -74,6 +74,35 @@ public class TestTime {
 		assertEquals(5*60, user.getWorkLogValue(schedule.getDate().getTime()));
 	}
 	
+
+	@Test
+	public void registerTimePastMidnight() throws Exception{
+		
+		Calendar newCal = new GregorianCalendar();
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 8*60);
+		when(dateServer.getDate()).thenReturn(newCal);
+		
+		
+		// the employee automatically punches out as he logs out
+		schedule.logOut(); 			// punches out
+		assertEquals(8*60, user.getWorkLogValue(schedule.getDate().getTime()));
+		
+		// log in another employee
+		schedule.login("luvi");
+		user = schedule.getUser();
+		
+		// He works for 17 hours and logs out (17*60 min)  - past midnight
+		newCal.setTime(cal.getTime());
+		newCal.add(Calendar.MINUTE, 17*60 + 8*60);
+		when(dateServer.getDate()).thenReturn(newCal);
+	
+		schedule.logOut();
+		
+		assertEquals(17*60, user.getWorkLogValue(schedule.getDate().getTime()));
+	}
+	
+	
 	@Test
 	public void registerTimeMultipleTimesADay() throws Exception {
 		

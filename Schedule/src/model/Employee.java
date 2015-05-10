@@ -46,8 +46,6 @@ public class Employee {
 	public void createProject(Project newProject) throws Exception {
 		if (!schedule.isLoggedIn())
 			throw new OperationNotAllowedException("You need to be logged in to create a project", "Create project");
-		else if (!this.equals(schedule.getUser()))
-			throw new OperationNotAllowedException("You need to be the one logged in to create a project", "Add task");
 		else if (newProject.getStartDate().after(newProject.getEndDate()))
 			throw new OperationNotAllowedException("Bad project bounds - Project ends before it begins", "Create project");
 		
@@ -66,9 +64,7 @@ public class Employee {
 		
 	public void deleteProject(Project project) throws Exception {
 		if (!schedule.isLoggedIn())
-			throw new OperationNotAllowedException("You need to be logged in to delete a project", "Create project");
-		else if (!this.equals(schedule.getUser()))
-			throw new OperationNotAllowedException("You need to be the one logged in to delete a project", "Add task");
+			throw new OperationNotAllowedException("You need to be logged in to delete a project", "Delete project");
 		else if (!this.equals(project.getProjectLeader())) 
 			throw new OperationNotAllowedException("Cannot remove a project if not its leader", "Delete project");
 		
@@ -98,8 +94,6 @@ public class Employee {
 	public void createTask(Task task, Project project) throws Exception {
 		if (!schedule.isLoggedIn())
 			throw new OperationNotAllowedException("You need to be logged in to add a task", "Add task");
-		else if (!this.equals(schedule.getUser()))
-			throw new OperationNotAllowedException("You need to be the one logged in to add a task", "Add task");
 		else if (!this.equals(project.getProjectLeader()))
 			throw new OperationNotAllowedException("Only the project leader may add a task to a project", "Add task");
 		else if (task.endsBeforeStart()) 
@@ -310,8 +304,8 @@ public class Employee {
 		//punchOut = cal.get(Calendar.HOUR_OF_DAY)*60+cal.get(Calendar.MINUTE);		// get the current time in minutes
 		
 		int workMinutes = punchOut-punchIn;
-		// to compensate for late shifts working past midnight
 		
+		// to compensate for late shifts working past midnight
 		 if (workMinutes < 0)
 			 workMinutes += 24*60;
 		 
@@ -363,10 +357,10 @@ public class Employee {
 //		taskLog.put(task, time);
 	}
 
-	public int getAssignmentTimeSpentInMinutes(Assignment assignment) {
-		return (int) (assignment.getTimeSpent() / (1000*60));
-//		return taskLog.get(task);
-	}
+//	public int getAssignmentTimeSpentInMinutes(Assignment assignment) {
+//		return (int) (assignment.getTimeSpent() / (1000*60));
+////		return taskLog.get(task);
+//	}
 	
 	public Map<Task, Integer> getTaskLog() {
 		return taskLog;
@@ -507,5 +501,6 @@ public class Employee {
 	public void setTaskDescription(String description, Task task) {
 		task.setDescription(description);
 	}
+
 
 }

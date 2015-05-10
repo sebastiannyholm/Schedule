@@ -71,6 +71,7 @@ public class TestAbsence {
 
 		assertTrue(employee.isAbsent());
 //		assertEquals(employee.getStatus(), Status.SICK);
+		assertEquals("SICK", Status.valueOf("SICK").toString());	// enum value test
 		
 		// the employee should now show up on the Absent list for the day.
 		assertEquals(projectLeader.getAbsentEmployees().get(0).getName(),"Lukas Villumsen");
@@ -102,6 +103,7 @@ public class TestAbsence {
 		when(dateServer.getDate()).thenReturn(newCal);
 		
 		assertTrue(employee.isAbsent());
+		assertEquals("VACATION", Status.valueOf("VACATION").toString());
 //		assertEquals(employee.getStatus(), Status.VACATION);
 		
 		// the employee should now show up on the Absent list for the day.
@@ -137,6 +139,8 @@ public class TestAbsence {
 		// the employee should NOT show up on the Absent list for the day of his/her initial requested time of vacation
 		assertEquals(projectLeader.getAbsentEmployees().size(), 0);
 	}
+	
+	
 }
 
 

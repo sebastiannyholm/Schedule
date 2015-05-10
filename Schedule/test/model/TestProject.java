@@ -72,6 +72,29 @@ public class TestProject {
 	}
 	
 	@Test
+	public void deleteProjectWhenNotLoggedIn() throws Exception{
+
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);							//projectName, totalTime (in weeks), employee
+		
+		user.createProject(project);
+		
+		Employee projectLeader = project.getProjectLeader();
+		
+		schedule.logOut();
+		try{
+			projectLeader.deleteProject(project);
+		} catch (OperationNotAllowedException e){
+			assertEquals("You need to be logged in to delete a project", e.getMessage());
+			assertEquals("Delete project", e.getOperation());
+		}
+		
+		assertEquals(1,projectLeader.getProjects().size());
+		assertEquals(1,schedule.getAllProjects().size());
+	
+		
+	}
+	
+	@Test
 	public void deleteProjectWhenNotProjectLeader() throws Exception {
 		
 		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);							//projectName, totalTime (in weeks), employee
@@ -107,7 +130,7 @@ public class TestProject {
 		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);							//projectName, totalTime (in weeks), employee
 		
 		user.createProject(project);
-		
+	
 		try {
 			user.createProject(project);
 			fail("OperationNotAlloedException should have been thrown from the above statement");
@@ -133,6 +156,17 @@ public class TestProject {
 		assertEquals(20150000, project.getProjectNumber());
 		assertEquals(20150001, newProject.getProjectNumber());
 		assertEquals(20150002, anotherProject.getProjectNumber());
+	}
+
+	@Test
+	public void projectInformation() throws Exception {
+		
+		Project project = new Project("ProjectAwesome", new GregorianCalendar(2015, Calendar.JANUARY, 1), new GregorianCalendar(2015, Calendar.JANUARY, 29), user);							//projectName, totalTime (in weeks), employee
+		
+		user.createProject(project);
+		assertEquals("ProjectAwesome", project.getName());												// check if the correct name is recorded
+		assertEquals("20150000 - ProjectAwesome from 01/01/2015 to 29/01/2015", project.toString()); 	// check for correct output string
+		
 	}
 	
 	@Test

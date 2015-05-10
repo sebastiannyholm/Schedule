@@ -82,14 +82,14 @@ public class Task {
 	}
 
 	
-	public void setTaskLog(Employee employee, int timeWorkedOnTask) {
-		
-		if (log.containsKey(employee))
-			log.put(employee, log.get(employee) + timeWorkedOnTask);
-		else 
-			log.put(employee, timeWorkedOnTask);
-		
-	}
+//	public void setTaskLog(Employee employee, int timeWorkedOnTask) {
+//		
+//		if (log.containsKey(employee))
+//			log.put(employee, log.get(employee) + timeWorkedOnTask);
+//		else 
+//			log.put(employee, timeWorkedOnTask);
+//		
+//	}
 
 //	public void belongsTo(Project project) {
 //		this.project = project;

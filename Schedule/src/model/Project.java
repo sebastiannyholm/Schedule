@@ -14,7 +14,7 @@ public class Project {
 	
 //	private List<Employee> employees;
 	private List<Task> tasks;
-	private List<Employee> absentEmployees;
+//	private List<Employee> absentEmployees;
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public Project(String projectName, Calendar startDate, Calendar endDate, Employee projectLeader){
@@ -24,7 +24,7 @@ public class Project {
 		this.endDate = endDate;
 		this.projectLeader = projectLeader;
 		
-		this.absentEmployees = new LinkedList<Employee>();
+//		this.absentEmployees = new LinkedList<Employee>();
 		this.tasks = new LinkedList<Task>();
 //		employees = new LinkedList<Employee>();
 	
@@ -115,13 +115,13 @@ public class Project {
 		
 	}
 
-	public List<Employee> getAbsentEmployees() {
-		return absentEmployees;
-	}
-
-	public void addAbsentEmployee(Employee employee) {
-		this.absentEmployees.add(employee);	
-	}
+//	public List<Employee> getAbsentEmployees() {
+//		return absentEmployees;
+//	}
+//
+//	public void addAbsentEmployee(Employee employee) {
+//		this.absentEmployees.add(employee);	
+//	}
 
 	public boolean hasTask(Task task) {
 		return tasks.contains(task);

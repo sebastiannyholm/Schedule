@@ -49,22 +49,6 @@ public class PriorityQueue<T> {
 	}
 
 	/**
-	 * Changes the key of the element to newKey.
-	 * @param element The element to change.
-	 * @param newKey The new key associated to the element.
-	 */
-	public void changeKey(T element, Calendar newKey) {
-		if (!map.containsKey(element)) {
-			throw new RuntimeException("The PriorityQueue does not contain the element: " + element);
-		}
-
-		int index = elements.indexOf(element);
-		keys.set(index, newKey);
-		bubbleUp(index);
-		bubbleDown(index);
-	}
-	
-	/**
 	 * Returns whether the PriorityQueue is empty or not.
 	 * @return True if the PriorityQueue is empty, otherwise false.
 	 */
