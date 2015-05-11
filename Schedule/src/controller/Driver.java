@@ -10,7 +10,6 @@ import model.Schedule;
 import model.Task;
 import view.View;
 
-
 public class Driver {
 
 	public static void main(String[] args) throws Exception{
