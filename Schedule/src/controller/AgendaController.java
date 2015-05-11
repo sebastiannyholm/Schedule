@@ -3,10 +3,10 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import view.View;
+import model.Assignment;
 import model.Schedule;
 import model.Task;
-import model.Assignment;
+import view.View;
 
 public class AgendaController implements ActionListener {
 

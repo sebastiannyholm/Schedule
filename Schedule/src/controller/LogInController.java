@@ -3,8 +3,8 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import view.View;
 import model.Schedule;
+import view.View;
 
 public class LogInController implements ActionListener {
 

@@ -4,13 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
-import view.View;
-import model.Employee;
 import model.Project;
 import model.Schedule;
 import model.Task;
+import view.View;
 
 public class CreateTaskController implements ActionListener {
 

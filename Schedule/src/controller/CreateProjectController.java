@@ -6,11 +6,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import view.View;
 import model.Employee;
 import model.Project;
 import model.Schedule;
-import model.Status;
+import view.View;
 
 public class CreateProjectController implements ActionListener {
 
@@ -25,7 +24,7 @@ public class CreateProjectController implements ActionListener {
 	public CreateProjectController(Schedule schedule, View view) {
 		this.schedule = schedule;
 		this.view = view;
-		
+	
 		view.getCreateProjectPanel().registerListener(this);
 	}
 	
