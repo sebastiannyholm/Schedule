@@ -68,7 +68,7 @@ Here the user can quickly get an overview of which employees
 are to be expected absent on the specific day (today).
 
 "My projects"
-	redirects the user to his/Her projects.
+	redirects the user to his/her projects.
 The possession of project is defined by being its project leader.
 From here the user can create, delete and manage these projects.
 When managing projects the user can, like with projects, create,
@@ -77,7 +77,7 @@ While managing tasks the user can create assignments. These
 assignments are individually tied to one unique employee.
 "Hour of day" indicates at which point in time, on the chosen date,
 the user is expected to do this job. 
-Below a user can enter how many hours of work the employee chosen 
+A user can enter how many hours of work the employee chosen 
 for the assignment is expected to finish in.
 
 "Manage employees" (admin only)
