@@ -41,19 +41,19 @@ public class ControlPanel extends JPanel {
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.BLACK));
 		
-		myAgenda.setBounds(335,230,140,40);
-		absence.setBounds(335,290, 140, 40);
-		myProjects.setBounds(495,230,140,40);
+		myAgenda.setBounds(325,230,150,40);
+		absence.setBounds(325,290, 150, 40);
+		myProjects.setBounds(495,230,150,40);
 		
 		errorLabel.setBounds(20, 430, 300, 40);
 		
 		if (schedule.getUser().isAdmin()) {
-			manageEmployee.setBounds(495,290,140,40);
-			logOut.setBounds(495,350,140,40);
+			manageEmployee.setBounds(495,290,150,40);
+			logOut.setBounds(495,350,150,40);
 			this.add(manageEmployee);
 		}
 		else {
-			logOut.setBounds(495,290,140,40);
+			logOut.setBounds(495,290,150,40);
 		}
 		
 		this.add(titleLabel);

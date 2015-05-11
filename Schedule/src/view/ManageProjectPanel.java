@@ -170,7 +170,7 @@ public class ManageProjectPanel extends JPanel {
 	}
 	
 	public void setDescriptionLabel(String description) {
-		this.descriptionLabel.setText("<html><p style=\"width:100%;\">"+description+"</p></html>");
+		this.descriptionLabel.setText("<html><p style=\"width:100%;\">"+description+"</p></html>");		// for line breaks
 	}
 	
 	public void setDescriptionText(String description) {

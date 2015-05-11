@@ -98,7 +98,7 @@ public class CreateAssignmentPanel extends JPanel {
 		
 		errorLabel.setBounds(470,350,200,20);
 		
-		findFreeEmployees.setBounds(470, 390, 120, 40);
+		findFreeEmployees.setBounds(470, 390, 150, 40);
 		
 		freeEmployeesLabel.setBounds(690, 110, 200, 20);
 		scrollPaneFindEmployees.setBounds(690, 130, 200, 240);

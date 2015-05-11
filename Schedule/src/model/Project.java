@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Project {
 
-	private String projectName, projectNumber, description;
+	private String projectName, projectNumber, description = "";
 	private Calendar startDate, endDate;
 	private Employee projectLeader;
 	private List<Task> tasks;

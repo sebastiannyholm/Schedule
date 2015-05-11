@@ -66,7 +66,7 @@ public class WorkingPanel extends JPanel {
 		this.errorLabel = new ErrorLabel("");
 		this.errorLabelTime = new ErrorLabel("");
 		this.back = new JButton("Back");
-		this.addAssistence = new JButton("Add assistence");
+		this.addAssistence = new JButton("Add assistance");
 		this.findEmployeesLabel = new SubTitleLabel("Find an employee to help you");
 		this.findFreeEmployees = new JButton("Find employees");
 		this.hourInDayLabel = new Label("Hour of day");
@@ -102,7 +102,6 @@ public class WorkingPanel extends JPanel {
 		errorLabel.setBounds(20,315,200,40);
 		back.setBounds(370, 430, 120, 40);
 		
-		addAssistence.setBounds(370, 380, 120, 40);
 		findEmployeesLabel.setBounds(250, 40, 200, 40);
 		startDateLabel.setBounds(250, 80, 200, 30);
 		findEmployeesDatePicker.setBounds(250,110,200,40);
@@ -155,12 +154,12 @@ public class WorkingPanel extends JPanel {
 		
 		errorLabel.setBounds(470,350,200,20);
 		
-		findFreeEmployees.setBounds(470, 390, 120, 40);
+		findFreeEmployees.setBounds(470, 390, 150, 40);
 		
 		freeEmployeesLabel.setBounds(690, 110, 200, 20);
 		scrollPaneFindEmployees.setBounds(690, 130, 200, 240);
 		
-		addAssistence.setBounds(690, 390, 120, 40);
+		addAssistence.setBounds(690, 390, 150, 40);
 		
 		back.setBounds(820,520,120,40);
 		

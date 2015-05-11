@@ -33,11 +33,11 @@ public class Driver {
 		Employee employee2 = new Employee("Lukas Villumsen", "luvi", 19, address2, schedule);		// name, initials, age, address, schedule
 		employee2.setAdmin(true);
 		
-		Address address3 = new Address("Venlighedsvej", 32, 3800, "Hørsholm");					//street, streetNumber, zipCode, city
-		Employee employee3 = new Employee("Ander Jensen", "anje", 22, address3, schedule);		// name, initials, age, address, schedule
+		Address address3 = new Address("Venlighedsvej", 32, 3800, "Horsholm");					//street, streetNumber, zipCode, city
+		Employee employee3 = new Employee("Anders Jensen", "anje", 22, address3, schedule);		// name, initials, age, address, schedule
 		
 		Address address4 = new Address("Kollegiebakken", 9, 2800, "Lyngby");					//street, streetNumber, zipCode, city
-		Employee employee4 = new Employee("Louise Bak", "luba", 22, address4, schedule);		// name, initials, age, address, schedule
+		Employee employee4 = new Employee("Louise Bak", "loba", 22, address4, schedule);		// name, initials, age, address, schedule
 		
 		Project project1 = new Project("Ventiba", new GregorianCalendar(2015, Calendar.MAY, 1), new GregorianCalendar(2015, Calendar.JULY, 29), employee1);		//projectName, projectNumber, totalTime (in weeks), project leader
 		Project project2 = new Project("Leg og Sjov", new GregorianCalendar(2015, Calendar.APRIL, 5), new GregorianCalendar(2015, Calendar.JUNE, 20), employee1);
@@ -104,11 +104,12 @@ public class Driver {
 		employee2.createProject(project3);
 		employee2.createTask(task31, project3);
 		
-		
+		employee2.setProjectDescription("Lorem ipsum dolor sit amet, magnis ultricies cursus lorem dolor. Diam aenean morbi, nibh praesent at. Ut amet ante, consectetuer in pellentesque non, optio etiam curabitur, arcu purus", project3);
 		employee2.addEmployeeToTask(employee2, task31, new GregorianCalendar(2015, Calendar.MAY, 11, 8, 0), 200*60);
 		employee2.addEmployeeToTask(employee3, task31, new GregorianCalendar(2015, Calendar.MAY, 13, 10, 0), 40*60);
 
 		// Set assignment descriptions
+		employee2.setTaskDescription("Lorem ipsum dolor sit amet, magnis ultricies cursus lorem dolor. Diam aenean morbi, nibh praesent at. Ut amet ante, consectetuer in pellentesque non, optio etiam curabitur, arcu purus", task31);
 		employee2.getTasksAndTime().get(task31).get(0).setDescription("Lorem ipsum dolor sit amet, magnis ultricies cursus lorem dolor. Diam aenean morbi, nibh praesent at. Ut amet ante, consectetuer in pellentesque non, optio etiam curabitur, arcu purus");
 		schedule.logOut();
 		

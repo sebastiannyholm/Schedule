@@ -46,7 +46,7 @@ public class CreateTaskPanel extends JPanel {
 		this.taskNameLabel = new Label("Task name");
 		this.startDateLabel = new Label("Task start date");
 		this.endDateLabel = new Label("Task end date");
-		this.budgetTimeLabel = new Label("Budget time");
+		this.budgetTimeLabel = new Label("Budget time (hours)");
 		this.budgetTime = new JTextField();
 		
 		this.startDateModel = new UtilDateModel();
