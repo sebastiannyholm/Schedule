@@ -62,12 +62,12 @@ public class AgendaPanel extends JPanel {
 	    
 	    titleLabel.setLocation(20, 20);
 		dailyListLabel.setBounds(20, 80, 200, 20);
-		scrollPane.setBounds(20, 120, 500, 300);
-		checkTask.setBounds(20, 440, 120, 40);
+		scrollPane.setBounds(20, 120, 500, 380);
+		checkTask.setBounds(20, 520, 120, 40);
 		back.setBounds(820,520,120,40);
 		datePicker.setBounds(250,240,200,40);
 		
-		errorLabel.setBounds(160, 440, 300, 40);
+		errorLabel.setBounds(160, 520, 300, 40);
 		
 		this.setLayout(null);
 		this.add(titleLabel);

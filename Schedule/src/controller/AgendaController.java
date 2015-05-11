@@ -43,6 +43,7 @@ public class AgendaController implements ActionListener {
 					
 					view.getWorkingPanel().checkTimeLimit();
 					view.getWorkingPanel().setDescriptionTask(task.getDescription());
+					view.getWorkingPanel().setDescriptionAssignment(assignment.getDescription());
 					view.remove(view.getAgendaPanel());
 					view.add(view.getWorkingPanel());
 					view.reset();

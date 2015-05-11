@@ -79,24 +79,23 @@ public class CreateProjectController implements ActionListener {
 				}
 				
 				project.setDescription(view.getCreateProjectPanel().getProjectDescription());
-				view.remove(view.getCreateProjectPanel());
 				
-				if (schedule.getUser().equals(projectLeader)){
-					view.getManageProjectPanel().setProject(project);
-					view.getManageProjectPanel().updateList(project);
-					view.getManageProjectPanel().setTitleLabel(project.getName());
-					view.getManageProjectPanel().setProjectLeaderLabel(project.getProjectLeader().getName());
-					view.getManageProjectPanel().setProjectLeaderText(project.getProjectLeader().getInitials());
-					view.getManageProjectPanel().setDescriptionLabel(project.getDescription());
-					view.getManageProjectPanel().setDescriptionText(project.getDescription());
-					view.getManageProjectPanel().setStartDate(startDate);
-					view.getManageProjectPanel().setEndDate(endDate);
-	
-					view.getProjectPanel().updateList();
-					view.add(view.getManageProjectPanel());
-				}
-				else 
-					view.add(view.getProjectPanel());
+				view.getManageProjectPanel().setProject(project);
+				view.getManageProjectPanel().updateList(project);
+				view.getManageProjectPanel().setTitleLabel(project.getName());
+				view.getManageProjectPanel().setProjectLeaderLabel(project.getProjectLeader().getName());
+				view.getManageProjectPanel().setProjectLeaderText(project.getProjectLeader().getInitials());
+				view.getManageProjectPanel().setDescriptionLabel(project.getDescription());
+				view.getManageProjectPanel().setDescriptionText(project.getDescription());
+				view.getManageProjectPanel().setStartDate(startDate);
+				view.getManageProjectPanel().setEndDate(endDate);
+				view.getProjectPanel().updateList();
+				
+				if (!schedule.getUser().equals(projectLeader))
+					view.getManageProjectPanel().disableAllButtons();
+				
+				view.add(view.getManageProjectPanel());
+				view.remove(view.getCreateProjectPanel());
 				
 				view.reset();
 				break;

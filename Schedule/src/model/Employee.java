@@ -348,7 +348,7 @@ public class Employee {
 			this.addEmployeeToTask(employee, schedule.getAllProjects().get(0).getTasks().get(1), startDate, time);
 	
 	}
-
+	
 	public boolean isAbsent() {
 		
 		for (Task absent : schedule.getAllProjects().get(0).getTasks()) {

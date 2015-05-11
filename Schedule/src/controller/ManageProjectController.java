@@ -118,6 +118,10 @@ public class ManageProjectController implements ActionListener {
 					view.getManageTaskPanel().setTimeTaskTLabel();
 					view.getManageTaskPanel().setSpentTimeTaskTLabel();
 					view.getManageTaskPanel().setRegisteredSpentTimeTaskTLabel();
+					view.getManageTaskPanel().setDescriptionLabel(task.getDescription());
+					view.getManageTaskPanel().setDescriptionText(task.getDescription());
+					view.getManageTaskPanel().setStartDate(task.getStartDate());
+					view.getManageTaskPanel().setEndDate(task.getEndDate());
 					if (schedule.getAllProjects().get(0).getTasks().contains(task))
 						view.getManageTaskPanel().removeAssistenceList();
 					else

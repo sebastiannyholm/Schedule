@@ -8,16 +8,15 @@ public class Schedule {
 
 	private List<Employee> employees;
 	private List<Project> allProjects;
-//	private List<Task> allTasks;
 	private boolean loggedIn = false;
 	private Employee user;
-	private DateServer dateServer = new DateServer();
+	private DateServer dateServer;
 	
 	public Schedule(){
 
 		this.employees = new LinkedList<Employee>();
 		this.allProjects = new LinkedList<Project>();
-
+		this.dateServer = new DateServer();
 	}
 	
 	public List<Employee> getEmployees() {

@@ -81,7 +81,7 @@ public class CreateTaskController implements ActionListener {
 					break;
 				}
 				
-				task.setDescription(view.getCreateProjectPanel().getProjectDescription());
+				task.setDescription(view.getCreateTaskPanel().getTaskDescription());
 				view.getManageProjectPanel().updateList(project);
 				
 				view.remove(view.getCreateTaskPanel());

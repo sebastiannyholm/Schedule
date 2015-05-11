@@ -405,4 +405,18 @@ public class TestTime {
 		assertEquals("name from 10/04/2015 - 08:00:00 to 10/04/2015 - 11:00:00", assignment.toString());
 	}
 	
+	@Test
+	public void checkAssignmentDescription() throws Exception {
+		Project project = schedule.getAllProjects().get(0);
+		Task task = new Task("name", new GregorianCalendar(2015, Calendar.JANUARY, 22), new GregorianCalendar(2015, Calendar.DECEMBER, 20), 5);
+		
+		user.createTask(task, project);
+		// the user is only supposed to work on the task for 3 hours (the entire task period)
+		user.addEmployeeToTask(user, task, schedule.getDate(), 3*60);
+		// Get the timers that has just been created, when the employees was added for the task
+		Assignment assignment = user.getTasksAndTime().get(task).get(0);
+		assignment.setDescription("Check description");
+		assertEquals("Check description", assignment.getDescription());
+	}
+	
 }

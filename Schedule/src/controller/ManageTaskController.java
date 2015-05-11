@@ -34,96 +34,36 @@ public class ManageTaskController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		task = view.getManageTaskPanel().getTask();
+		
 		switch (e.getActionCommand()) {
-			case "Find employees":
-				timeString = view.getManageTaskPanel().getTimeText();
-				hourInDayString = view.getManageTaskPanel().getHourInDayText();
 				
-				if (view.getManageTaskPanel().getStartDate() != null) {
-					startDate = new GregorianCalendar();
-					startDate.setTime(view.getManageTaskPanel().getStartDate());
-				}
-				
-				if (startDate == null) {
-					view.getManageTaskPanel().setErrorLabel("Please set a start date");
-					break;
-				}
-				
-				try {
-					hourInDay = Integer.parseInt(hourInDayString);
-					view.resetErrorLabels();
-				} catch(NumberFormatException error) {
-					view.getManageTaskPanel().setErrorLabel("Correct your hour of day");
-					System.err.println(error);
-					break;
-				}
-				
-				try {  
-					time = Integer.parseInt(timeString);
-					view.resetErrorLabels();
-				} catch(NumberFormatException error) {
-					view.getManageTaskPanel().setErrorLabel("Correct your time");
-					break;
-				}
-				
-				startDate.set(Calendar.HOUR_OF_DAY, hourInDay);
-				startDate.set(Calendar.MINUTE,0);
-				startDate.set(Calendar.SECOND,0);
-				
-				view.getManageTaskPanel().updateFindEmployeesList(schedule.getUser().getFreeEmployeesInPeriod(startDate, time));
-				
+			case "Change description":
+				view.getManageTaskPanel().remove(view.getManageTaskPanel().getDescriptionLabelComp());
+				view.getManageTaskPanel().remove(view.getManageTaskPanel().getChangeDescriptionComp());
+				view.getManageTaskPanel().add(view.getManageTaskPanel().getDescriptionTextComp());
+				view.getManageTaskPanel().add(view.getManageTaskPanel().getSaveDescriptionComp());
+				view.reset();
 				break;
 				
+			case "Save description":
+				task.setDescription(view.getManageTaskPanel().getDescriptionText());
+				
+				view.getManageTaskPanel().setDescriptionLabel(task.getDescription());
+				view.getManageTaskPanel().remove(view.getManageTaskPanel().getDescriptionTextComp());
+				view.getManageTaskPanel().remove(view.getManageTaskPanel().getSaveDescriptionComp());
+				view.getManageTaskPanel().add(view.getManageTaskPanel().getDescriptionLabelComp());
+				view.getManageTaskPanel().add(view.getManageTaskPanel().getChangeDescriptionComp());
+				
+				view.reset();
+				break;	
+		
 			case "Create Assignment":
-				timeString = view.getManageTaskPanel().getTimeText();
-				hourInDayString = view.getManageTaskPanel().getHourInDayText();
-				
-				if (view.getManageTaskPanel().getStartDate() != null) {
-					startDate = new GregorianCalendar();
-					startDate.setTime(view.getManageTaskPanel().getStartDate());
-				}
-				
-				if (startDate == null) {
-					view.getManageTaskPanel().setErrorLabel("Please set a start date");
-					break;
-				}
-				
-				try {
-					hourInDay = Integer.parseInt(hourInDayString);
-					view.resetErrorLabels();
-				} catch(NumberFormatException error) {
-					view.getManageTaskPanel().setErrorLabel("Correct your hour of day");
-					break;
-				}
-				
-				try {  
-					time = Integer.parseInt(timeString);
-					view.resetErrorLabels();
-				} catch(NumberFormatException error) {
-					view.getManageTaskPanel().setErrorLabel("Correct your time");
-					break;
-				}
-				
-				startDate.set(Calendar.HOUR_OF_DAY, hourInDay);
-				startDate.set(Calendar.MINUTE,0);
-				startDate.set(Calendar.SECOND,0);
-				
-				if ( view.getManageTaskPanel().getSelectedIndex() > -1 ) {
-					employee = view.getManageTaskPanel().getSelected();
-					task = view.getManageTaskPanel().getTask();
-					try {
-						schedule.getUser().addEmployeeToTask(employee, task, startDate, time*60);
-						view.resetErrorLabels();
-					} catch (Exception error) {
-						view.getManageTaskPanel().setErrorLabel(error.getMessage());
-					}
-					view.getManageTaskPanel().setSpentTimeTaskTLabel();
-					view.getManageTaskPanel().updateList();
-					view.getManageTaskPanel().updateAssignmentsList();
-					view.getManageTaskPanel().updateFindEmployeesList(schedule.getUser().getFreeEmployeesInPeriod(startDate, time));
-				} else {
-					view.getManageTaskPanel().setErrorLabel("Choose an employee");
-				}
+				task = view.getManageTaskPanel().getTask();
+				view.getCreateAssignmentPanel().setTask(task);
+				view.remove(view.getManageTaskPanel());
+				view.add(view.getCreateAssignmentPanel());
+				view.reset();
 				
 				break;
 				

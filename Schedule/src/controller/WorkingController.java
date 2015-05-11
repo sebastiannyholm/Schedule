@@ -143,11 +143,12 @@ public class WorkingController implements ActionListener {
 					task = view.getWorkingPanel().getTask();
 					try {
 						schedule.getUser().requireAssistance(employee, task, startDate, time*60);
-						view.resetErrorLabels();
 					} catch (Exception error) {
 						view.getWorkingPanel().setErrorLabel(error.getMessage());
+						break;
 					}
-					
+					view.resetErrorLabels();
+					employee.getTasksAndTime().get(task).getLast().setDescription(assignment.getDescription());
 					view.getWorkingPanel().updateFindEmployeesList(schedule.getUser().getFreeEmployeesInPeriod(startDate, time));
 				} else {
 					view.getWorkingPanel().setErrorLabel("Choose an employee");

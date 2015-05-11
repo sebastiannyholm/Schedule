@@ -15,7 +15,7 @@ public class Assignment implements ActionListener {
 	private Calendar startDate, endDate;
 	private int time, registeredTime, hours, minutes, seconds;
 	private Timer timer;
-	private String registeredTimeString = "00:00:00", hoursString = "00", minutesString = "00", secondsString = "00"; 
+	private String registeredTimeString = "00:00:00", hoursString = "00", minutesString = "00", secondsString = "00", description = ""; 
 	
 	private DateFormat df = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
 	
@@ -143,5 +143,13 @@ public class Assignment implements ActionListener {
 	
 	public String getRegisteredTimeString() {
 		return registeredTimeString;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getDescription() {
+		return description;
 	}
 }

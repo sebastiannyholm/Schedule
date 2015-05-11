@@ -28,6 +28,7 @@ public class View extends JFrame {
 	private ManageTaskPanel manageTaskPanel;
 	private WorkingPanel workingPanel;
 	private ManageEmployeesPanel manageEmployeesPanel;
+	private CreateAssignmentPanel createAssignmentPanel;
 
 	
 	public View(Schedule schedule) {
@@ -67,6 +68,7 @@ public class View extends JFrame {
 		this.manageTaskPanel = new ManageTaskPanel(schedule);
 		this.workingPanel = new WorkingPanel(schedule);
 		this.manageEmployeesPanel = new ManageEmployeesPanel(schedule);
+		this.createAssignmentPanel = new CreateAssignmentPanel(schedule);
 	}
 	
 	public LogInPanel getLogInPanel() {
@@ -126,6 +128,10 @@ public class View extends JFrame {
 		projectPanel.setErrorLabel("");
 		workingPanel.setErrorLabel("");
 		workingPanel.setErrorLabelTime("");
+	}
+
+	public CreateAssignmentPanel getCreateAssignmentPanel() {
+		return createAssignmentPanel;
 	}
 	
 }

@@ -92,7 +92,7 @@ public class WorkingPanel extends JPanel {
 		
 		this.setLayout(null);
 		
-		titleLabel.setBounds(20, 20, 460, 40);
+		titleLabel.setLocation(20, 20);
 		timeSpentTitleLabel.setBounds(20,80,200,40);
 		timeSpentLabel.setBounds(20,120,200,40);
 		changeTimeSpentLabel.setBounds(20, 200, 200, 40);
