@@ -12,7 +12,7 @@ public class Task {
 
 	private List<Employee> employees;
 	private List<Employee> employeesAsAssistance;
-	private String name, taskNumber, description;
+	private String name, taskNumber, description = "";
 	private Calendar startDate, endDate;
 	private int budgetedTime;
 	private Map<Employee, Integer> log = new HashMap<Employee, Integer>();

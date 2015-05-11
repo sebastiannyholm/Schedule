@@ -55,8 +55,8 @@ public class ProjectPanel extends JPanel {
 		
 		createProject.setBounds(20, 520, 120, 40);
 		deleteProject.setBounds(160, 520, 120, 40);
-		manageProject.setBounds(300, 520, 120, 40);
-		errorLabel.setBounds(440, 520, 300, 40);
+		manageProject.setBounds(300, 520, 150, 40);
+		errorLabel.setBounds(470, 520, 300, 40);
 		back.setBounds(820,520,120,40);
 		
 		this.add(titleLabel);
