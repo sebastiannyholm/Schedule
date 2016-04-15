@@ -132,6 +132,7 @@ public class TestProject {
 		user.createProject(newProject);
 		user.createProject(anotherProject);
 		
+		// this will change according to the current year so won't work forever...
 		assertEquals(20150000, project.getProjectNumber());
 		assertEquals(20150001, newProject.getProjectNumber());
 		assertEquals(20150002, anotherProject.getProjectNumber());
